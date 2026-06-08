@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Performia – PERFORM-6™ Assessment</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ═══ DESIGN TOKENS ══════════════════════════════════════════════
+   Flat design. No gradients. Matches Login / Marketplace / Dashboard.
+════════════════════════════════════════════════════════════════ */
+:root{
+  --primary:#0F1F6B;
+  --accent:#1FC7D4;
+  --accent-light:rgba(31,199,212,.08);
+  --accent-mid:rgba(31,199,212,.16);
+  --bg:#F8FAFC;
+  --surface:#FFFFFF;
+  --border:#D9E4F2;
+  --border-dark:#B8CCE4;
+  --text-primary:#0F1F6B;
+  --text-body:#374151;
+  --text-muted:#6B7280;
+  --text-light:#9CA3AF;
+  --radius:16px;
+  --radius-sm:10px;
+  --radius-xs:8px;
+  --shadow-card:0 1px 4px rgba(15,31,107,.06),0 4px 16px rgba(15,31,107,.04);
+  --shadow-hover:0 4px 12px rgba(15,31,107,.10),0 8px 24px rgba(15,31,107,.06);
+}
+*,*::before,*::after{
+  font-family:"Noto Sans Thai",sans-serif;
+  box-sizing:border-box;margin:0;padding:0;
+  -webkit-font-smoothing:antialiased;
+}
+body{background:var(--bg);min-height:100vh;color:var(--text-body);}
+
+/* ── Typography ── */
+.t-display{font-size:22px;font-weight:700;color:var(--text-primary);line-height:1.4;}
+.t-title  {font-size:18px;font-weight:600;color:var(--text-primary);line-height:1.5;}
+.t-body   {font-size:14px;font-weight:400;color:var(--text-body);   line-height:1.7;}
+.t-label  {font-size:12px;font-weight:600;color:var(--text-muted);  line-height:1.5;letter-spacing:.04em;text-transform:uppercase;}
+.t-small  {font-size:12px;font-weight:400;color:var(--text-muted);  line-height:1.6;}
+.t-caption{font-size:11px;font-weight:500;color:var(--text-light);  line-height:1.5;letter-spacing:.03em;}
+
+/* ── Card ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-card);}
+.card-p{padding:20px;}
+
+/* ── Header ── */
+.app-header{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:200;padding:0 20px;
+  display:flex;align-items:center;height:56px;
+}
+.app-header-inner{max-width:760px;width:100%;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.logo-mark{width:30px;height:30px;border-radius:8px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:var(--accent);flex-shrink:0;}
+
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;border:none;font-family:inherit;font-weight:600;transition:all .18s ease;white-space:nowrap;}
+.btn-lg{padding:13px 28px;border-radius:var(--radius-sm);font-size:15px;}
+.btn-md{padding:10px 20px;border-radius:var(--radius-sm);font-size:14px;}
+.btn-sm{padding:7px 14px;border-radius:var(--radius-xs);font-size:12px;}
+
+.btn-primary{background:var(--primary);color:#fff;}
+.btn-primary:hover:not(:disabled){background:#162580;box-shadow:0 4px 14px rgba(15,31,107,.25);}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed;}
+
+.btn-accent{background:var(--accent);color:#fff;}
+.btn-accent:hover{background:#18B5C2;box-shadow:0 4px 14px rgba(31,199,212,.3);}
+
+.btn-ghost{background:transparent;color:var(--text-muted);border:1.5px solid var(--border);}
+.btn-ghost:hover:not(:disabled){background:var(--bg);color:var(--text-primary);}
+.btn-ghost:disabled{opacity:.35;cursor:not-allowed;}
+
+.btn-outline-accent{background:transparent;color:var(--accent);border:1.5px solid var(--accent);}
+.btn-outline-accent:hover{background:var(--accent-light);}
+
+/* ── Progress bar ── */
+.progress-track{height:6px;background:var(--border);border-radius:9999px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--accent);border-radius:9999px;transition:width .6s cubic-bezier(.4,0,.2,1);}
+
+/* ── Pill nav ── */
+.pillar-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:9999px;border:1.5px solid var(--border);font-size:12px;font-weight:500;white-space:nowrap;flex-shrink:0;transition:all .18s;}
+.pillar-pill.done{background:var(--accent-light);color:var(--accent);border-color:rgba(31,199,212,.3);}
+.pillar-pill.active{background:var(--primary);color:#fff;border-color:transparent;}
+.pillar-pill.upcoming{background:transparent;color:var(--text-light);border-color:var(--border);}
+
+/* ── Likert answer cards ── */
+.answer-card{
+  cursor:pointer;border:1.5px solid var(--border);border-radius:var(--radius-sm);
+  background:var(--surface);padding:14px 18px;
+  display:flex;align-items:center;gap:14px;
+  transition:all .18s ease;user-select:none;
+}
+.answer-card:hover{border-color:var(--accent);background:var(--accent-light);}
+.answer-card:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.answer-card.selected{
+  border-color:var(--accent);background:var(--accent-light);
+  box-shadow:0 0 0 3px rgba(31,199,212,.12);
+}
+.answer-radio{
+  width:20px;height:20px;border-radius:50%;border:2px solid var(--border-dark);
+  flex-shrink:0;transition:all .18s;display:flex;align-items:center;justify-content:center;
+}
+.answer-card.selected .answer-radio{border-color:var(--accent);background:var(--accent);}
+.answer-label{flex:1;font-size:14px;font-weight:500;color:var(--text-body);line-height:1.6;}
+.answer-card.selected .answer-label{font-weight:600;color:var(--text-primary);}
+
+/* Situational cards */
+.situation-card{
+  cursor:pointer;border:1.5px solid var(--border);border-radius:var(--radius-sm);
+  background:var(--surface);padding:16px 18px;
+  transition:all .18s ease;user-select:none;
+}
+.situation-card:hover{border-color:var(--accent);background:var(--accent-light);}
+.situation-card.selected{border-color:var(--accent);background:var(--accent-light);box-shadow:0 0 0 3px rgba(31,199,212,.12);}
+
+/* ── Validation ── */
+.val-msg{
+  background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.25);
+  border-radius:var(--radius-xs);padding:10px 14px;
+  display:none;align-items:center;gap:8px;margin-top:12px;
+}
+.val-msg.show{display:flex;}
+
+/* ── Screens ── */
+.screen{display:none;}.screen.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .35s cubic-bezier(.4,0,.2,1) both;}
+.d1{animation-delay:.06s;}.d2{animation-delay:.12s;}.d3{animation-delay:.18s;}
+.d4{animation-delay:.24s;}.d5{animation-delay:.30s;}.d6{animation-delay:.36s;}
+
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.slide-up{animation:slideUp .32s cubic-bezier(.4,0,.2,1) both;}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin-anim{animation:spin .8s linear infinite;}
+
+/* ── Bottom bar ── */
+.bottom-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:rgba(248,250,252,.96);border-top:1px solid var(--border);
+  padding:12px 20px 20px;
+}
+.bottom-bar-inner{max-width:720px;margin:0 auto;display:flex;gap:10px;}
+
+/* ── Score ring ── */
+.score-ring-svg circle{transition:stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1);}
+
+/* ── Zone badge ── */
+.zone-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:9999px;font-size:11px;font-weight:600;}
+
+/* ── Pillar score card ── */
+.pillar-score-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;}
+.score-track{height:6px;background:var(--border);border-radius:9999px;overflow:hidden;margin-top:10px;}
+.score-fill{height:100%;border-radius:9999px;background:var(--accent);transition:width 1s cubic-bezier(.4,0,.2,1);}
+
+/* ── Strength / Support rows ── */
+.strength-row{display:flex;align-items:center;gap:12px;padding:12px 14px;background:rgba(31,199,212,.06);border:1px solid rgba(31,199,212,.18);border-radius:var(--radius-sm);}
+.support-row {display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);}
+.icon-box{width:34px;height:34px;border-radius:var(--radius-xs);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* ═══ MARKETPLACE ACTIVITY CARD — canonical component ══════════
+   This is the single shared ActivityCard used in Marketplace
+   AND in the Assessment result recommendations.
+   Do not create a different card anywhere in the product.
+════════════════════════════════════════════════════════════════ */
+.activity-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-card);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  transition:box-shadow .2s,transform .2s;
+  cursor:pointer;
+}
+.activity-card:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px);}
+.activity-card__thumb{
+  width:100%;height:120px;object-fit:cover;
+  background:linear-gradient(135deg,#E8EFF8 0%,#D9E4F2 100%);
+  display:flex;align-items:center;justify-content:center;
+  border-bottom:1px solid var(--border);
+  position:relative;flex-shrink:0;
+}
+.activity-card__thumb-icon{color:var(--border-dark);opacity:.6;}
+.activity-card__body{padding:14px 16px;display:flex;flex-direction:column;gap:6px;flex:1;}
+.activity-card__category{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 10px;border-radius:9999px;
+  background:var(--accent-light);color:var(--accent);
+  font-size:11px;font-weight:600;width:fit-content;
+}
+.activity-card__title{font-size:14px;font-weight:600;color:var(--text-primary);line-height:1.4;}
+.activity-card__meta{display:flex;align-items:center;justify-content:space-between;margin-top:4px;}
+.activity-card__provider{font-size:12px;color:var(--text-muted);}
+.activity-card__credits{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:4px 10px;border-radius:9999px;
+  background:rgba(15,31,107,.07);color:var(--primary);
+  font-size:12px;font-weight:700;
+}
+.activity-card__cta{
+  margin:0 16px 14px;padding:9px;border-radius:var(--radius-xs);
+  background:var(--primary);color:#fff;
+  font-size:13px;font-weight:600;text-align:center;
+  transition:background .18s;border:none;cursor:pointer;width:calc(100% - 32px);
+}
+.activity-card__cta:hover{background:#162580;}
+
+/* Horizontal variant for result screen */
+.activity-card--h{
+  flex-direction:row;align-items:stretch;
+}
+.activity-card--h .activity-card__thumb{
+  width:80px;height:auto;min-height:80px;
+  border-bottom:none;border-right:1px solid var(--border);
+  flex-shrink:0;border-radius:0;
+}
+.activity-card--h .activity-card__body{padding:12px 14px;}
+.activity-card--h .activity-card__cta{margin:0 14px 12px;width:calc(100% - 28px);}
+
+/* ── Privacy notice ── */
+.privacy-notice{
+  background:var(--accent-light);border:1px solid rgba(31,199,212,.22);
+  border-radius:var(--radius-sm);padding:14px 16px;
+  display:flex;align-items:flex-start;gap:12px;
+}
+
+/* ── Language dropdown ── */
+.lang-dd{position:absolute;top:calc(100% + 8px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xs);overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.10);min-width:130px;z-index:400;display:none;}
+.lang-dd.open{display:block;}
+.lang-opt{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-body);transition:background .15s;}
+.lang-opt:hover{background:var(--bg);}
+.lang-opt.active{color:var(--accent);background:var(--accent-light);}
+
+/* ── Persona badge ── */
+.persona-card{background:var(--accent-light);border:1.5px solid rgba(31,199,212,.28);border-radius:var(--radius);padding:18px 20px;display:flex;align-items:center;gap:14px;}
+.persona-icon{width:44px;height:44px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* pillar scroll */
+.pillar-scroll::-webkit-scrollbar{display:none;}
+.pillar-scroll{-ms-overflow-style:none;scrollbar-width:none;}
+
+/* step dots */
+.step-dot{height:5px;border-radius:9999px;transition:all .3s cubic-bezier(.4,0,.2,1);}
+
+/* save dot */
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.4}}
+.save-dot{animation:pulse-dot 2s infinite;}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ═══════════════════════════════════
+     HEADER — sticky, shared across all screens
+════════════════════════════════════ -->
+<header class="app-header">
+  <div class="app-header-inner">
+    <!-- Logo -->
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="logo-mark">P</div>
+      <span style="font-size:16px;font-weight:700;color:var(--primary);">Performia</span>
+    </div>
+    <!-- Right cluster -->
+    <div style="display:flex;align-items:center;gap:8px;">
+      <!-- Auto-save dot (hidden on non-assessment screens) -->
+      <div id="save-badge" style="display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:9999px;background:var(--accent-light);border:1px solid rgba(31,199,212,.2);">
+        <div class="save-dot" style="width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;"></div>
+        <span id="lbl-saved" style="font-size:11px;font-weight:500;color:var(--text-muted);"></span>
+      </div>
+      <!-- Language switcher -->
+      <div style="position:relative;">
+        <button id="lang-btn" onclick="toggleLang()" style="padding:5px 12px;border-radius:9999px;cursor:pointer;background:var(--surface);border:1.5px solid var(--border);font-size:12px;font-weight:600;color:var(--text-body);display:flex;align-items:center;gap:5px;">
+          <span id="lang-code">TH</span>
+          <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="lang-dd" id="lang-dd">
+          <div class="lang-opt active" id="opt-th" onclick="setLocale('th')">
+            <span>TH</span><span>ภาษาไทย</span>
+            <svg id="chk-th" style="margin-left:auto;" width="14" height="14" fill="none" stroke="var(--accent)" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <div class="lang-opt" id="opt-en" onclick="setLocale('en')">
+            <span>EN</span><span>English</span>
+            <svg id="chk-en" style="margin-left:auto;display:none;" width="14" height="14" fill="none" stroke="var(--accent)" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════
+     SCREEN 1: INTRO
+════════════════════════════════════ -->
+<div id="screen-intro" class="screen active">
+  <main style="max-width:560px;margin:0 auto;padding:40px 20px 60px;">
+    <div class="card card-p fade-up" style="text-align:center;padding:36px 32px;">
+      <!-- Icon -->
+      <div style="width:56px;height:56px;border-radius:16px;background:var(--accent-light);border:1px solid rgba(31,199,212,.22);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+        <svg width="26" height="26" fill="none" stroke="var(--accent)" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+      </div>
+      <p id="intro-title" class="t-display" style="margin-bottom:10px;"></p>
+      <p id="intro-sub" class="t-body" style="color:var(--text-muted);margin-bottom:28px;"></p>
+      <!-- Stats row -->
+      <div style="display:flex;gap:12px;justify-content:center;margin-bottom:28px;">
+        <div style="flex:1;max-width:140px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 10px;text-align:center;">
+          <p id="intro-stat-q" style="font-size:22px;font-weight:700;color:var(--primary);"></p>
+          <p id="intro-stat-q-lbl" class="t-small"></p>
+        </div>
+        <div style="flex:1;max-width:140px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 10px;text-align:center;">
+          <p id="intro-stat-t" style="font-size:22px;font-weight:700;color:var(--primary);"></p>
+          <p id="intro-stat-t-lbl" class="t-small"></p>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-lg" onclick="goTo('screen-privacy')" style="width:100%;">
+        <span id="intro-cta"></span>
+      </button>
+    </div>
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════
+     SCREEN 2: PRIVACY NOTICE
+════════════════════════════════════ -->
+<div id="screen-privacy" class="screen">
+  <main style="max-width:560px;margin:0 auto;padding:40px 20px 80px;">
+    <div class="card card-p fade-up">
+      <!-- Lock icon -->
+      <div style="width:48px;height:48px;border-radius:14px;background:var(--accent-light);border:1px solid rgba(31,199,212,.22);display:flex;align-items:center;justify-content:center;margin-bottom:18px;">
+        <svg width="22" height="22" fill="none" stroke="var(--accent)" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+      </div>
+      <p id="priv-title" class="t-title" style="margin-bottom:8px;"></p>
+      <p id="priv-body" class="t-body" style="margin-bottom:20px;"></p>
+
+      <!-- Privacy points -->
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;" id="priv-points"></div>
+
+      <button class="btn btn-primary btn-lg" onclick="startAssessment()" style="width:100%;margin-bottom:10px;">
+        <span id="priv-cta"></span>
+      </button>
+      <button class="btn btn-ghost btn-md" onclick="goTo('screen-intro')" style="width:100%;">
+        <span id="priv-back"></span>
+      </button>
+    </div>
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════
+     SCREEN 3: QUESTION FLOW
+════════════════════════════════════ -->
+<div id="screen-assessment" class="screen">
+
+  <!-- Sticky progress -->
+  <div style="background:var(--surface);border-bottom:1px solid var(--border);padding:12px 20px;position:sticky;top:56px;z-index:150;">
+    <div style="max-width:720px;margin:0 auto;">
+      <!-- Top row: pillar nav -->
+      <div class="pillar-scroll" id="pillar-nav" style="display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:10px;"></div>
+      <!-- Bottom row: counts + bar + time -->
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <span id="lbl-q-of" style="font-size:12px;font-weight:600;color:var(--text-primary);white-space:nowrap;flex-shrink:0;"></span>
+        <div class="progress-track" style="flex:1;min-width:80px;">
+          <div class="progress-fill" id="progress-bar" style="width:0%;"></div>
+        </div>
+        <span id="lbl-pct" style="font-size:12px;font-weight:600;color:var(--accent);white-space:nowrap;flex-shrink:0;"></span>
+        <span id="lbl-time" style="font-size:11px;color:var(--text-muted);white-space:nowrap;display:flex;align-items:center;gap:3px;flex-shrink:0;">
+          <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <span id="lbl-time-text"></span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <main style="max-width:720px;margin:0 auto;padding:20px 20px 140px;">
+    <!-- Question card -->
+    <div class="card card-p slide-up" id="q-card" style="margin-bottom:14px;">
+      <!-- Pillar label -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
+        <div id="q-icon" style="width:34px;height:34px;border-radius:var(--radius-xs);background:var(--accent-light);border:1px solid rgba(31,199,212,.2);display:flex;align-items:center;justify-content:center;color:var(--accent);flex-shrink:0;"></div>
+        <p id="q-pillar-lbl" class="t-label"></p>
+      </div>
+      <!-- Question -->
+      <h2 id="q-text" style="font-size:clamp(16px,3.5vw,20px);font-weight:600;color:var(--text-primary);line-height:1.6;margin-bottom:20px;"></h2>
+      <!-- Scale type indicator -->
+      <p id="scale-hint" class="t-caption" style="margin-bottom:14px;"></p>
+      <!-- Answers -->
+      <div id="answer-area" style="display:flex;flex-direction:column;gap:8px;" role="radiogroup"></div>
+      <!-- Validation -->
+      <div class="val-msg" id="val-msg">
+        <svg width="15" height="15" fill="none" stroke="#F59E0B" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+        <span id="lbl-val" class="t-body" style="color:#92400E;font-size:13px;"></span>
+      </div>
+    </div>
+    <!-- Persistent privacy note -->
+    <div class="privacy-notice">
+      <svg width="16" height="16" fill="none" stroke="var(--accent)" stroke-width="1.8" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+      <p id="lbl-priv-inline" class="t-small"></p>
+    </div>
+  </main>
+
+  <!-- Bottom bar -->
+  <div class="bottom-bar">
+    <div class="bottom-bar-inner">
+      <button id="btn-back" class="btn btn-ghost btn-md" onclick="handlePrev()" style="flex-shrink:0;padding:11px 16px;">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        <span id="lbl-back"></span>
+      </button>
+      <button class="btn btn-ghost btn-md" onclick="handleSaveExit()" style="flex-shrink:0;padding:11px 14px;">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+        <span id="lbl-save-exit" style="white-space:nowrap;"></span>
+      </button>
+      <button id="btn-next" class="btn btn-primary btn-md" onclick="handleNext()" style="flex:1;">
+        <span id="lbl-next"></span>
+        <svg id="icon-fwd" width="15" height="15" fill="none" stroke="white" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        <svg id="icon-chk" style="display:none;" width="15" height="15" fill="none" stroke="white" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        <svg id="icon-spin" class="spin-anim" style="display:none;" width="16" height="16" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M12 3a9 9 0 109 9"/></svg>
+      </button>
+    </div>
+    <div id="step-dots" style="display:flex;justify-content:center;gap:4px;margin-top:8px;"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     SCREEN 4: RESULT SUMMARY
+════════════════════════════════════ -->
+<div id="screen-result" class="screen">
+  <main style="max-width:760px;margin:0 auto;padding:24px 20px 60px;">
+
+    <!-- 1. HERO -->
+    <div class="card card-p fade-up" style="text-align:center;margin-bottom:16px;">
+      <div style="width:44px;height:44px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 0 0 8px var(--accent-light);">
+        <svg width="20" height="20" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <p id="res-title" class="t-display" style="margin-bottom:6px;"></p>
+      <p id="res-sub" class="t-body" style="color:var(--text-muted);margin-bottom:28px;"></p>
+
+      <!-- Score ring -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+        <div style="position:relative;width:148px;height:148px;">
+          <svg width="148" height="148" viewBox="0 0 148 148">
+            <circle cx="74" cy="74" r="62" fill="none" stroke="var(--border)" stroke-width="9"/>
+            <circle id="score-ring" cx="74" cy="74" r="62" fill="none" stroke="var(--accent)" stroke-width="9"
+              stroke-linecap="round" stroke-dasharray="389.6" stroke-dashoffset="389.6"
+              transform="rotate(-90 74 74)"/>
+          </svg>
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+            <span id="res-score-num" style="font-size:40px;font-weight:700;color:var(--primary);line-height:1;"></span>
+            <span style="font-size:12px;color:var(--text-muted);font-weight:500;">/&nbsp;100</span>
+          </div>
+        </div>
+        <div id="res-zone-badge" class="zone-badge"></div>
+        <p id="res-zone-label" style="font-size:13px;color:var(--text-muted);line-height:1.6;"></p>
+        <p id="res-overall-lbl" class="t-label"></p>
+      </div>
+    </div>
+
+    <!-- 2. PERSONA -->
+    <div class="fade-up d1" style="margin-bottom:16px;">
+      <p id="sec-persona" class="t-label" style="margin-bottom:10px;"></p>
+      <div class="persona-card" id="persona-card"></div>
+    </div>
+
+    <!-- 3. PILLAR BREAKDOWN -->
+    <div class="fade-up d2" style="margin-bottom:16px;">
+      <p id="sec-pillars" class="t-label" style="margin-bottom:10px;"></p>
+      <div id="pillar-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px;"></div>
+    </div>
+
+    <!-- 4. STRENGTHS -->
+    <div class="card card-p fade-up d3" style="margin-bottom:12px;">
+      <p id="sec-strengths" class="t-label" style="color:var(--accent);margin-bottom:12px;"></p>
+      <div id="strengths-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+
+    <!-- 5. AREAS TO SUPPORT -->
+    <div class="card card-p fade-up d4" style="margin-bottom:12px;">
+      <p id="sec-support" class="t-label" style="margin-bottom:12px;"></p>
+      <div id="support-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+
+    <!-- 6. RECOMMENDED ACTIVITIES — uses canonical ActivityCard -->
+    <div class="fade-up d5" style="margin-bottom:16px;">
+      <p id="sec-activities" class="t-label" style="margin-bottom:10px;"></p>
+      <div id="activities-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;"></div>
+    </div>
+
+    <!-- 7. PRIVACY REMINDER -->
+    <div class="privacy-notice fade-up d6" style="margin-bottom:20px;">
+      <svg width="16" height="16" fill="none" stroke="var(--accent)" stroke-width="1.8" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+      <p id="res-privacy" class="t-small"></p>
+    </div>
+
+    <!-- CTAs -->
+    <div style="display:flex;flex-direction:column;gap:10px;max-width:480px;margin:0 auto;" class="fade-up d6">
+      <button class="btn btn-primary btn-lg" onclick="alert(t('btn.view_profile'))" style="width:100%;">
+        <span id="lbl-res-profile"></span>
+      </button>
+      <button class="btn btn-outline-accent btn-lg" onclick="alert(t('btn.view_activities'))" style="width:100%;">
+        <span id="lbl-res-activities"></span>
+      </button>
+    </div>
+
+  </main>
+</div>
+
+</div><!-- #app -->
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// i18n
+// ═══════════════════════════════════════════════════════════════
+const TR={
+th:{
+  "saved":"บันทึกแล้ว",
+  "intro.title":"แบบประเมิน PERFORM-6™",
+  "intro.sub":"ตอบคำถามเพื่อรับโปรไฟล์สุขภาพส่วนตัวและคำแนะนำกิจกรรมที่เหมาะกับคุณ",
+  "intro.stat.q":"36",
+  "intro.stat.q.lbl":"คำถาม",
+  "intro.stat.t":"6–8 นาที",
+  "intro.stat.t.lbl":"เวลาโดยประมาณ",
+  "intro.cta":"เริ่มทำแบบประเมิน",
+  "priv.title":"ความเป็นส่วนตัวของคุณ",
+  "priv.body":"ข้อมูลของคุณได้รับการคุ้มครองอย่างเต็มที่ ระบบออกแบบเพื่อช่วยเหลือคุณเท่านั้น",
+  "priv.pt1":"HR เห็นเฉพาะข้อมูลภาพรวมของทีม ไม่เห็นคำตอบรายบุคคล",
+  "priv.pt2":"ผลลัพธ์เป็นของคุณส่วนตัว ใช้เพื่อแนะนำกิจกรรมที่เหมาะกับคุณ",
+  "priv.pt3":"คุณสามารถหยุดและบันทึกความคืบหน้าได้ทุกเมื่อ",
+  "priv.cta":"รับทราบ เริ่มทำแบบประเมิน",
+  "priv.back":"ย้อนกลับ",
+  "pillar.Mind":"จิตใจ",
+  "pillar.Body":"ร่างกาย",
+  "pillar.Money":"การเงิน",
+  "pillar.Social":"สังคม",
+  "pillar.Growth":"การเติบโต",
+  "pillar.Work Design":"การออกแบบงาน",
+  "q.label":"{pillar} · คำถาม {n}/{total}",
+  "scale.likert":"1 = แทบไม่เคย &nbsp;·&nbsp; 5 = เกือบเสมอ",
+  "scale.situation":"เลือกสถานการณ์ที่ตรงกับคุณมากที่สุด",
+  "likert.1":"1 – แทบไม่เคย",
+  "likert.2":"2 – นานๆ ครั้ง",
+  "likert.3":"3 – บางครั้ง",
+  "likert.4":"4 – บ่อยครั้ง",
+  "likert.5":"5 – เกือบเสมอ",
+  "val.required":"กรุณาเลือกคำตอบก่อนดำเนินการต่อ",
+  "btn.back":"ย้อนกลับ",
+  "btn.save_exit":"บันทึกและออก",
+  "btn.next":"ถัดไป",
+  "btn.submit":"ส่งคำตอบ",
+  "btn.submitting":"กำลังส่ง…",
+  "btn.view_profile":"ดูโปรไฟล์ของฉัน",
+  "btn.view_activities":"ดูกิจกรรมแนะนำ",
+  "priv.inline":"HR เห็นเฉพาะข้อมูลภาพรวม ไม่เห็นคำตอบรายบุคคล",
+  "alert.saved":"บันทึกความคืบหน้าแล้ว คุณสามารถกลับมาทำต่อได้",
+  "progress.q_of":"คำถาม {c} / {t}",
+  "progress.pct":"{p}%",
+  "time.plural":"ประมาณ {n} นาที",
+  "time.one":"น้อยกว่า 1 นาที",
+  "res.title":"สรุปผล PERFORM-6™ ของคุณ",
+  "res.sub":"นี่คือภาพรวมสุขภาพส่วนตัว เพื่อช่วยให้คุณเลือกการดูแลที่เหมาะกับตัวเอง",
+  "res.overall":"Human Performance Score",
+  "res.sec.persona":"บุคลิกภาพด้านสุขภาพของคุณ",
+  "res.sec.pillars":"คะแนนแต่ละด้าน PERFORM-6™",
+  "res.sec.strengths":"จุดแข็งของคุณ",
+  "res.sec.support":"ด้านที่แนะนำให้ดูแลเพิ่มเติม",
+  "res.sec.activities":"กิจกรรมที่เหมาะกับคุณ",
+  "res.privacy":"ผลลัพธ์นี้เป็นข้อมูลส่วนตัวของคุณ HR จะเห็นเฉพาะข้อมูลภาพรวม ไม่เห็นคำตอบรายบุคคล",
+  "act.book":"จอง",
+  "act.credits":"{n} เครดิต",
+  "zone.performing.name":"Performing Zone",
+  "zone.stable.name":"Stable Zone",
+  "zone.watch.name":"Watch Zone",
+  "zone.risk.name":"Risk Zone",
+  "zone.critical.name":"Critical Zone",
+  "zone.performing.label":"แข็งแรงและพร้อมเติบโต",
+  "zone.stable.label":"โดยรวมดี ควรดูแลต่อเนื่อง",
+  "zone.watch.label":"ควรดูแลเพิ่มเติม",
+  "zone.risk.label":"ควรได้รับการดูแลอย่างเหมาะสม",
+  "zone.critical.label":"ควรได้รับการดูแลอย่างใกล้ชิด",
+},
+en:{
+  "saved":"Saved",
+  "intro.title":"PERFORM-6™ Assessment",
+  "intro.sub":"Answer a few questions to receive your personal wellbeing profile and activity recommendations.",
+  "intro.stat.q":"36",
+  "intro.stat.q.lbl":"Questions",
+  "intro.stat.t":"6–8 min",
+  "intro.stat.t.lbl":"Estimated time",
+  "intro.cta":"Start Assessment",
+  "priv.title":"Your Privacy Matters",
+  "priv.body":"Your data is fully protected. This system is designed to support you, not to evaluate you.",
+  "priv.pt1":"HR sees only team-level aggregated insights, not your individual answers.",
+  "priv.pt2":"Your results are personal — used only to recommend activities that support you.",
+  "priv.pt3":"You can pause and save your progress at any time.",
+  "priv.cta":"Understood — Start Assessment",
+  "priv.back":"Back",
+  "pillar.Mind":"Mind Resilience",
+  "pillar.Body":"Energy Vitality",
+  "pillar.Money":"Financial Confidence",
+  "pillar.Social":"Social Connection",
+  "pillar.Growth":"Growth Momentum",
+  "pillar.Work Design":"WorkFlow Clarity",
+  "q.label":"{pillar} · Q {n}/{total}",
+  "scale.likert":"1 = Almost never &nbsp;·&nbsp; 5 = Almost always",
+  "scale.situation":"Select the situation that best describes you.",
+  "likert.1":"1 – Almost never",
+  "likert.2":"2 – Rarely",
+  "likert.3":"3 – Sometimes",
+  "likert.4":"4 – Often",
+  "likert.5":"5 – Almost always",
+  "val.required":"Please select an answer to continue.",
+  "btn.back":"Back",
+  "btn.save_exit":"Save & Exit",
+  "btn.next":"Next",
+  "btn.submit":"Submit Assessment",
+  "btn.submitting":"Submitting…",
+  "btn.view_profile":"View My Profile",
+  "btn.view_activities":"View Recommended Activities",
+  "priv.inline":"HR sees aggregated insights only — not your individual answers.",
+  "alert.saved":"Progress saved. You can return to finish later.",
+  "progress.q_of":"Q {c} / {t}",
+  "progress.pct":"{p}%",
+  "time.plural":"About {n} min remaining",
+  "time.one":"Less than 1 min remaining",
+  "res.title":"Your PERFORM-6™ Result Summary",
+  "res.sub":"A personal wellbeing snapshot to help you choose the right support.",
+  "res.overall":"Human Performance Score",
+  "res.sec.persona":"Your Wellbeing Persona",
+  "res.sec.pillars":"PERFORM-6™ Pillar Scores",
+  "res.sec.strengths":"Your Strengths",
+  "res.sec.support":"Areas to Support",
+  "res.sec.activities":"Recommended Activities for You",
+  "res.privacy":"This profile is personal to you. HR sees aggregated insights only, not individual answers.",
+  "act.book":"Book",
+  "act.credits":"{n} Credits",
+  "zone.performing.name":"Performing Zone",
+  "zone.stable.name":"Stable Zone",
+  "zone.watch.name":"Watch Zone",
+  "zone.risk.name":"Risk Zone",
+  "zone.critical.name":"Critical Zone",
+  "zone.performing.label":"Strong and Ready to Grow",
+  "zone.stable.label":"Stable with Room to Support",
+  "zone.watch.label":"Needs Additional Support",
+  "zone.risk.label":"Support Recommended",
+  "zone.critical.label":"Close Support Recommended",
+}};
+function t(k,v){
+  let s=(TR[locale]&&TR[locale][k])||(TR.en[k])||k;
+  if(v) Object.entries(v).forEach(([a,b])=>{s=s.split("{"+a+"}").join(b);});
+  return s;
+}
+function tp(k){return t("pillar."+k);}
+
+// ═══════════════════════════════════════════════════════════════
+// QUESTIONS — 6 questions (one per pillar for this MVP)
+// Types: "likert" | "situation"
+// ═══════════════════════════════════════════════════════════════
+const QUESTIONS=[
+  {id:1,pk:"Mind",type:"likert",
+   s:{th:"ฉันสามารถฟื้นตัวจากความเครียดหรือแรงกดดันในการทำงานได้",
+      en:"I can recover from stress or pressure at work."}},
+  {id:2,pk:"Body",type:"likert",
+   s:{th:"ฉันมีพลังงานเพียงพอสำหรับการทำงานในแต่ละวัน",
+      en:"I have enough energy for my daily work."}},
+  {id:3,pk:"Money",type:"situation",
+   s:{th:"เมื่อนึกถึงเรื่องการเงิน คุณรู้สึกอย่างไร?",
+      en:"When you think about your finances, you feel:"},
+   opts:{
+     th:["วิตกกังวลและไม่มั่นใจ","พอรับได้ แต่ยังกังวลบ้าง","เป็นกลาง ดูแลได้แต่อยากพัฒนา","มั่นใจและจัดการได้ดี","มั่นใจมาก มีแผนชัดเจน"],
+     en:["Anxious and uncertain","Manageable but still worried","Neutral, handling it but want to improve","Confident and in control","Very confident with a clear plan"]
+   }},
+  {id:4,pk:"Social",type:"likert",
+   s:{th:"ฉันรู้สึกเป็นส่วนหนึ่งของทีมและองค์กร",
+      en:"I feel a sense of belonging with my team and organization."}},
+  {id:5,pk:"Growth",type:"likert",
+   s:{th:"ฉันมองเห็นโอกาสในการเรียนรู้และเติบโตในงานของฉัน",
+      en:"I see opportunities to learn and grow in my work."}},
+  {id:6,pk:"Work Design",type:"situation",
+   s:{th:"ในสัปดาห์ที่ผ่านมา คุณรู้สึกกับงานอย่างไร?",
+      en:"In the past week, how did you feel about your work?"},
+   opts:{
+     th:["หมดแรงและท่วมท้นมาก","เครียด แต่พอผ่านได้","โอเค แต่รู้สึกซ้ำซากจำเจ","มีพลังและโฟกัสดี","มีชีวิตชีวา รู้สึก flow"],
+     en:["Exhausted and overwhelmed","Stressed but getting through","Okay but feeling stuck in a routine","Energized and focused","In flow — meaningful and alive"]
+   }},
+];
+
+const PILLAR_KEYS=["Mind","Body","Money","Social","Growth","Work Design"];
+const PILLAR_SVG={
+  Mind:`<svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3a6 6 0 00-6 6c0 2.025.98 3.823 2.5 4.97V17h7v-3.03A6.003 6.003 0 0018 9a6 6 0 00-6-6z"/></svg>`,
+  Body:`<svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>`,
+  Money:`<svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`,
+  Social:`<svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>`,
+  Growth:`<svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>`,
+  "Work Design":`<svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>`,
+};
+
+// ═══════════════════════════════════════════════════════════════
+// ACTIVITIES catalogue — rendered as canonical ActivityCard
+// ═══════════════════════════════════════════════════════════════
+const ACTIVITIES={
+  Mind:[
+    {th:"เวิร์กช็อปฟื้นฟูจากความเครียด",en:"Stress Recovery Workshop",provider:"Mindspa",credits:3,pk:"Mind"},
+    {th:"โปรแกรม Mindfulness",en:"Mindfulness at Work",provider:"Calm Business",credits:2,pk:"Mind"},
+  ],
+  Body:[
+    {th:"โยคะฟื้นฟูพลังงาน",en:"Energy Recovery Yoga",provider:"YogaFlow Studio",credits:2,pk:"Body"},
+    {th:"โปรแกรมนอนหลับเพื่อสุขภาพ",en:"Sleep Wellness Program",provider:"SleepWell",credits:2,pk:"Body"},
+  ],
+  Money:[
+    {th:"โค้ชชิ่งด้านสุขภาพการเงิน",en:"Financial Wellness Coaching",provider:"MoneyMind",credits:4,pk:"Money"},
+    {th:"แผนการออมและลงทุน",en:"Savings & Investment Planning",provider:"WealthCoach",credits:3,pk:"Money"},
+  ],
+  Social:[
+    {th:"กิจกรรมสร้างทีม",en:"Team Connection Workshop",provider:"Connectify",credits:2,pk:"Social"},
+    {th:"โปรแกรมพี่เลี้ยง",en:"Peer Mentoring Program",provider:"MentorHub",credits:3,pk:"Social"},
+  ],
+  Growth:[
+    {th:"หลักสูตรพัฒนาทักษะ",en:"Skills Development Course",provider:"LearnFwd",credits:3,pk:"Growth"},
+    {th:"Career Coaching",en:"Career Coaching Session",provider:"CoachPro",credits:4,pk:"Growth"},
+  ],
+  "Work Design":[
+    {th:"เวิร์กช็อปจัดการงานและเวลา",en:"Work & Time Management",provider:"FlowLab",credits:2,pk:"Work Design"},
+    {th:"โปรแกรม Focus & Deep Work",en:"Focus & Deep Work",provider:"DeepFlow",credits:3,pk:"Work Design"},
+  ],
+};
+
+// Personas
+const PERSONAS={
+  th:[
+    {min:80,icon:"⚡",name:"High Performer",desc:"คุณมีพลังงานสูง มีความสมดุลในทุกด้าน และพร้อมสำหรับความท้าทายใหม่"},
+    {min:65,icon:"🌱",name:"Growth Seeker",desc:"คุณมีรากฐานที่มั่นคง กำลังเติบโต และยังมีพื้นที่ให้พัฒนาในบางด้าน"},
+    {min:50,icon:"⚖️",name:"Steady Balancer",desc:"คุณจัดการได้ แต่บางด้านต้องการการดูแลเพิ่มเพื่อให้มีพลังงานมากขึ้น"},
+    {min:35,icon:"🔥",name:"Silent Burnout",desc:"คุณทำงานหนักโดยอาจไม่รู้ตัว หยุดพักและดูแลตัวเองก่อนจะเป็นสิ่งสำคัญ"},
+    {min:0, icon:"🆘",name:"High Pressure",desc:"คุณกำลังเผชิญกับแรงกดดันสูงหลายด้าน การขอรับการสนับสนุนเป็นสิ่งสำคัญ"},
+  ],
+  en:[
+    {min:80,icon:"⚡",name:"High Performer",desc:"You have high energy, well-balanced across all dimensions, and ready for new challenges."},
+    {min:65,icon:"🌱",name:"Growth Seeker",desc:"You have a solid foundation and are growing, with some areas still developing."},
+    {min:50,icon:"⚖️",name:"Steady Balancer",desc:"You're managing well but some dimensions need attention to unlock more energy."},
+    {min:35,icon:"🔥",name:"Silent Burnout",desc:"You may be running hard without realising it. Rest and recovery are important steps forward."},
+    {min:0, icon:"🆘",name:"High Pressure Under Stress",desc:"You're facing high pressure across multiple areas. Seeking support is a meaningful first step."},
+  ],
+};
+
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+let locale="th", currentIdx=0, answers={}, showVal=false;
+
+// ═══════════════════════════════════════════════════════════════
+// SCORING
+// ═══════════════════════════════════════════════════════════════
+function computeScores(){
+  const ps={};
+  PILLAR_KEYS.forEach(k=>{
+    const q=QUESTIONS.find(q=>q.pk===k);
+    const raw=q?(answers[q.id]||3):3;
+    ps[k]=Math.round(((raw-1)/4)*100);
+  });
+  const overall=Math.round(Object.values(ps).reduce((a,b)=>a+b,0)/PILLAR_KEYS.length);
+  return{ps,overall};
+}
+function zone(s){return s>=80?"performing":s>=65?"stable":s>=50?"watch":s>=35?"risk":"critical";}
+function zColor(z){return{performing:"#059669",stable:"#0891B2",watch:"#D97706",risk:"#DC2626",critical:"#7C3AED"}[z];}
+function zBg(z){return{performing:"rgba(5,150,105,.09)",stable:"rgba(8,145,178,.09)",watch:"rgba(217,119,6,.09)",risk:"rgba(220,38,38,.09)",critical:"rgba(124,58,237,.09)"}[z];}
+function scoreBarColor(s){
+  if(s>=80)return"#059669";if(s>=65)return"#1FC7D4";if(s>=50)return"#D97706";if(s>=35)return"#DC2626";return"#7C3AED";
+}
+function getPersona(score){
+  const list=PERSONAS[locale]||PERSONAS.en;
+  return list.find(p=>score>=p.min)||list[list.length-1];
+}
+
+// ═══════════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════════
+function goTo(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+  // Show/hide save badge
+  const showBadge=id==="screen-assessment";
+  document.getElementById("save-badge").style.display=showBadge?"flex":"none";
+}
+
+function startAssessment(){
+  currentIdx=0;answers={};showVal=false;
+  goTo("screen-assessment");
+  renderAssessment();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER INTRO
+// ═══════════════════════════════════════════════════════════════
+function renderIntro(){
+  document.getElementById("intro-title").textContent=t("intro.title");
+  document.getElementById("intro-sub").textContent=t("intro.sub");
+  document.getElementById("intro-stat-q").textContent=t("intro.stat.q");
+  document.getElementById("intro-stat-q-lbl").textContent=t("intro.stat.q.lbl");
+  document.getElementById("intro-stat-t").textContent=t("intro.stat.t");
+  document.getElementById("intro-stat-t-lbl").textContent=t("intro.stat.t.lbl");
+  document.getElementById("intro-cta").textContent=t("intro.cta");
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER PRIVACY
+// ═══════════════════════════════════════════════════════════════
+function renderPrivacy(){
+  document.getElementById("priv-title").textContent=t("priv.title");
+  document.getElementById("priv-body").textContent=t("priv.body");
+  const pts=[t("priv.pt1"),t("priv.pt2"),t("priv.pt3")];
+  document.getElementById("priv-points").innerHTML=pts.map(p=>`
+    <div style="display:flex;align-items:flex-start;gap:10px;">
+      <div style="width:20px;height:20px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+        <svg width="10" height="10" viewBox="0 0 20 20" fill="white"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+      </div>
+      <p class="t-body">${p}</p>
+    </div>`).join("");
+  document.getElementById("priv-cta").textContent=t("priv.cta");
+  document.getElementById("priv-back").textContent=t("priv.back");
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER ASSESSMENT QUESTION
+// ═══════════════════════════════════════════════════════════════
+function renderAssessment(){
+  const q=QUESTIONS[currentIdx],total=QUESTIONS.length;
+  const done=Object.keys(answers).length,pct=Math.round((done/total)*100);
+  const isLast=currentIdx===total-1,sel=answers[q.id];
+
+  // Header
+  document.getElementById("lbl-saved").textContent=t("saved");
+  document.getElementById("lbl-q-of").textContent=t("progress.q_of",{c:currentIdx+1,t:total});
+  document.getElementById("lbl-pct").textContent=t("progress.pct",{p:pct});
+  document.getElementById("progress-bar").style.width=pct+"%";
+  const mins=Math.ceil(((total-currentIdx)/total)*8);
+  document.getElementById("lbl-time-text").textContent=mins<=1?t("time.one"):t("time.plural",{n:mins});
+
+  // Pillar nav
+  renderPillarNav(q.pk);
+
+  // Question card
+  document.getElementById("q-icon").innerHTML=PILLAR_SVG[q.pk];
+  document.getElementById("q-pillar-lbl").textContent=t("q.label",{pillar:tp(q.pk),n:currentIdx+1,total});
+  document.getElementById("q-text").textContent=q.s[locale];
+  document.getElementById("scale-hint").innerHTML=q.type==="likert"?t("scale.likert"):t("scale.situation");
+
+  // Answer area
+  renderAnswers(q,sel);
+
+  // Validation
+  document.getElementById("lbl-val").textContent=t("val.required");
+  document.getElementById("val-msg").classList.toggle("show",showVal);
+
+  // Privacy inline
+  document.getElementById("lbl-priv-inline").textContent=t("priv.inline");
+
+  // Bottom bar
+  document.getElementById("lbl-back").textContent=t("btn.back");
+  document.getElementById("lbl-save-exit").textContent=t("btn.save_exit");
+  document.getElementById("lbl-next").textContent=isLast?t("btn.submit"):t("btn.next");
+  document.getElementById("btn-back").disabled=(currentIdx===0);
+  document.getElementById("icon-fwd").style.display=isLast?"none":"inline-block";
+  document.getElementById("icon-chk").style.display=isLast?"inline-block":"none";
+  document.getElementById("icon-spin").style.display="none";
+  document.getElementById("btn-next").disabled=false;
+
+  renderDots();
+}
+
+function renderPillarNav(cpk){
+  const ci=PILLAR_KEYS.indexOf(cpk);
+  document.getElementById("pillar-nav").innerHTML=PILLAR_KEYS.map((k,i)=>{
+    const st=i<ci?"done":i===ci?"active":"upcoming";
+    const chk=st==="done"?`<svg width="11" height="11" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>`:"";
+    const dot=st==="active"?`<span style="width:5px;height:5px;border-radius:50%;background:var(--accent);display:inline-block;"></span>`:"";
+    return`<div class="pillar-pill ${st}">${chk}${dot}${tp(k)}</div>`;
+  }).join("");
+}
+
+function renderAnswers(q,sel){
+  const area=document.getElementById("answer-area");
+  if(q.type==="likert"){
+    area.innerHTML=[1,2,3,4,5].map(v=>{
+      const s=sel===v;
+      const chk=`<svg width="10" height="10" viewBox="0 0 20 20" fill="white"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>`;
+      return`<div class="answer-card${s?" selected":""}" role="radio" aria-checked="${s}" tabindex="0"
+        onclick="selectAnswer(${v})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectAnswer(${v})}">
+        <div class="answer-radio">${s?chk:""}</div>
+        <span class="answer-label">${t("likert."+v)}</span>
+      </div>`;
+    }).join("");
+  } else {
+    const opts=(q.opts&&q.opts[locale])||q.opts.en||[];
+    area.innerHTML=opts.map((opt,i)=>{
+      const v=i+1, s=sel===v;
+      return`<div class="situation-card${s?" selected":""}" role="radio" aria-checked="${s}" tabindex="0"
+        onclick="selectAnswer(${v})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectAnswer(${v})}">
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div style="width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border-dark);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;${s?'background:var(--accent);border-color:var(--accent);':''}">
+            ${s?`<svg width="10" height="10" viewBox="0 0 20 20" fill="white"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>`:""}
+          </div>
+          <p style="font-size:14px;font-weight:${s?600:500};color:${s?"var(--primary)":"var(--text-body)"};line-height:1.6;">${opt}</p>
+        </div>
+      </div>`;
+    }).join("");
+  }
+}
+
+function renderDots(){
+  document.getElementById("step-dots").innerHTML=QUESTIONS.map((q,i)=>{
+    const w=i===currentIdx?"18px":"5px";
+    const bg=i<currentIdx?"var(--accent)":i===currentIdx?"var(--primary)":"var(--border)";
+    return`<div class="step-dot" style="width:${w};background:${bg};"></div>`;
+  }).join("");
+}
+
+// ═══════════════════════════════════════════════════════════════
+// HANDLERS
+// ═══════════════════════════════════════════════════════════════
+function selectAnswer(v){
+  answers[QUESTIONS[currentIdx].id]=v;
+  showVal=false;
+  renderAssessment();
+}
+
+function handleNext(){
+  const q=QUESTIONS[currentIdx];
+  if(answers[q.id]===undefined){
+    showVal=true;
+    document.getElementById("val-msg").classList.add("show");
+    document.getElementById("lbl-val").textContent=t("val.required");
+    return;
+  }
+  if(currentIdx===QUESTIONS.length-1){handleSubmit();return;}
+  currentIdx++;showVal=false;
+  const c=document.getElementById("q-card");c.classList.remove("slide-up");void c.offsetWidth;c.classList.add("slide-up");
+  renderAssessment();
+}
+
+function handlePrev(){
+  if(!currentIdx)return;
+  currentIdx--;showVal=false;
+  const c=document.getElementById("q-card");c.classList.remove("slide-up");void c.offsetWidth;c.classList.add("slide-up");
+  renderAssessment();
+}
+
+function handleSaveExit(){alert(t("alert.saved"));}
+
+async function handleSubmit(){
+  const q=QUESTIONS[currentIdx];
+  if(answers[q.id]===undefined){showVal=true;document.getElementById("val-msg").classList.add("show");return;}
+  const btn=document.getElementById("btn-next");btn.disabled=true;
+  document.getElementById("lbl-next").textContent=t("btn.submitting");
+  document.getElementById("icon-fwd").style.display="none";
+  document.getElementById("icon-chk").style.display="none";
+  document.getElementById("icon-spin").style.display="inline-block";
+  await new Promise(r=>setTimeout(r,1200));
+  goTo("screen-result");
+  renderResult();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER RESULT
+// ═══════════════════════════════════════════════════════════════
+function renderResult(){
+  const{ps,overall}=computeScores();
+  const oz=zone(overall),oc=zColor(oz);
+  const persona=getPersona(overall);
+
+  // Hero
+  document.getElementById("res-title").textContent=t("res.title");
+  document.getElementById("res-sub").textContent=t("res.sub");
+  document.getElementById("res-score-num").textContent=overall;
+  document.getElementById("res-overall-lbl").textContent=t("res.overall");
+
+  // Ring
+  const ring=document.getElementById("score-ring");
+  ring.style.stroke=oc;
+  ring.style.transition="stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1)";
+  setTimeout(()=>{ring.style.strokeDashoffset=389.6-(overall/100)*389.6;},80);
+
+  // Zone
+  const badge=document.getElementById("res-zone-badge");
+  badge.style.background=zBg(oz);badge.style.color=oc;
+  badge.innerHTML=`<span style="width:7px;height:7px;border-radius:50%;background:${oc};display:inline-block;"></span>${t("zone."+oz+".name")}`;
+  const zl=document.getElementById("res-zone-label");
+  zl.textContent=t("zone."+oz+".label");zl.style.color=oc;
+
+  // Persona
+  document.getElementById("sec-persona").textContent=t("res.sec.persona");
+  document.getElementById("persona-card").innerHTML=`
+    <div class="persona-icon"><span style="font-size:22px;">${persona.icon}</span></div>
+    <div>
+      <p style="font-size:15px;font-weight:700;color:var(--primary);line-height:1.4;">${persona.name}</p>
+      <p class="t-body" style="margin-top:4px;">${persona.desc}</p>
+    </div>`;
+
+  // Sections
+  document.getElementById("sec-pillars").textContent=t("res.sec.pillars");
+  document.getElementById("sec-strengths").textContent=t("res.sec.strengths");
+  document.getElementById("sec-support").textContent=t("res.sec.support");
+  document.getElementById("sec-activities").textContent=t("res.sec.activities");
+  document.getElementById("res-privacy").textContent=t("res.privacy");
+  document.getElementById("lbl-res-profile").textContent=t("btn.view_profile");
+  document.getElementById("lbl-res-activities").textContent=t("btn.view_activities");
+
+  // Pillar cards
+  document.getElementById("pillar-cards").innerHTML=PILLAR_KEYS.map((k,i)=>{
+    const sc=ps[k],pz=zone(sc),pc=zColor(pz),bg=zBg(pz);
+    return`<div class="pillar-score-card fade-up" style="animation-delay:${0.05*i}s;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <div style="width:32px;height:32px;border-radius:8px;background:${bg};border:1px solid ${pc}22;display:flex;align-items:center;justify-content:center;color:${pc};flex-shrink:0;">
+          ${PILLAR_SVG[k]}
+        </div>
+        <div style="flex:1;min-width:0;">
+          <p style="font-size:13px;font-weight:600;color:var(--primary);line-height:1.3;">${tp(k)}</p>
+          <span class="zone-badge" style="background:${bg};color:${pc};margin-top:2px;font-size:10px;">${t("zone."+pz+".name")}</span>
+        </div>
+        <div style="flex-shrink:0;text-align:right;">
+          <span style="font-size:22px;font-weight:700;color:${pc};line-height:1;">${sc}</span>
+          <span style="font-size:11px;color:var(--text-muted);"> / 100</span>
+        </div>
+      </div>
+      <div class="score-track">
+        <div class="score-fill" id="sf-${k.replace(' ','-')}" style="width:0%;background:${scoreBarColor(sc)};"></div>
+      </div>
+      <p class="t-small" style="margin-top:6px;">${t("zone."+pz+".label")}</p>
+    </div>`;
+  }).join("");
+  setTimeout(()=>{PILLAR_KEYS.forEach(k=>{const e=document.getElementById("sf-"+k.replace(' ','-'));if(e)e.style.width=ps[k]+"%";});},200);
+
+  // Sort
+  const sorted=[...PILLAR_KEYS].sort((a,b)=>ps[b]-ps[a]);
+
+  // Strengths
+  document.getElementById("strengths-list").innerHTML=sorted.slice(0,3).map(k=>`
+    <div class="strength-row">
+      <div class="icon-box" style="background:var(--accent-light);border:1px solid rgba(31,199,212,.18);color:var(--accent);">${PILLAR_SVG[k]}</div>
+      <div style="flex:1;">
+        <p style="font-size:14px;font-weight:600;color:var(--primary);line-height:1.4;">${tp(k)}</p>
+        <p class="t-small" style="margin-top:2px;">${ps[k]} / 100 &nbsp;·&nbsp; ${t("zone."+zone(ps[k])+".label")}</p>
+      </div>
+      <svg width="16" height="16" fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+    </div>`).join("");
+
+  // Support
+  document.getElementById("support-list").innerHTML=sorted.slice(-2).map(k=>`
+    <div class="support-row">
+      <div class="icon-box" style="background:var(--bg);border:1px solid var(--border);color:var(--text-muted);">${PILLAR_SVG[k]}</div>
+      <div style="flex:1;">
+        <p style="font-size:14px;font-weight:600;color:var(--primary);line-height:1.4;">${tp(k)}</p>
+        <p class="t-small" style="margin-top:2px;">${ps[k]} / 100 &nbsp;·&nbsp; ${t("zone."+zone(ps[k])+".label")}</p>
+      </div>
+    </div>`).join("");
+
+  // ── Recommended activities — rendered as canonical ActivityCard ──
+  const recs=[];
+  sorted.slice(-3).forEach(k=>{if(ACTIVITIES[k]&&ACTIVITIES[k][0]) recs.push(ACTIVITIES[k][0]);});
+
+  document.getElementById("activities-grid").innerHTML=recs.slice(0,3).map(a=>{
+    const az=zone(ps[a.pk]),ac=zColor(az),abg=zBg(az);
+    return`
+    <div class="activity-card" onclick="alert(t('act.book'))">
+      <!-- Thumb -->
+      <div class="activity-card__thumb">
+        <div style="width:44px;height:44px;border-radius:var(--radius-sm);background:${abg};border:1px solid ${ac}22;display:flex;align-items:center;justify-content:center;color:${ac};">
+          ${PILLAR_SVG[a.pk]}
+        </div>
+      </div>
+      <!-- Body -->
+      <div class="activity-card__body">
+        <span class="activity-card__category">${tp(a.pk)}</span>
+        <p class="activity-card__title">${locale==="th"?a.th:a.en}</p>
+        <div class="activity-card__meta">
+          <span class="activity-card__provider">${a.provider}</span>
+          <span class="activity-card__credits">
+            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            ${t("act.credits",{n:a.credits})}
+          </span>
+        </div>
+      </div>
+      <button class="activity-card__cta">${t("act.book")}</button>
+    </div>`;
+  }).join("");
+}
+
+// ═══════════════════════════════════════════════════════════════
+// LANGUAGE
+// ═══════════════════════════════════════════════════════════════
+function toggleLang(){document.getElementById("lang-dd").classList.toggle("open");}
+document.addEventListener("click",e=>{
+  if(!document.getElementById("lang-btn").contains(e.target)&&!document.getElementById("lang-dd").contains(e.target))
+    document.getElementById("lang-dd").classList.remove("open");
+});
+function setLocale(nl){
+  locale=nl;document.documentElement.lang=nl;
+  document.getElementById("lang-dd").classList.remove("open");
+  document.getElementById("lang-code").textContent=nl==="th"?"TH":"EN";
+  document.getElementById("opt-th").classList.toggle("active",nl==="th");
+  document.getElementById("opt-en").classList.toggle("active",nl==="en");
+  document.getElementById("chk-th").style.display=nl==="th"?"block":"none";
+  document.getElementById("chk-en").style.display=nl==="en"?"block":"none";
+  const cur=document.querySelector(".screen.active")?.id;
+  if(cur==="screen-intro") renderIntro();
+  else if(cur==="screen-privacy") renderPrivacy();
+  else if(cur==="screen-assessment") renderAssessment();
+  else if(cur==="screen-result") renderResult();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+document.getElementById("save-badge").style.display="none";
+renderIntro();
+renderPrivacy();
+</script>
+</body>
+</html>

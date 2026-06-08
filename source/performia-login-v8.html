@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="th" id="html-root">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title id="page-title">Performia — เข้าสู่ระบบ</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+/* ── FONTS ── */
+@font-face{font-family:'LINE Seed Sans';src:url('https://cdn.jsdelivr.net/npm/line-seed-sans@1.0.3/fonts/LINESeedSans_W_Rg.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'LINE Seed Sans';src:url('https://cdn.jsdelivr.net/npm/line-seed-sans@1.0.3/fonts/LINESeedSans_W_Bd.woff2') format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:'LINE Seed Sans';src:url('https://cdn.jsdelivr.net/npm/line-seed-sans@1.0.3/fonts/LINESeedSans_W_XBd.woff2') format('woff2');font-weight:800;font-display:swap}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+<style>
+/* ═══════════════════════════════════════════
+   BASE
+═══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+
+:root{
+  --navy:#071B63;--nd:#031244;
+  --aqua:#10D5D2;--cyan:#59E3FF;
+  --tp:#061849;--ts:#4E607A;
+  --font:'Noto Sans Thai','LINE Seed Sans',sans-serif;
+  --font-lat:'LINE Seed Sans','Noto Sans Thai',sans-serif;
+}
+html[lang="th"]{--lh-h:1.52;--lh-b:1.88}
+html[lang="en"]{--lh-h:1.18;--lh-b:1.58}
+body{font-family:var(--font)}
+
+/* ═══════════════════════════════════════════
+   LEFT PANEL — navy brand canvas
+═══════════════════════════════════════════ */
+.lp{
+  background:
+    radial-gradient(ellipse 120% 70% at 60% -5%,  rgba(255,255,255,.09) 0%,transparent 50%),
+    radial-gradient(ellipse 80%  90% at -10% 110%, rgba(16,213,210,.10)  0%,transparent 52%),
+    radial-gradient(ellipse 60%  60% at 110% 60%,  rgba(89,227,255,.07)  0%,transparent 50%),
+    linear-gradient(158deg, #132674 0%, #0B1F62 32%, #0C2166 60%, #112472 100%);
+  position:relative;overflow:hidden;
+}
+
+/* ── SVG illustration layer ── */
+.lp-svg{position:absolute;inset:0;width:100%;height:100%}
+
+/* ── Copy layer floats above SVG ── */
+.lp-copy{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;padding:clamp(30px,3.8vw,56px)}
+
+/* ── Animations ── */
+@keyframes orb-breathe{0%,100%{r:80;opacity:.28}50%{r:88;opacity:.45}}
+@keyframes orb-breathe2{0%,100%{r:55;opacity:.18}50%{r:62;opacity:.32}}
+@keyframes ring-pulse{0%,100%{stroke-opacity:.14;transform:scale(1)}50%{stroke-opacity:.28;transform:scale(1.025)}}
+@keyframes ring-pulse2{0%,100%{stroke-opacity:.09;transform:scale(1)}50%{stroke-opacity:.2;transform:scale(1.02)}}
+@keyframes float-slow{0%,100%{transform:translateY(0px)}50%{transform:translateY(-10px)}}
+@keyframes float-med{0%,100%{transform:translateY(0px)}50%{transform:translateY(-14px)}}
+@keyframes dot-drift{0%,100%{transform:translate(0,0);opacity:.35}33%{transform:translate(4px,-6px);opacity:.55}66%{transform:translate(-3px,4px);opacity:.4}}
+@keyframes line-trace{0%{stroke-dashoffset:200}100%{stroke-dashoffset:0}}
+@keyframes arc-glow{0%,100%{stroke-opacity:.1}50%{stroke-opacity:.22}}
+@keyframes particle-float{0%{transform:translate(0,0);opacity:0}20%{opacity:.5}80%{opacity:.3}100%{transform:translate(var(--tx),var(--ty));opacity:0}}
+@keyframes human-glow{0%,100%{filter:drop-shadow(0 0 12px rgba(89,227,255,.2))}50%{filter:drop-shadow(0 0 22px rgba(89,227,255,.38))}}
+@keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fu{animation:fu .65s ease-out both}
+.d1{animation-delay:.08s}.d2{animation-delay:.18s}.d3{animation-delay:.3s}.d4{animation-delay:.44s}
+@keyframes live-blink{0%,100%{opacity:1}50%{opacity:.15}}
+.ldot{animation:live-blink 2.5s ease-in-out infinite}
+
+/* ═══════════════════════════════════════════
+   RIGHT PANEL — soft white background
+═══════════════════════════════════════════ */
+.rp{
+  background:
+    radial-gradient(ellipse 70% 60% at 85% 10%, rgba(89,227,255,.055) 0%,transparent 65%),
+    radial-gradient(ellipse 55% 55% at 5%  90%, rgba(16,213,210,.04)  0%,transparent 60%),
+    linear-gradient(155deg,#EDF6FC 0%,#E4F1F9 48%,#EEF5FB 100%);
+  position:relative;overflow:hidden;
+}
+/* Subtle dot grid */
+.rp::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(7,27,99,.055) 1px,transparent 1px);
+  background-size:26px 26px;
+  opacity:.9;
+}
+
+/* ═══════════════════════════════════════════
+   LANGUAGE SWITCHER
+═══════════════════════════════════════════ */
+.lang-sw{
+  position:absolute;top:22px;right:22px;z-index:30;
+  display:flex;align-items:center;
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(188,214,234,.62);
+  border-radius:99px;padding:3px;
+  box-shadow:0 2px 16px rgba(6,24,73,.07),0 1px 4px rgba(6,24,73,.04);
+  transition:box-shadow .22s;
+}
+.lang-sw:hover{box-shadow:0 4px 22px rgba(6,24,73,.11)}
+.lbtn{
+  padding:5px 14px;border-radius:99px;border:none;cursor:pointer;
+  font-family:var(--font-lat);font-size:.71rem;font-weight:600;letter-spacing:.03em;
+  color:var(--ts);background:transparent;
+  transition:color .2s,background .2s,box-shadow .2s;
+  white-space:nowrap;line-height:1;
+}
+.lbtn.on{
+  color:#fff;
+  background:linear-gradient(128deg,#071B63,#0B7FA3);
+  box-shadow:0 2px 10px rgba(7,27,99,.22),0 0 0 1px rgba(89,227,255,.16);
+}
+.lbtn:not(.on):hover{color:var(--navy)}
+
+/* ═══════════════════════════════════════════
+   LOGIN CARD
+═══════════════════════════════════════════ */
+.card{
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(48px);-webkit-backdrop-filter:blur(48px);
+  border-radius:2rem;
+  border:1px solid rgba(255,255,255,.85);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.68) inset,
+    0 2px 0   rgba(255,255,255,.98) inset,
+    0 40px 96px rgba(6,24,73,.082),
+    0 12px 40px rgba(6,24,73,.048),
+    0 2px  8px  rgba(6,24,73,.030);
+  position:relative;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:10%;right:10%;height:1px;border-radius:50%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.96),transparent);
+}
+
+/* ═══════════════════════════════════════════
+   FORM ELEMENTS
+═══════════════════════════════════════════ */
+.inp{
+  width:100%;padding:10.5px 14px;border-radius:10px;
+  border:1.5px solid #C3D8EC;
+  background:rgba(232,243,251,.52);
+  font-family:var(--font);font-size:.875rem;color:var(--tp);
+  outline:none;transition:border-color .22s,box-shadow .22s,background .22s;
+}
+html[lang="th"] .inp{font-size:.9rem;line-height:var(--lh-b)}
+.inp::placeholder{color:#97AEC4}
+.inp:focus{border-color:var(--aqua);background:rgba(255,255,255,.98);box-shadow:0 0 0 3.5px rgba(16,213,210,.1)}
+
+.btn-p{
+  width:100%;padding:12px;border:none;border-radius:11px;cursor:pointer;
+  background:linear-gradient(128deg,#071B63 0%,#0C3686 52%,#0B7FA3 100%);
+  color:#fff;font-family:var(--font);font-weight:600;font-size:.9rem;
+  position:relative;overflow:hidden;letter-spacing:.008em;
+  box-shadow:0 4px 24px rgba(7,27,99,.26),0 1px 3px rgba(7,27,99,.16);
+  transition:transform .2s,box-shadow .2s;
+}
+html[lang="th"] .btn-p{letter-spacing:0}
+.btn-p::after{content:'';position:absolute;inset:0;background:linear-gradient(128deg,transparent 52%,rgba(89,227,255,.15) 100%);opacity:0;transition:opacity .22s}
+.btn-p:hover{transform:translateY(-1px);box-shadow:0 8px 32px rgba(7,27,99,.3)}
+.btn-p:hover::after{opacity:1}
+.btn-p:active{transform:none}
+.btn-p:focus{outline:none;box-shadow:0 0 0 3px rgba(16,213,210,.28)}
+
+.btn-sso{
+  flex:1;padding:9.5px 10px;border-radius:10px;
+  border:1.5px solid #C3D8EC;background:rgba(255,255,255,.84);
+  font-family:var(--font);font-size:.81rem;font-weight:500;color:var(--tp);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;
+  transition:border-color .2s,background .2s,box-shadow .2s,transform .18s;
+}
+.btn-sso:hover{border-color:rgba(16,213,210,.55);background:#fff;box-shadow:0 4px 16px rgba(16,213,210,.08);transform:translateY(-1px)}
+.btn-sso:focus{outline:none;box-shadow:0 0 0 3px rgba(16,213,210,.18)}
+
+.cbw input[type=checkbox]{
+  appearance:none;-webkit-appearance:none;
+  width:15px;height:15px;border-radius:4px;
+  border:1.5px solid #BACEDF;background:rgba(255,255,255,.9);
+  cursor:pointer;flex-shrink:0;position:relative;
+  transition:background .15s,border-color .15s;
+}
+.cbw input:checked{background:linear-gradient(135deg,#10D5D2,#59E3FF);border-color:transparent}
+.cbw input:checked::after{content:'';display:block;width:4px;height:7px;border:1.5px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translate(2.5px,-1.5px)}
+.cbw input:focus{outline:none;box-shadow:0 0 0 3px rgba(16,213,210,.18)}
+
+.dvd{display:flex;align-items:center;gap:10px;font-size:.71rem;color:#97AEC4;font-family:var(--font)}
+.dvd::before,.dvd::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,#CFE3F0,transparent)}
+
+.spin{display:none;width:17px;height:17px;margin:0 auto;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:_sp .7s linear infinite}
+@keyframes _sp{to{transform:rotate(360deg)}}
+
+/* ═══════════════════════════════════════════
+   SYSTEM UI
+═══════════════════════════════════════════ */
+.rb{position:fixed;top:0;left:0;right:0;z-index:60;padding:13px;text-align:center;background:linear-gradient(90deg,#031244,#0C3585);color:#fff;font-family:var(--font);font-size:.82rem;font-weight:500;transform:translateY(-100%);transition:transform .4s cubic-bezier(.34,1.4,.64,1)}
+.rb.show{transform:translateY(0)}
+.rpb{position:absolute;bottom:0;left:0;height:2.5px;width:0%;background:linear-gradient(90deg,#10D5D2,#59E3FF);transition:width 2.1s linear}
+.rpb.go{width:100%}
+.mo{position:fixed;inset:0;z-index:50;background:rgba(3,18,68,.42);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.mo.show{opacity:1;pointer-events:all}
+.mb{background:rgba(255,255,255,.97);border-radius:1.5rem;padding:1.75rem;max-width:420px;width:90%;box-shadow:0 32px 80px rgba(3,18,68,.17);transform:translateY(16px);transition:transform .3s cubic-bezier(.34,1.2,.64,1)}
+.mo.show .mb{transform:translateY(0)}
+.wsb{width:100%;padding:12px 14px;border-radius:11px;border:1.5px solid #D0E3F0;background:rgba(232,243,251,.4);text-align:left;cursor:pointer;font-family:var(--font);transition:border-color .2s,background .2s,box-shadow .2s}
+.wsb:hover{border-color:rgba(16,213,210,.5);background:rgba(16,213,210,.04);box-shadow:0 4px 16px rgba(16,213,210,.08)}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(12px);background:#031244;color:#fff;padding:9px 18px;border-radius:9px;font-size:.78rem;opacity:0;transition:opacity .22s,transform .22s;pointer-events:none;white-space:nowrap;z-index:99;border:1px solid rgba(89,227,255,.16);font-family:var(--font)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ═══════════════════════════════════════════
+   MOBILE
+═══════════════════════════════════════════ */
+@media(max-width:1023px){
+  html,body{overflow:auto}
+  .page{flex-direction:column!important;height:auto!important}
+  .lp{width:100%!important;min-height:260px}
+  .lp-copy{padding:26px 22px!important}
+  .lp-desk{display:none!important}
+  .lp-mob{display:flex!important;flex:1;flex-direction:column;justify-content:center;gap:10px}
+  .rp{width:100%!important;padding:20px!important}
+}
+@media(min-width:1024px){.lp-mob{display:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ── REDIRECT BANNER ── -->
+<div class="rb" id="rb" role="status" aria-live="polite">
+  <span id="rbMsg"></span>
+  <div class="rpb" id="rpb"></div>
+</div>
+
+<!-- ── WORKSPACE MODAL ── -->
+<div class="mo" id="wsModal" role="dialog" aria-modal="true" aria-labelledby="wsTitle">
+  <div class="mb">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+      <div style="width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,rgba(16,213,210,.16),rgba(89,227,255,.1));border:1px solid rgba(16,213,210,.24);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="7.5" r="2.5" fill="#10D5D2" opacity=".8"/><path d="M7.5 16.5c0-2.485 2.015-4 4.5-4s4.5 1.515 4.5 4" stroke="#10D5D2" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div>
+        <h3 id="wsTitle" style="font-weight:600;font-size:.98rem;color:var(--tp)" data-i18n="ws.title"></h3>
+        <p style="font-size:.72rem;color:var(--ts);margin-top:1px" data-i18n="ws.subtitle"></p>
+      </div>
+    </div>
+    <hr style="border-color:#E0EDF6;margin:14px 0"/>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <button class="wsb" onclick="doRedirect('employee')">
+        <div style="font-weight:600;font-size:.85rem;color:var(--tp)" data-i18n="ws.employee.title"></div>
+        <div style="font-size:.72rem;color:var(--ts);margin-top:2px" data-i18n="ws.employee.desc"></div>
+      </button>
+      <button class="wsb" onclick="doRedirect('hr')">
+        <div style="font-weight:600;font-size:.85rem;color:var(--tp)" data-i18n="ws.hr.title"></div>
+        <div style="font-size:.72rem;color:var(--ts);margin-top:2px" data-i18n="ws.hr.desc"></div>
+      </button>
+      <button class="wsb" onclick="doRedirect('executive')">
+        <div style="font-weight:600;font-size:.85rem;color:var(--tp)" data-i18n="ws.exec.title"></div>
+        <div style="font-size:.72rem;color:var(--ts);margin-top:2px" data-i18n="ws.exec.desc"></div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOAST ── -->
+<div class="toast" id="toast" role="alert" aria-live="assertive"></div>
+
+<!-- ── LANGUAGE SWITCHER ── -->
+<div class="lang-sw" aria-label="Language selector">
+  <button class="lbtn" id="btn-th" onclick="setLang('th')" aria-pressed="true">ไทย</button>
+  <button class="lbtn" id="btn-en" onclick="setLang('en')" aria-pressed="false">EN</button>
+</div>
+
+<!-- ════════════════════════════════════════
+     PAGE LAYOUT
+════════════════════════════════════════ -->
+<div class="page" style="display:flex;height:100vh;width:100vw;overflow:hidden">
+
+  <!-- ═══════ LEFT BRAND PANEL ═══════ -->
+  <div class="lp" style="width:46%">
+
+    <!-- ── AMBIENT SVG ILLUSTRATION ── -->
+    <svg class="lp-svg" viewBox="0 0 560 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <!-- Aqua glow gradient -->
+        <radialGradient id="orb1" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="#10D5D2" stop-opacity=".32"/>
+          <stop offset="60%"  stop-color="#59E3FF" stop-opacity=".10"/>
+          <stop offset="100%" stop-color="#59E3FF" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="orb2" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="#59E3FF" stop-opacity=".22"/>
+          <stop offset="55%"  stop-color="#10D5D2" stop-opacity=".07"/>
+          <stop offset="100%" stop-color="#10D5D2" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="orb3" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="#ffffff" stop-opacity=".08"/>
+          <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="humanGrad" cx="50%" cy="30%" r="70%">
+          <stop offset="0%"   stop-color="#59E3FF" stop-opacity=".72"/>
+          <stop offset="100%" stop-color="#10D5D2" stop-opacity=".32"/>
+        </radialGradient>
+        <!-- Soft blur filter -->
+        <filter id="blur8"><feGaussianBlur stdDeviation="8"/></filter>
+        <filter id="blur20"><feGaussianBlur stdDeviation="20"/></filter>
+        <filter id="blur35"><feGaussianBlur stdDeviation="35"/></filter>
+        <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+
+      <!-- ── BACKGROUND GLOW POOLS ── -->
+      <!-- Top-right aqua bloom -->
+      <ellipse cx="480" cy="120" rx="200" ry="160" fill="url(#orb2)" filter="url(#blur35)">
+        <animate attributeName="ry" values="160;178;160" dur="12s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="1;.7;1" dur="12s" repeatCount="indefinite"/>
+      </ellipse>
+      <!-- Bottom-left cyan bloom -->
+      <ellipse cx="80" cy="680" rx="180" ry="180" fill="url(#orb1)" filter="url(#blur35)">
+        <animate attributeName="ry" values="180;200;180" dur="16s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="1;.65;1" dur="16s" repeatCount="indefinite"/>
+      </ellipse>
+      <!-- Center white bloom -->
+      <ellipse cx="280" cy="400" rx="160" ry="200" fill="url(#orb3)" filter="url(#blur35)"/>
+
+      <!-- ── ATMOSPHERIC RINGS (soft, barely visible) ── -->
+      <g transform="translate(280,380)" fill="none">
+        <circle r="140" stroke="#59E3FF" stroke-width="1" stroke-opacity=".12" style="transform-origin:0 0;animation:ring-pulse 10s ease-in-out infinite"/>
+        <circle r="195" stroke="#59E3FF" stroke-width="1" stroke-opacity=".08" style="transform-origin:0 0;animation:ring-pulse2 14s ease-in-out infinite"/>
+        <circle r="250" stroke="#10D5D2" stroke-width=".8" stroke-opacity=".05" style="transform-origin:0 0;animation:ring-pulse2 18s ease-in-out infinite;animation-delay:-6s"/>
+        <circle r="310" stroke="#59E3FF" stroke-width=".5" stroke-opacity=".04"/>
+      </g>
+
+      <!-- ── HUMAN FIGURE (abstract, premium) ── -->
+      <g style="animation:float-slow 8s ease-in-out infinite;transform-origin:280px 380px" filter="url(#glow)">
+        <!-- Head circle -->
+        <circle cx="280" cy="250" r="38" fill="none" stroke="url(#humanGrad)" stroke-width="1.5" stroke-opacity=".75"/>
+        <!-- Inner head glow -->
+        <circle cx="280" cy="250" r="38" fill="url(#orb1)" filter="url(#blur8)" opacity=".6"/>
+        <!-- Crown dot (consciousness / intelligence) -->
+        <circle cx="280" cy="218" r="3.5" fill="#59E3FF" opacity=".7">
+          <animate attributeName="opacity" values=".7;1;.7" dur="3s" repeatCount="indefinite"/>
+        </circle>
+
+        <!-- Neck -->
+        <line x1="280" y1="288" x2="280" y2="310" stroke="#59E3FF" stroke-width="1.2" stroke-opacity=".45" stroke-linecap="round"/>
+
+        <!-- Shoulders / body outline -->
+        <path d="M200 360 Q230 308 280 308 Q330 308 360 360" fill="none" stroke="url(#humanGrad)" stroke-width="1.4" stroke-opacity=".6" stroke-linecap="round"/>
+
+        <!-- Arms — outstretched slightly, connecting outward -->
+        <path d="M210 355 Q170 370 140 390" fill="none" stroke="#59E3FF" stroke-width="1.2" stroke-opacity=".35" stroke-linecap="round"/>
+        <path d="M350 355 Q390 370 420 390" fill="none" stroke="#59E3FF" stroke-width="1.2" stroke-opacity=".35" stroke-linecap="round"/>
+
+        <!-- Torso / core light -->
+        <ellipse cx="280" cy="365" rx="28" ry="40" fill="none" stroke="#10D5D2" stroke-width="1" stroke-opacity=".3"/>
+        <ellipse cx="280" cy="365" rx="16" ry="24" fill="url(#orb1)" filter="url(#blur8)" opacity=".5"/>
+
+        <!-- Heart-energy glow at centre chest -->
+        <circle cx="280" cy="355" r="5" fill="#10D5D2" opacity=".5">
+          <animate attributeName="r" values="5;7;5" dur="2.2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values=".5;.8;.5" dur="2.2s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+
+      <!-- ── CONNECTION LINES (ecosystem intelligence) ── -->
+      <!-- Left arm → satellite node -->
+      <line x1="140" y1="390" x2="85" y2="470" stroke="#10D5D2" stroke-width="1" stroke-opacity=".18" stroke-dasharray="4 6">
+        <animate attributeName="stroke-dashoffset" values="0;-40" dur="4s" repeatCount="indefinite"/>
+      </line>
+      <!-- Right arm → satellite node -->
+      <line x1="420" y1="390" x2="475" y2="480" stroke="#59E3FF" stroke-width="1" stroke-opacity=".18" stroke-dasharray="4 6">
+        <animate attributeName="stroke-dashoffset" values="0;-40" dur="5s" repeatCount="indefinite"/>
+      </line>
+      <!-- Crown → top-right node -->
+      <line x1="280" y1="218" x2="410" y2="155" stroke="#59E3FF" stroke-width="1" stroke-opacity=".16" stroke-dasharray="3 7">
+        <animate attributeName="stroke-dashoffset" values="0;-40" dur="6s" repeatCount="indefinite"/>
+      </line>
+      <!-- Body → bottom node -->
+      <line x1="280" y1="405" x2="280" y2="520" stroke="#10D5D2" stroke-width="1" stroke-opacity=".15" stroke-dasharray="4 6">
+        <animate attributeName="stroke-dashoffset" values="0;-40" dur="3.5s" repeatCount="indefinite"/>
+      </line>
+
+      <!-- ── SATELLITE NODES (floating softly) ── -->
+      <!-- Top-right node -->
+      <g style="animation:float-slow 7s ease-in-out infinite;animation-delay:-2s;transform-origin:415px 148px">
+        <circle cx="415" cy="148" r="22" fill="none" stroke="#59E3FF" stroke-width="1" stroke-opacity=".28"/>
+        <circle cx="415" cy="148" r="22" fill="#59E3FF" fill-opacity=".06" filter="url(#blur8)"/>
+        <circle cx="415" cy="148" r="4" fill="#59E3FF" opacity=".55">
+          <animate attributeName="opacity" values=".55;.85;.55" dur="3.5s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+      <!-- Left node -->
+      <g style="animation:float-med 9s ease-in-out infinite;animation-delay:-4s;transform-origin:78px 468px">
+        <circle cx="78" cy="468" r="18" fill="none" stroke="#10D5D2" stroke-width="1" stroke-opacity=".25"/>
+        <circle cx="78" cy="468" r="18" fill="#10D5D2" fill-opacity=".07" filter="url(#blur8)"/>
+        <circle cx="78" cy="468" r="3.5" fill="#10D5D2" opacity=".5">
+          <animate attributeName="opacity" values=".5;.8;.5" dur="4s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+      <!-- Right node -->
+      <g style="animation:float-slow 8s ease-in-out infinite;animation-delay:-1s;transform-origin:480px 478px">
+        <circle cx="480" cy="478" r="20" fill="none" stroke="#59E3FF" stroke-width="1" stroke-opacity=".24"/>
+        <circle cx="480" cy="478" r="20" fill="#59E3FF" fill-opacity=".06" filter="url(#blur8)"/>
+        <circle cx="480" cy="478" r="3.5" fill="#59E3FF" opacity=".52">
+          <animate attributeName="opacity" values=".52;.82;.52" dur="3.2s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+      <!-- Bottom node -->
+      <g style="animation:float-med 10s ease-in-out infinite;animation-delay:-6s;transform-origin:280px 528px">
+        <circle cx="280" cy="528" r="16" fill="none" stroke="#10D5D2" stroke-width="1" stroke-opacity=".22"/>
+        <circle cx="280" cy="528" r="16" fill="#10D5D2" fill-opacity=".08" filter="url(#blur8)"/>
+        <circle cx="280" cy="528" r="3" fill="#10D5D2" opacity=".48">
+          <animate attributeName="opacity" values=".48;.75;.48" dur="2.8s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+
+      <!-- ── AMBIENT PARTICLES (slow drifting motes) ── -->
+      <!-- Each dot animates individually with gentle upward drift -->
+      <g opacity=".7">
+        <circle cx="80"  cy="180" r="1.5" fill="#59E3FF" opacity=".3"><animate attributeName="cy" values="180;165;180" dur="9s"  repeatCount="indefinite"/><animate attributeName="opacity" values=".3;.55;.3" dur="9s"  repeatCount="indefinite"/></circle>
+        <circle cx="460" cy="280" r="1.2" fill="#10D5D2" opacity=".28"><animate attributeName="cy" values="280;262;280" dur="11s" repeatCount="indefinite"/><animate attributeName="opacity" values=".28;.5;.28" dur="11s" repeatCount="indefinite"/></circle>
+        <circle cx="160" cy="550" r="1.8" fill="#59E3FF" opacity=".25"><animate attributeName="cy" values="550;534;550" dur="7s"  repeatCount="indefinite"/><animate attributeName="opacity" values=".25;.48;.25" dur="7s"  repeatCount="indefinite"/></circle>
+        <circle cx="390" cy="620" r="1.3" fill="#10D5D2" opacity=".32"><animate attributeName="cy" values="620;605;620" dur="13s" repeatCount="indefinite"/><animate attributeName="opacity" values=".32;.55;.32" dur="13s" repeatCount="indefinite"/></circle>
+        <circle cx="50"  cy="320" r="1"   fill="#59E3FF" opacity=".22"><animate attributeName="cy" values="320;308;320" dur="8s"  repeatCount="indefinite"/><animate attributeName="opacity" values=".22;.42;.22" dur="8s"  repeatCount="indefinite"/></circle>
+        <circle cx="510" cy="200" r="1.5" fill="#59E3FF" opacity=".2"><animate attributeName="cy" values="200;185;200" dur="10s" repeatCount="indefinite"/><animate attributeName="opacity" values=".2;.4;.2" dur="10s" repeatCount="indefinite"/></circle>
+        <circle cx="330" cy="690" r="1.2" fill="#10D5D2" opacity=".24"><animate attributeName="cy" values="690;676;690" dur="12s" repeatCount="indefinite"/><animate attributeName="opacity" values=".24;.45;.24" dur="12s" repeatCount="indefinite"/></circle>
+        <circle cx="200" cy="120" r="1"   fill="#59E3FF" opacity=".2"><animate attributeName="cy" values="120;107;120" dur="9.5s" repeatCount="indefinite"/><animate attributeName="opacity" values=".2;.4;.2" dur="9.5s" repeatCount="indefinite"/></circle>
+        <circle cx="120" cy="740" r="1.5" fill="#10D5D2" opacity=".18"><animate attributeName="cy" values="740;725;740" dur="14s" repeatCount="indefinite"/><animate attributeName="opacity" values=".18;.38;.18" dur="14s" repeatCount="indefinite"/></circle>
+        <circle cx="440" cy="720" r="1"   fill="#59E3FF" opacity=".22"><animate attributeName="cy" values="720;706;720" dur="11s" repeatCount="indefinite"/><animate attributeName="opacity" values=".22;.42;.22" dur="11s" repeatCount="indefinite"/></circle>
+      </g>
+
+      <!-- ── ARC LINES (soft enterprise arcs) ── -->
+      <path d="M60 600 Q180 540 280 580 Q380 620 500 560" fill="none" stroke="#10D5D2" stroke-width="1" stroke-opacity=".1">
+        <animate attributeName="stroke-opacity" values=".1;.2;.1" dur="8s" repeatCount="indefinite"/>
+      </path>
+      <path d="M40 200 Q160 140 280 180 Q400 220 520 160" fill="none" stroke="#59E3FF" stroke-width=".8" stroke-opacity=".08">
+        <animate attributeName="stroke-opacity" values=".08;.18;.08" dur="11s" repeatCount="indefinite"/>
+      </path>
+    </svg>
+
+    <!-- ── LEFT COPY LAYER ── -->
+    <div class="lp-copy">
+
+      <!-- LOGO -->
+      <div class="fu d1" style="flex-shrink:0">
+        <div style="display:flex;align-items:center;gap:11px">
+          <div style="width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="7" r="2.8" fill="rgba(89,227,255,.88)"/>
+              <path d="M7 18c0-2.76 2.24-4.5 5-4.5s5 1.74 5 4.5" stroke="rgba(89,227,255,.88)" stroke-width="1.4" stroke-linecap="round"/>
+              <circle cx="4.5"  cy="9.5" r="1.5" fill="rgba(16,213,210,.52)"/>
+              <circle cx="19.5" cy="9.5" r="1.5" fill="rgba(16,213,210,.52)"/>
+              <line x1="6.8" y1="9.2" x2="9.8" y2="7.8" stroke="rgba(16,213,210,.3)" stroke-width="1" stroke-linecap="round"/>
+              <line x1="17.2" y1="9.2" x2="14.2" y2="7.8" stroke="rgba(16,213,210,.3)" stroke-width="1" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <div style="color:#fff;font-weight:700;font-size:1.08rem;letter-spacing:-.015em;font-family:'LINE Seed Sans',sans-serif;line-height:1.1">Performia</div>
+            <div style="color:rgba(89,227,255,.48);font-size:.56rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-top:2px;font-family:'LINE Seed Sans',sans-serif" data-i18n="brand.tagline"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DESKTOP: Headline at vertical center -->
+      <div class="lp-desk" style="flex:1;display:flex;flex-direction:column;justify-content:center">
+        <div class="fu d2" style="margin-bottom:16px">
+          <div style="display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:99px;background:rgba(16,213,210,.1);border:1px solid rgba(16,213,210,.2)">
+            <span class="ldot" style="width:5px;height:5px;border-radius:50%;background:#10D5D2;flex-shrink:0"></span>
+            <span style="color:rgba(89,227,255,.76);font-size:.59rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;font-family:'LINE Seed Sans',sans-serif" data-i18n="brand.badge"></span>
+          </div>
+        </div>
+        <div class="fu d3">
+          <h1 style="color:#fff;font-weight:600;font-size:clamp(1.7rem,2.9vw,2.5rem);line-height:var(--lh-h);letter-spacing:-.018em;margin-bottom:14px" data-i18n="brand.headline"></h1>
+          <p style="color:rgba(185,210,230,.55);font-size:clamp(.8rem,.96vw,.9rem);font-weight:300;line-height:var(--lh-b);max-width:310px" data-i18n="brand.supporting"></p>
+        </div>
+      </div>
+
+      <!-- MOBILE compact -->
+      <div class="lp-mob">
+        <h1 style="color:#fff;font-weight:600;font-size:1.45rem;line-height:var(--lh-h)" data-i18n="brand.headline"></h1>
+        <p style="color:rgba(185,210,230,.55);font-size:.82rem;font-weight:300;line-height:var(--lh-b)" data-i18n="brand.supporting"></p>
+      </div>
+
+      <!-- Copyright -->
+      <div class="fu d4" style="flex-shrink:0;padding-top:8px">
+        <p style="color:rgba(185,210,230,.18);font-size:.61rem;font-family:'LINE Seed Sans',sans-serif" data-i18n="brand.copyright"></p>
+      </div>
+
+    </div>
+  </div><!-- /LEFT -->
+
+  <!-- ═══════ RIGHT LOGIN PANEL ═══════ -->
+  <div class="rp" style="width:54%;display:flex;align-items:center;justify-content:center;padding:clamp(24px,3vw,56px)">
+
+    <div class="fu d2" style="width:100%;max-width:416px;position:relative;z-index:1">
+
+      <!-- CARD -->
+      <div class="card" style="padding:clamp(28px,2.8vw,42px)">
+
+        <!-- Card logo row -->
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:22px">
+          <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,rgba(16,213,210,.17),rgba(89,227,255,.09));border:1px solid rgba(16,213,210,.22);display:flex;align-items:center;justify-content:center">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="7.5" r="2.5" fill="#10D5D2" opacity=".82"/>
+              <path d="M7.5 16.5c0-2.485 2.015-4 4.5-4s4.5 1.515 4.5 4" stroke="#10D5D2" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="5.5"  cy="9" r="1.5" fill="#10D5D2" opacity=".36"/>
+              <circle cx="18.5" cy="9" r="1.5" fill="#10D5D2" opacity=".36"/>
+            </svg>
+          </div>
+          <div>
+            <div style="font-weight:700;font-size:.9rem;color:var(--navy);letter-spacing:-.012em;line-height:1;font-family:'LINE Seed Sans',sans-serif">Performia</div>
+            <div style="font-size:.57rem;color:var(--aqua);font-family:'LINE Seed Sans',sans-serif;letter-spacing:.07em;text-transform:uppercase;margin-top:2px;opacity:.7" data-i18n="brand.tagline"></div>
+          </div>
+        </div>
+
+        <!-- Headline -->
+        <div style="margin-bottom:24px">
+          <h2 style="color:var(--tp);font-weight:600;font-size:clamp(1.18rem,1.6vw,1.44rem);letter-spacing:-.015em;margin-bottom:6px;line-height:var(--lh-h)" data-i18n="login.headline"></h2>
+          <p style="color:var(--ts);font-size:.86rem;line-height:var(--lh-b);font-weight:300" data-i18n="login.subheadline"></p>
+        </div>
+
+        <!-- FORM -->
+        <div style="display:flex;flex-direction:column;gap:14px">
+
+          <!-- Email -->
+          <div>
+            <label id="lbl-e" for="email" style="display:block;font-size:.74rem;font-weight:500;color:var(--tp);margin-bottom:5px" data-i18n="form.emailLabel"></label>
+            <input id="email" type="email" class="inp" autocomplete="email" aria-labelledby="lbl-e" data-i18n-placeholder="form.emailPlaceholder"/>
+          </div>
+
+          <!-- Password -->
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
+              <label id="lbl-p" for="password" style="font-size:.74rem;font-weight:500;color:var(--tp)" data-i18n="form.passwordLabel"></label>
+              <a href="#" style="font-size:.73rem;font-weight:400;color:var(--aqua);text-decoration:none;transition:opacity .15s" onmouseover="this.style.opacity='.6'" onmouseout="this.style.opacity='1'" data-i18n="form.forgotPassword"></a>
+            </div>
+            <div style="position:relative">
+              <input id="password" type="password" class="inp" autocomplete="current-password" aria-labelledby="lbl-p" placeholder="••••••••" style="padding-right:42px"/>
+              <button type="button" onclick="tglPw()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#97AEC4;line-height:0;transition:color .15s" onmouseover="this.style.color='#10D5D2'" onmouseout="this.style.color='#97AEC4'" aria-label="Toggle password visibility">
+                <svg id="pw-eye" width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 4C5.5 4 2 10 2 10s3.5 6 8 6 8-6 8-6-3.5-6-8-6z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Remember me -->
+          <label class="cbw" style="display:flex;align-items:center;gap:7px;cursor:pointer;user-select:none">
+            <input type="checkbox" id="remember"/>
+            <span style="font-size:.78rem;color:var(--ts);font-weight:300" data-i18n="form.rememberMe"></span>
+          </label>
+
+          <!-- Sign in -->
+          <button class="btn-p" id="signInBtn" type="button" onclick="handleSignIn()">
+            <span id="btnText" data-i18n="form.signIn"></span>
+            <div class="spin" id="btnSpin"></div>
+          </button>
+
+          <!-- Divider -->
+          <div class="dvd" data-i18n="form.orWith"></div>
+
+          <!-- SSO -->
+          <div style="display:flex;gap:10px">
+            <button class="btn-sso" type="button" onclick="handleSSO('google')" aria-label="Sign in with Google">
+              <svg width="15" height="15" viewBox="0 0 18 18" fill="none"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/><path d="M3.964 10.706A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.706V4.962H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.038l3.007-2.332z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.962L3.964 7.294C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/></svg>
+              Google
+            </button>
+            <button class="btn-sso" type="button" onclick="handleSSO('microsoft')" aria-label="Sign in with Microsoft">
+              <svg width="15" height="15" viewBox="0 0 18 18" fill="none"><rect width="8.5" height="8.5" fill="#F25022"/><rect x="9.5" width="8.5" height="8.5" fill="#7FBA00"/><rect y="9.5" width="8.5" height="8.5" fill="#00A4EF"/><rect x="9.5" y="9.5" width="8.5" height="8.5" fill="#FFB900"/></svg>
+              Microsoft
+            </button>
+          </div>
+
+        </div><!-- /form -->
+
+        <!-- Privacy note -->
+        <div style="margin-top:20px;display:flex;align-items:flex-start;gap:8px;padding:10px 12px;border-radius:10px;background:rgba(16,213,210,.04);border:1px solid rgba(16,213,210,.12)">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="margin-top:2px;flex-shrink:0" aria-hidden="true"><path d="M8 2L3 4.5v4C3 11.5 5.5 14 8 14s5-2.5 5-5.5v-4L8 2z" stroke="#10D5D2" stroke-width="1.3" stroke-linejoin="round"/><path d="M6 8l1.5 1.5L10 6.5" stroke="#10D5D2" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p style="color:var(--ts);font-size:.7rem;line-height:var(--lh-b);font-weight:300" data-i18n="form.privacy"></p>
+        </div>
+
+      </div><!-- /card -->
+
+      <!-- Footer links -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-top:15px">
+        <a href="#" style="font-size:.7rem;color:#97AEC4;text-decoration:none;transition:color .15s" onmouseover="this.style.color='#10D5D2'" onmouseout="this.style.color='#97AEC4'" data-i18n="footer.privacy"></a>
+        <span style="color:#C4DCF0;font-size:.4rem">●</span>
+        <a href="#" style="font-size:.7rem;color:#97AEC4;text-decoration:none;transition:color .15s" onmouseover="this.style.color='#10D5D2'" onmouseout="this.style.color='#97AEC4'" data-i18n="footer.terms"></a>
+        <span style="color:#C4DCF0;font-size:.4rem">●</span>
+        <a href="#" style="font-size:.7rem;color:#97AEC4;text-decoration:none;transition:color .15s" onmouseover="this.style.color='#10D5D2'" onmouseout="this.style.color='#97AEC4'" data-i18n="footer.support"></a>
+      </div>
+
+    </div>
+  </div><!-- /RIGHT -->
+
+</div><!-- /page -->
+
+<script>
+/* ═══════════════════════════════════════════════
+   i18n
+═══════════════════════════════════════════════ */
+const TR = {
+  th:{
+    'page.title':           'Performia — เข้าสู่ระบบ',
+    'brand.tagline':        'Human Performance OS',
+    'brand.badge':          'Enterprise Human Performance',
+    'brand.headline':       'ยินดีต้อนรับสู่ Performia',
+    'brand.supporting':     'เปลี่ยนความเป็นอยู่ที่ดีให้เป็นผลลัพธ์ที่วัดได้',
+    'brand.copyright':      '© 2568 Performia. Human Performance Intelligence Platform.',
+    'login.headline':       'ยินดีต้อนรับสู่ Performia',
+    'login.subheadline':    'เข้าสู่ระบบเพื่อใช้งานแพลตฟอร์มของคุณ',
+    'form.emailLabel':      'อีเมลองค์กร',
+    'form.emailPlaceholder':'you@organization.com',
+    'form.passwordLabel':   'รหัสผ่าน',
+    'form.forgotPassword':  'ลืมรหัสผ่าน?',
+    'form.rememberMe':      'จดจำการเข้าสู่ระบบ',
+    'form.signIn':          'เข้าสู่ระบบ',
+    'form.orWith':          'หรือเข้าสู่ระบบด้วย',
+    'form.privacy':         'ข้อมูลส่วนบุคคลของคุณได้รับการดูแลอย่างปลอดภัย โดย HR จะเห็นเฉพาะข้อมูลภาพรวม ไม่สามารถเห็นคำตอบรายบุคคลได้',
+    'val.noEmail':          'กรุณากรอกอีเมลองค์กรของคุณ',
+    'val.invalidEmail':     'กรุณากรอกอีเมลที่ถูกต้อง',
+    'val.noPassword':       'กรุณากรอกรหัสผ่าน',
+    'val.ssoConnect':       'กำลังเชื่อมต่อกับ',
+    'footer.privacy':       'นโยบายความเป็นส่วนตัว',
+    'footer.terms':         'เงื่อนไขการใช้งาน',
+    'footer.support':       'ติดต่อฝ่ายสนับสนุน',
+    'ws.title':             'เลือกพื้นที่ทำงาน',
+    'ws.subtitle':          'คุณมีสิทธิ์เข้าถึงหลายพื้นที่ทำงาน',
+    'ws.employee.title':    'My Performia',
+    'ws.employee.desc':     'โปรไฟล์สุขภาวะ เครดิต และกิจกรรมโปรแกรมของคุณ',
+    'ws.hr.title':          'แดชบอร์ด HR & People',
+    'ws.hr.desc':           'การมีส่วนร่วม การวิเคราะห์กำลังคน และการจัดการงบประมาณ',
+    'ws.exec.title':        'Executive Intelligence',
+    'ws.exec.desc':         'ผลกระทบทางธุรกิจ ผลลัพธ์ ESG และรายงานเชิงกลยุทธ์',
+    'redirect.to':          'กำลังนำทางไปยัง',
+    'redirect.demo':        '✓ นำทางไปยัง',
+    'redirect.demo2':       'แล้ว (ตัวอย่าง)',
+  },
+  en:{
+    'page.title':           'Performia — Sign In',
+    'brand.tagline':        'Human Performance OS',
+    'brand.badge':          'Enterprise Human Performance',
+    'brand.headline':       'Welcome to Performia',
+    'brand.supporting':     'Turn wellbeing into measurable performance.',
+    'brand.copyright':      '© 2025 Performia. Human Performance Intelligence Platform.',
+    'login.headline':       'Welcome to Performia',
+    'login.subheadline':    'Sign in to continue to your workspace.',
+    'form.emailLabel':      'Work Email',
+    'form.emailPlaceholder':'you@organization.com',
+    'form.passwordLabel':   'Password',
+    'form.forgotPassword':  'Forgot password?',
+    'form.rememberMe':      'Keep me signed in',
+    'form.signIn':          'Sign in',
+    'form.orWith':          'or continue with',
+    'form.privacy':         'Your personal data is handled securely. HR sees aggregated insights only, not individual answers.',
+    'val.noEmail':          'Please enter your work email.',
+    'val.invalidEmail':     'Please enter a valid email address.',
+    'val.noPassword':       'Please enter your password.',
+    'val.ssoConnect':       'Connecting to',
+    'footer.privacy':       'Privacy Policy',
+    'footer.terms':         'Terms',
+    'footer.support':       'Contact Support',
+    'ws.title':             'Select Workspace',
+    'ws.subtitle':          'You have access to multiple workspaces.',
+    'ws.employee.title':    'My Performia',
+    'ws.employee.desc':     'Your wellbeing profile, credits, and programme activities',
+    'ws.hr.title':          'HR & People Dashboard',
+    'ws.hr.desc':           'Participation, workforce analytics, and budget oversight',
+    'ws.exec.title':        'Executive Intelligence',
+    'ws.exec.desc':         'Business impact, ESG outcomes, and strategic reporting',
+    'redirect.to':          'Redirecting you to',
+    'redirect.demo':        '✓ Redirected to',
+    'redirect.demo2':       '(demo)',
+  }
+};
+
+let lang='th';
+function t(k){return TR[lang][k]||TR.en[k]||k}
+
+function applyTr(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=t(el.getAttribute('data-i18n')));
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>el.placeholder=t(el.getAttribute('data-i18n-placeholder')));
+  document.getElementById('html-root').lang=lang;
+  document.title=t('page.title');
+  document.getElementById('page-title').textContent=t('page.title');
+  document.getElementById('btn-th').classList.toggle('on',lang==='th');
+  document.getElementById('btn-en').classList.toggle('on',lang==='en');
+  document.getElementById('btn-th').setAttribute('aria-pressed',lang==='th');
+  document.getElementById('btn-en').setAttribute('aria-pressed',lang==='en');
+  const b=document.getElementById('btnText'); if(b) b.textContent=t('form.signIn');
+}
+function setLang(l){
+  if(l===lang)return; lang=l;
+  try{localStorage.setItem('performia_lang',l)}catch(e){}
+  document.body.style.transition='opacity .13s';document.body.style.opacity='.8';
+  setTimeout(()=>{applyTr();document.body.style.opacity='1';setTimeout(()=>document.body.style.transition='',160)},110);
+}
+(function(){try{const s=localStorage.getItem('performia_lang');if(s==='en'||s==='th')lang=s}catch(e){}applyTr()})();
+
+/* UX */
+function tglPw(){const p=document.getElementById('password'),e=document.getElementById('pw-eye');if(p.type==='password'){p.type='text';e.innerHTML=`<path d="M3 3l14 14M10 4C5.5 4 2 10 2 10s1.5 2.5 4 4M10 16c4.5 0 8-6 8-6s-1.5-2.5-4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/>`}else{p.type='password';e.innerHTML=`<path d="M10 4C5.5 4 2 10 2 10s3.5 6 8 6 8-6 8-6-3.5-6-8-6z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/>`}}
+function showToast(m){const e=document.getElementById('toast');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),3200)}
+function detectRole(email){const e=email.toLowerCase();if(e.includes('multi'))return['employee','hr','executive'];if(e.includes('exec')||e.includes('ceo')||e.includes('cfo'))return['executive'];if(e.includes('hr')||e.includes('admin')||e.includes('people'))return['hr'];return['employee']}
+const DEST={employee:{key:'ws.employee.title',path:'/app/me'},hr:{key:'ws.hr.title',path:'/app/hr'},executive:{key:'ws.exec.title',path:'/app/executive'}};
+function doRedirect(role){closeModal();const d=DEST[role],label=t(d.key),bn=document.getElementById('rb'),msg=document.getElementById('rbMsg'),prog=document.getElementById('rpb');msg.textContent=`${t('redirect.to')} ${label}…`;bn.classList.add('show');setTimeout(()=>prog.classList.add('go'),50);setTimeout(()=>showToast(`${t('redirect.demo')} ${label} ${t('redirect.demo2')}`),2200);setTimeout(()=>{bn.classList.remove('show');prog.classList.remove('go');prog.style.transition='none';prog.style.width='0%';setTimeout(()=>prog.style.transition='',60)},2700)}
+function closeModal(){document.getElementById('wsModal').classList.remove('show')}
+function handleSignIn(){const email=document.getElementById('email').value.trim(),pw=document.getElementById('password').value;if(!email){showToast(t('val.noEmail'));document.getElementById('email').focus();return}if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showToast(t('val.invalidEmail'));return}if(!pw){showToast(t('val.noPassword'));document.getElementById('password').focus();return}const btn=document.getElementById('signInBtn'),txt=document.getElementById('btnText'),spin=document.getElementById('btnSpin');btn.disabled=true;txt.style.display='none';spin.style.display='block';setTimeout(()=>{btn.disabled=false;txt.style.display='block';spin.style.display='none';const roles=detectRole(email);roles.length>1?document.getElementById('wsModal').classList.add('show'):doRedirect(roles[0])},1400)}
+function handleSSO(p){showToast(`${t('val.ssoConnect')} ${p.charAt(0).toUpperCase()+p.slice(1)}…`);setTimeout(()=>doRedirect('employee'),1600)}
+['email','password'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')handleSignIn()}));
+document.getElementById('wsModal').addEventListener('click',function(e){if(e.target===this)closeModal()});
+</script>
+</body>
+</html>

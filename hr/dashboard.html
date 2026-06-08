@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>HR Dashboard — Performia</title>
+<script src="/assets/mock-data.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap"/>
+<style>
+/* ── Reset ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{
+  font-family:"Noto Sans Thai",sans-serif;
+  background:#F8FBFD;
+  color:#061849;
+  font-size:14px;
+  line-height:22px;
+}
+
+/* ── CSS Variables ── */
+:root{
+  --navy-dark :#031244;
+  --navy      :#071B63;
+  --aqua      :#10D5D2;
+  --cyan      :#59E3FF;
+  --bg-page   :#F8FBFD;
+  --bg-soft   :#EEF8FF;
+  --surface   :#FFFFFF;
+  --muted     :#F3F7FA;
+  --text-pri  :#061849;
+  --text-sec  :#52627A;
+  --border    :#DCEAF5;
+  --success   :#22C55E;
+  --warning   :#F59E0B;
+  --danger    :#EF4444;
+  --sidebar-w :260px;
+  --header-h  :72px;
+}
+
+/* ══════════════════════════════════════════
+   APP SHELL
+══════════════════════════════════════════ */
+#app{display:flex;height:100vh;overflow:hidden;}
+
+/* ── Sidebar ── */
+#sidebar{
+  width:var(--sidebar-w);flex-shrink:0;
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  height:100vh;overflow:hidden;
+}
+.sidebar-logo{
+  height:var(--header-h);
+  padding:0 24px;
+  display:flex;align-items:center;gap:12px;
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.logo-mark{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--navy);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.logo-name{font-size:16px;font-weight:800;color:var(--navy);}
+.logo-sub{font-size:11px;color:var(--text-sec);}
+
+.sidebar-scroll{flex:1;overflow-y:auto;padding:16px 12px;}
+.sidebar-scroll::-webkit-scrollbar{width:0;}
+
+.nav-section-label{
+  font-size:11px;font-weight:700;color:var(--text-sec);
+  text-transform:uppercase;letter-spacing:0.10em;
+  padding:0 14px;margin:12px 0 6px;
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  height:44px;padding:0 14px;border-radius:14px;border:none;
+  background:transparent;cursor:pointer;width:100%;text-align:left;
+  font-family:"Noto Sans Thai",sans-serif;font-size:14px;font-weight:500;
+  color:var(--text-sec);transition:background 0.12s,color 0.12s;
+  position:relative;
+}
+.nav-item:hover{background:var(--muted);color:var(--navy);}
+.nav-item.active{background:var(--bg-soft);color:var(--navy);font-weight:700;}
+.nav-item.active::before{
+  content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:3px;height:24px;border-radius:0 3px 3px 0;background:var(--aqua);
+}
+.nav-item svg{flex-shrink:0;}
+.nav-item .nav-badge{
+  margin-left:auto;background:var(--danger);color:#fff;
+  font-size:10px;font-weight:700;border-radius:100px;
+  padding:1px 6px;
+}
+
+.sidebar-footer{
+  padding:16px;border-top:1px solid var(--border);flex-shrink:0;
+}
+.sidebar-user{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:14px;
+  background:var(--muted);cursor:pointer;
+}
+.user-avatar{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--navy);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.user-name{font-size:13px;font-weight:700;color:var(--text-pri);}
+.user-role{font-size:11px;color:var(--text-sec);}
+
+/* ── Main area ── */
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+
+/* ── Header ── */
+#header{
+  height:var(--header-h);flex-shrink:0;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;
+  padding:0 32px;gap:16px;
+}
+.header-title{flex:1;}
+.header-title h1{font-size:18px;font-weight:800;color:var(--text-pri);}
+.header-title p{font-size:12px;color:var(--text-sec);margin-top:1px;}
+
+.lang-toggle{
+  display:flex;gap:2px;background:var(--muted);
+  border-radius:12px;padding:3px;border:1px solid var(--border);
+}
+.lang-btn{
+  padding:0 16px;height:30px;border-radius:9px;border:none;cursor:pointer;
+  font-family:"Noto Sans Thai",sans-serif;font-size:12px;font-weight:700;
+  background:transparent;color:var(--text-sec);transition:all 0.15s;
+}
+.lang-btn.active{background:var(--navy);color:#fff;}
+
+.header-icon-btn{
+  width:40px;height:40px;border-radius:12px;
+  border:1px solid var(--border);background:var(--surface);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background 0.12s;
+}
+.header-icon-btn:hover{background:var(--bg-soft);}
+.header-avatar-btn{
+  width:40px;height:40px;border-radius:12px;
+  background:var(--navy);display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;color:#fff;cursor:pointer;
+}
+
+/* ── Scrollable content ── */
+#content{flex:1;overflow-y:auto;padding:32px;}
+#content::-webkit-scrollbar{width:5px;}
+#content::-webkit-scrollbar-track{background:transparent;}
+#content::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px;}
+
+.content-inner{max-width:1440px;margin:0 auto;display:flex;flex-direction:column;gap:32px;}
+
+/* ══════════════════════════════════════════
+   TYPOGRAPHY HELPERS
+══════════════════════════════════════════ */
+.sec-header{margin-bottom:20px;}
+.sec-header h2{font-size:18px;font-weight:800;color:var(--text-pri);margin-bottom:3px;}
+.sec-header p{font-size:13px;color:var(--text-sec);}
+.sec-divider{
+  display:flex;align-items:center;gap:12px;margin-bottom:20px;
+}
+.sec-divider-line{flex:1;height:1px;background:var(--border);}
+.sec-tag{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 14px;border-radius:100px;
+  border:1px solid var(--border);background:var(--surface);
+  font-size:11px;font-weight:700;color:var(--text-sec);
+  text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap;
+}
+.sec-tag-dot{width:7px;height:7px;border-radius:50%;}
+
+/* ══════════════════════════════════════════
+   CARD SYSTEM
+══════════════════════════════════════════ */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:24px;
+}
+.card-sm{padding:18px 20px;}
+
+/* ══════════════════════════════════════════
+   SECTION 1 — EXECUTIVE SUMMARY
+══════════════════════════════════════════ */
+.exec-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.exec-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:24px;padding:22px 24px;
+  position:relative;overflow:hidden;
+}
+.exec-card-accent{
+  position:absolute;top:0;left:0;right:0;height:3px;border-radius:24px 24px 0 0;
+}
+.exec-kpi-label{font-size:12px;color:var(--text-sec);font-weight:600;margin-bottom:10px;}
+.exec-kpi-value{font-size:28px;font-weight:800;color:var(--text-pri);line-height:1;margin-bottom:8px;}
+.exec-kpi-sub{font-size:12px;color:var(--text-sec);}
+.exec-trend{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:11px;font-weight:700;border-radius:100px;padding:2px 9px;
+  margin-top:8px;
+}
+.trend-up{background:#DCFCE7;color:#15803D;}
+.trend-down{background:#FEE2E2;color:#B91C1C;}
+.trend-stable{background:#FEF9C3;color:#854D0E;}
+
+/* Org score card — wider */
+.exec-score-card{
+  background:var(--navy);
+  border:none;border-radius:24px;padding:24px;
+  grid-column:span 1;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.exec-score-label{font-size:12px;font-weight:700;color:rgba(255,255,255,0.55);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;}
+.exec-score-value{font-size:48px;font-weight:800;color:#fff;line-height:1;margin-bottom:4px;}
+.exec-score-sub{font-size:12px;color:rgba(255,255,255,0.50);}
+.exec-score-bar-bg{height:4px;background:rgba(255,255,255,0.15);border-radius:99px;margin-top:16px;overflow:hidden;}
+.exec-score-bar-fill{height:100%;border-radius:99px;background:var(--aqua);}
+
+/* ══════════════════════════════════════════
+   SECTION 2 — PILLAR PERFORMANCE
+══════════════════════════════════════════ */
+.pillar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.pillar-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:20px;padding:20px;
+}
+.pillar-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.pillar-icon{
+  width:38px;height:38px;border-radius:11px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.pillar-name{font-size:14px;font-weight:700;color:var(--text-pri);}
+.pillar-dept{font-size:11px;color:var(--text-sec);}
+.pillar-status-pill{
+  font-size:11px;font-weight:700;border-radius:100px;
+  padding:3px 10px;
+}
+.pillar-score-row{display:flex;align-items:baseline;gap:6px;margin-bottom:10px;}
+.pillar-score{font-size:26px;font-weight:800;color:var(--text-pri);}
+.pillar-score-max{font-size:12px;color:var(--text-sec);}
+.bar-bg{height:6px;background:var(--muted);border-radius:99px;overflow:hidden;margin-bottom:10px;}
+.bar-fill{height:100%;border-radius:99px;transition:width 0.6s ease;}
+.pillar-footer{display:flex;justify-content:space-between;align-items:center;}
+.pillar-change{font-size:11px;font-weight:600;}
+.pillar-employees{font-size:11px;color:var(--text-sec);}
+
+/* ══════════════════════════════════════════
+   SECTION 3 — UTILIZATION & ENGAGEMENT
+══════════════════════════════════════════ */
+.util-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;}
+.util-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:20px;padding:22px;
+}
+.util-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;}
+.util-title{font-size:14px;font-weight:700;color:var(--text-pri);margin-bottom:2px;}
+.util-subtitle{font-size:12px;color:var(--text-sec);}
+.util-big{font-size:36px;font-weight:800;color:var(--navy);}
+.util-big-unit{font-size:14px;font-weight:600;color:var(--text-sec);margin-left:3px;}
+
+/* Mini horizontal bar chart */
+.mini-bar-list{display:flex;flex-direction:column;gap:10px;}
+.mini-bar-item{}
+.mini-bar-label-row{display:flex;justify-content:space-between;margin-bottom:4px;}
+.mini-bar-name{font-size:12px;color:var(--text-sec);}
+.mini-bar-val{font-size:12px;font-weight:700;color:var(--text-pri);}
+.mini-bar-track{height:6px;background:var(--muted);border-radius:99px;overflow:hidden;}
+.mini-bar-fill{height:100%;border-radius:99px;}
+
+/* Donut-style circle stat */
+.donut-wrap{display:flex;align-items:center;justify-content:center;position:relative;margin:12px 0;}
+
+/* Activity type list */
+.activity-type-list{display:flex;flex-direction:column;gap:8px;}
+.activity-type-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:9px 12px;border-radius:12px;background:var(--muted);
+}
+.activity-type-name{font-size:13px;font-weight:600;color:var(--text-pri);}
+.activity-type-count{font-size:13px;font-weight:700;color:var(--navy);}
+.activity-type-dot{width:8px;height:8px;border-radius:50%;margin-right:8px;}
+
+/* ══════════════════════════════════════════
+   SECTION 4 — RISK & INSIGHT VIEW
+   Internal health metrics only.
+   No benchmarks. No comparisons.
+══════════════════════════════════════════ */
+.risk-section-wrap{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:24px;padding:28px;
+}
+.risk-section-header{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  margin-bottom:24px;
+}
+.risk-section-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.20);
+  border-radius:100px;padding:4px 12px;
+  font-size:11px;font-weight:700;color:var(--danger);
+  letter-spacing:0.06em;text-transform:uppercase;
+}
+.risk-section-badge-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--danger);
+  animation:blink 2s infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+.risk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.risk-card{
+  border:1px solid var(--border);border-radius:18px;
+  padding:18px 20px;position:relative;overflow:hidden;
+  transition:box-shadow 0.15s;
+}
+.risk-card:hover{box-shadow:0 4px 20px rgba(7,27,99,0.08);}
+.risk-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
+.risk-card-icon{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.risk-card-name{font-size:13px;font-weight:700;color:var(--text-pri);margin-bottom:2px;}
+.risk-card-desc{font-size:11px;color:var(--text-sec);line-height:15px;}
+.risk-status-badge{
+  font-size:10px;font-weight:700;border-radius:100px;padding:3px 9px;
+  white-space:nowrap;flex-shrink:0;
+}
+.risk-status-good{background:#DCFCE7;color:#15803D;}
+.risk-status-moderate{background:#FEF9C3;color:#854D0E;}
+.risk-status-attention{background:#FEE2E2;color:#B91C1C;}
+
+.risk-score-row{display:flex;align-items:baseline;gap:5px;margin-bottom:8px;}
+.risk-score{font-size:22px;font-weight:800;color:var(--text-pri);}
+.risk-score-max{font-size:11px;color:var(--text-sec);}
+.risk-trend-row{display:flex;align-items:center;gap:6px;margin-bottom:12px;}
+.risk-trend-chip{
+  display:inline-flex;align-items:center;gap:3px;
+  font-size:11px;font-weight:700;border-radius:100px;padding:2px 8px;
+}
+.risk-period{font-size:11px;color:var(--text-sec);}
+
+/* Sparkline bars */
+.sparkline{display:flex;align-items:flex-end;gap:3px;height:28px;margin-bottom:12px;}
+.spark-bar{flex:1;border-radius:2px;min-height:4px;}
+
+.risk-insight-box{
+  background:var(--muted);border-radius:10px;
+  padding:9px 11px;
+  font-size:11px;color:var(--text-sec);line-height:16px;
+}
+.risk-insight-box strong{color:var(--text-pri);}
+
+/* High risk callout row */
+.risk-callout{
+  margin-top:20px;padding:16px 20px;
+  background:rgba(239,68,68,0.05);
+  border:1px solid rgba(239,68,68,0.15);
+  border-radius:16px;
+  display:flex;align-items:flex-start;gap:14px;
+}
+.risk-callout-icon{
+  width:36px;height:36px;border-radius:10px;
+  background:rgba(239,68,68,0.10);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.risk-callout-title{font-size:13px;font-weight:700;color:#B91C1C;margin-bottom:3px;}
+.risk-callout-text{font-size:12px;color:var(--text-sec);line-height:18px;}
+.risk-callout-action{
+  margin-left:auto;flex-shrink:0;
+  padding:0 16px;height:36px;border-radius:11px;border:1px solid rgba(239,68,68,0.25);
+  background:var(--surface);color:var(--danger);
+  font-family:"Noto Sans Thai",sans-serif;font-size:12px;font-weight:700;
+  cursor:pointer;white-space:nowrap;transition:background 0.12s;
+}
+.risk-callout-action:hover{background:rgba(239,68,68,0.06);}
+
+/* ══════════════════════════════════════════
+   SECTION 5 — BENCHMARK & POSITIONING
+   Comparison only. No internal health data.
+══════════════════════════════════════════ */
+.bench-section-wrap{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:24px;padding:28px;
+}
+.bench-section-header{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  margin-bottom:24px;
+}
+.bench-section-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(7,27,99,0.06);border:1px solid rgba(7,27,99,0.14);
+  border-radius:100px;padding:4px 12px;
+  font-size:11px;font-weight:700;color:var(--navy);
+  letter-spacing:0.06em;text-transform:uppercase;
+}
+
+/* Bench overview row — 3 positioning stats */
+.bench-overview-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;}
+.bench-stat{
+  border:1px solid var(--border);border-radius:16px;padding:16px 18px;
+  background:var(--muted);
+}
+.bench-stat-label{font-size:11px;font-weight:700;color:var(--text-sec);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;}
+.bench-stat-value{font-size:24px;font-weight:800;color:var(--navy);}
+.bench-stat-sub{font-size:11px;color:var(--text-sec);margin-top:3px;}
+
+/* Percentile bar */
+.percentile-wrap{margin-bottom:24px;}
+.percentile-title{font-size:13px;font-weight:700;color:var(--text-pri);margin-bottom:12px;}
+.percentile-track{
+  height:12px;background:var(--muted);border-radius:99px;
+  overflow:visible;position:relative;margin-bottom:8px;
+}
+.percentile-fill{
+  height:100%;border-radius:99px;
+  background:linear-gradient(to right,var(--bg-soft),var(--aqua));
+  position:relative;
+}
+.percentile-marker{
+  position:absolute;right:-1px;top:50%;transform:translateY(-50%);
+  width:20px;height:20px;border-radius:50%;
+  background:var(--navy);border:3px solid #fff;
+  box-shadow:0 2px 8px rgba(7,27,99,0.25);
+}
+.percentile-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--text-sec);}
+
+/* Benchmark comparison grid */
+.bench-compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.bench-compare-card{
+  border:1px solid var(--border);border-radius:18px;padding:18px 20px;
+}
+.bench-compare-title{font-size:13px;font-weight:700;color:var(--text-pri);margin-bottom:14px;
+  display:flex;align-items:center;gap:8px;}
+.bench-compare-icon{
+  width:28px;height:28px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+}
+/* Pillar comparison bars */
+.bench-bar-list{display:flex;flex-direction:column;gap:11px;}
+.bench-bar-item{}
+.bench-bar-name-row{display:flex;justify-content:space-between;margin-bottom:4px;}
+.bench-bar-name{font-size:12px;color:var(--text-pri);font-weight:500;}
+.bench-bar-vals{display:flex;gap:8px;font-size:11px;}
+.bench-bar-our{font-weight:700;color:var(--navy);}
+.bench-bar-ind{color:var(--text-sec);}
+.bench-bar-track{height:8px;background:var(--muted);border-radius:99px;position:relative;overflow:visible;}
+.bench-bar-industry{
+  position:absolute;top:0;left:0;height:100%;
+  border-radius:99px;background:var(--border);
+}
+.bench-bar-ours{
+  position:absolute;top:0;left:0;height:100%;
+  border-radius:99px;background:var(--navy);
+}
+.bench-bar-marker{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:2px;height:14px;background:rgba(7,27,99,0.20);
+}
+
+/* Best/opportunity cards */
+.bench-highlight-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;}
+.bench-best{
+  border:1px solid rgba(34,197,94,0.25);border-radius:16px;padding:16px;
+  background:rgba(34,197,94,0.04);
+}
+.bench-opp{
+  border:1px solid rgba(245,158,11,0.25);border-radius:16px;padding:16px;
+  background:rgba(245,158,11,0.04);
+}
+.bench-hl-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.10em;margin-bottom:6px;}
+.bench-hl-title{font-size:14px;font-weight:700;color:var(--text-pri);margin-bottom:3px;}
+.bench-hl-val{font-size:12px;color:var(--text-sec);}
+
+/* Region / size badge row */
+.bench-context-row{
+  display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;
+  padding-top:16px;border-top:1px solid var(--border);
+}
+.bench-context-chip{
+  display:flex;align-items:center;gap:6px;
+  border:1px solid var(--border);border-radius:100px;
+  padding:5px 12px;background:var(--muted);
+  font-size:12px;color:var(--text-sec);
+}
+.bench-context-chip strong{color:var(--text-pri);}
+
+/* ══════════════════════════════════════════
+   MISC UTILITIES
+══════════════════════════════════════════ */
+.divider-section{
+  display:flex;align-items:center;gap:16px;
+}
+.divider-section::before,.divider-section::after{
+  content:"";flex:1;height:1px;background:var(--border);
+}
+.filter-row{
+  display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap;
+}
+.filter-chip{
+  padding:0 14px;height:34px;border-radius:100px;border:1px solid var(--border);
+  background:var(--surface);font-family:"Noto Sans Thai",sans-serif;
+  font-size:12px;font-weight:600;color:var(--text-sec);cursor:pointer;transition:all 0.12s;
+}
+.filter-chip:hover{background:var(--bg-soft);color:var(--navy);}
+.filter-chip.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.btn-primary{
+  height:44px;padding:0 20px;border-radius:14px;border:none;
+  background:var(--navy);color:#fff;
+  font-family:"Noto Sans Thai",sans-serif;font-size:14px;font-weight:600;
+  cursor:pointer;transition:background 0.12s;display:inline-flex;align-items:center;gap:8px;
+}
+.btn-primary:hover{background:var(--navy-dark);}
+.btn-secondary{
+  height:44px;padding:0 20px;border-radius:14px;
+  border:1px solid var(--border);background:var(--surface);
+  color:var(--navy);font-family:"Noto Sans Thai",sans-serif;
+  font-size:14px;font-weight:600;cursor:pointer;transition:background 0.12s;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn-secondary:hover{background:var(--bg-soft);}
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ══ SIDEBAR ══ -->
+  <aside id="sidebar">
+    <div class="sidebar-logo" onclick="location.href='/hr/dashboard.html'" style="cursor:pointer">
+      <div class="logo-mark">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10D5D2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      </div>
+      <div>
+        <div class="logo-name">Performia</div>
+        <div class="logo-sub">HR Portal</div>
+      </div>
+    </div>
+
+    <div class="sidebar-scroll">
+      <div class="nav-section-label" id="nav-lbl-main" style="margin-top:4px;">เมนูหลัก</div>
+      <nav id="nav"></nav>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="user-avatar">อ</div>
+        <div style="overflow:hidden;">
+          <div class="user-name" id="sidebar-username">อนง สรีสุข</div>
+          <div class="user-role" id="sidebar-userrole">HR Manager</div>
+        </div>
+        <svg style="margin-left:auto;flex-shrink:0;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#52627A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══ MAIN ══ -->
+  <div id="main">
+
+    <!-- Header -->
+    <header id="header">
+      <div class="header-title">
+        <h1 id="hdr-title">แดชบอร์ด HR</h1>
+        <p id="hdr-sub">Performia Demo Organization · FMCG · Asia Pacific · 500–1,000 พนักงาน</p>
+      </div>
+
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btn-th" onclick="setLang('th')">TH</button>
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+      </div>
+
+      <button class="header-icon-btn" title="Export">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#52627A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </button>
+      <button class="header-icon-btn" title="Notifications">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#52627A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+      </button>
+      <div class="header-avatar-btn">อ</div>
+    </header>
+
+    <!-- Page content -->
+    <main id="content">
+      <div class="content-inner">
+
+        <!-- Date filter row -->
+        <div class="filter-row" id="filter-row">
+          <span style="font-size:13px;font-weight:700;color:#52627A;" id="lbl-period">ช่วงเวลา:</span>
+          <button class="filter-chip active" id="fc-q2">Q2 2026</button>
+          <button class="filter-chip" id="fc-q1">Q1 2026</button>
+          <button class="filter-chip" id="fc-ytd">YTD 2026</button>
+          <button class="filter-chip" id="fc-12m">12 เดือน</button>
+          <div style="margin-left:auto;display:flex;gap:8px;">
+            <button class="btn-secondary" style="height:36px;font-size:13px;border-radius:12px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#071B63" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+              <span id="lbl-filter">กรองข้อมูล</span>
+            </button>
+            <button class="btn-primary" style="height:36px;font-size:13px;border-radius:12px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span id="lbl-export">ส่งออกรายงาน</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════
+             SECTION 1 — EXECUTIVE SUMMARY
+        ══════════════════════════════ -->
+        <div>
+          <div class="sec-header">
+            <h2 id="sec1-title">ภาพรวมผู้บริหาร</h2>
+            <p id="sec1-sub">สรุปสถานะความเป็นอยู่ที่ดีขององค์กร ณ ไตรมาส 2/2026</p>
+          </div>
+          <div class="exec-grid">
+            <!-- Big score -->
+            <div class="exec-score-card">
+              <div>
+                <div class="exec-score-label" id="lbl-org-score">คะแนนองค์กรรวม</div>
+                <div class="exec-score-value">73.4</div>
+                <div class="exec-score-sub" id="lbl-score-out">จาก 100 คะแนน</div>
+              </div>
+              <div>
+                <div class="exec-score-bar-bg"><div class="exec-score-bar-fill" style="width:73.4%"></div></div>
+                <div style="display:flex;justify-content:space-between;margin-top:8px;">
+                  <span style="font-size:11px;color:rgba(255,255,255,0.45);">0</span>
+                  <span style="font-size:11px;color:rgba(255,255,255,0.45);">100</span>
+                </div>
+              </div>
+            </div>
+            <!-- KPI cards -->
+            <div class="exec-card">
+              <div class="exec-card-accent" style="background:#22C55E;"></div>
+              <div class="exec-kpi-label" id="lbl-participation">อัตราการเข้าร่วม</div>
+              <div class="exec-kpi-value">84%</div>
+              <div class="exec-kpi-sub" id="lbl-participation-sub">504 จาก 600 พนักงาน</div>
+              <div class="exec-trend trend-up">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="18 15 12 9 6 15"/></svg>
+                <span id="lbl-vs-last">+6% จากไตรมาสที่แล้ว</span>
+              </div>
+            </div>
+            <div class="exec-card">
+              <div class="exec-card-accent" style="background:#10D5D2;"></div>
+              <div class="exec-kpi-label" id="lbl-util">อัตราการใช้เครดิต</div>
+              <div class="exec-kpi-value">61%</div>
+              <div class="exec-kpi-sub" id="lbl-util-sub">8,540 จาก 14,000 เครดิต</div>
+              <div class="exec-trend trend-up">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="18 15 12 9 6 15"/></svg>
+                <span>+9%</span>
+              </div>
+            </div>
+            <div class="exec-card">
+              <div class="exec-card-accent" style="background:#F59E0B;"></div>
+              <div class="exec-kpi-label" id="lbl-risk">พนักงานกลุ่มเสี่ยง</div>
+              <div class="exec-kpi-value">12%</div>
+              <div class="exec-kpi-sub" id="lbl-risk-sub">ต้องการการดูแลเพิ่มเติม</div>
+              <div class="exec-trend trend-down">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+                <span id="lbl-risk-trend">+3% จากไตรมาสที่แล้ว</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════
+             SECTION 2 — PILLAR PERFORMANCE
+        ══════════════════════════════ -->
+        <div>
+          <div class="sec-header">
+            <h2 id="sec2-title">สมรรถภาพตาม 6 เสาหลัก</h2>
+            <p id="sec2-sub">คะแนนและแนวโน้มของแต่ละมิติสุขภาวะ</p>
+          </div>
+          <div class="pillar-grid" id="pillar-grid"></div>
+        </div>
+
+        <!-- ══════════════════════════════
+             SECTION 3 — UTILIZATION
+        ══════════════════════════════ -->
+        <div>
+          <div class="sec-header">
+            <h2 id="sec3-title">การใช้งานและการมีส่วนร่วม</h2>
+            <p id="sec3-sub">การใช้งบประมาณ เครดิต และกิจกรรม</p>
+          </div>
+          <div class="util-grid">
+            <!-- Budget usage -->
+            <div class="util-card">
+              <div class="util-header">
+                <div>
+                  <div class="util-title" id="lbl-budget-card">การใช้งบประมาณ</div>
+                  <div class="util-subtitle" id="lbl-budget-period">Q2 2026</div>
+                </div>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10D5D2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              </div>
+              <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:6px;">
+                <span class="util-big">฿842K</span>
+                <span style="font-size:13px;color:#52627A;" id="lbl-of-total">จาก ฿1.4M</span>
+              </div>
+              <div class="bar-bg" style="margin-bottom:16px;height:8px;">
+                <div class="bar-fill" style="width:60%;background:#10D5D2;"></div>
+              </div>
+              <div class="mini-bar-list" id="dept-bars"></div>
+            </div>
+            <!-- Credit utilization by dept -->
+            <div class="util-card">
+              <div class="util-header">
+                <div>
+                  <div class="util-title" id="lbl-credit-card">การใช้เครดิตรายแผนก</div>
+                  <div class="util-subtitle" id="lbl-credit-total">14,000 เครดิตทั้งหมด</div>
+                </div>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#818CF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+              </div>
+              <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:6px;">
+                <span class="util-big" style="color:#818CF8;">8,540</span>
+                <span style="font-size:13px;color:#52627A;" id="lbl-credits-used-sec">เครดิตที่ใช้แล้ว</span>
+              </div>
+              <div class="bar-bg" style="margin-bottom:16px;height:8px;">
+                <div class="bar-fill" style="width:61%;background:#818CF8;"></div>
+              </div>
+              <div class="mini-bar-list" id="credit-bars"></div>
+            </div>
+            <!-- Top activities -->
+            <div class="util-card">
+              <div class="util-header">
+                <div>
+                  <div class="util-title" id="lbl-activity-card">กิจกรรมยอดนิยม</div>
+                  <div class="util-subtitle" id="lbl-activity-bookings">412 การจองในไตรมาสนี้</div>
+                </div>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              </div>
+              <div class="activity-type-list" id="activity-type-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════
+             SECTION 4 — RISK & INSIGHT VIEW
+             Internal metrics. No benchmarks.
+        ══════════════════════════════ -->
+        <div>
+          <!-- Visual section divider -->
+          <div class="sec-divider">
+            <div class="sec-tag">
+              <div class="sec-tag-dot" style="background:#EF4444;box-shadow:0 0 6px rgba(239,68,68,0.5);"></div>
+              <span id="sec4-divider-label">ภาพรวมความเสี่ยงและข้อมูลเชิงลึก</span>
+            </div>
+            <div class="sec-divider-line"></div>
+          </div>
+
+          <div class="risk-section-wrap">
+            <div class="risk-section-header">
+              <div>
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+                  <h2 id="sec4-title" style="font-size:18px;font-weight:800;color:#061849;">ภาพรวมความเสี่ยงและข้อมูลเชิงลึก</h2>
+                  <div class="risk-section-badge">
+                    <div class="risk-section-badge-dot"></div>
+                    <span id="sec4-badge">Live Monitor</span>
+                  </div>
+                </div>
+                <p id="sec4-sub" style="font-size:13px;color:#52627A;">วัดสภาพความเป็นอยู่ที่ดีภายในองค์กรในปัจจุบัน — ไม่มีการเปรียบเทียบกับภายนอก</p>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <div style="display:flex;align-items:center;gap:12px;padding:8px 14px;background:#F3F7FA;border-radius:12px;border:1px solid #DCEAF5;">
+                  <span style="font-size:11px;font-weight:700;color:#52627A;" id="lbl-legend-internal">ตัวชี้วัดภายใน</span>
+                  <div style="display:flex;align-items:center;gap:16px;">
+                    <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:#15803D;"><span style="width:8px;height:8px;border-radius:50%;background:#22C55E;display:inline-block;"></span><span id="lbl-leg-good">ดี</span></span>
+                    <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:#854D0E;"><span style="width:8px;height:8px;border-radius:50%;background:#F59E0B;display:inline-block;"></span><span id="lbl-leg-mod">ปานกลาง</span></span>
+                    <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:#B91C1C;"><span style="width:8px;height:8px;border-radius:50%;background:#EF4444;display:inline-block;"></span><span id="lbl-leg-att">ต้องดูแล</span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="risk-grid" id="risk-grid"></div>
+
+            <!-- Risk callout -->
+            <div class="risk-callout">
+              <div class="risk-callout-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </div>
+              <div>
+                <div class="risk-callout-title" id="callout-title">พบความเสี่ยงที่ต้องดำเนินการ</div>
+                <div class="risk-callout-text" id="callout-text">Burnout Risk และ Psychological Safety อยู่ในระดับ "ต้องดูแล" ติดต่อกัน 2 ไตรมาส แนะนำให้เปิดแคมเปญ Wellbeing Intervention สำหรับแผนก Marketing และ Operations</div>
+              </div>
+              <button class="risk-callout-action" id="callout-btn">ดำเนินการ</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════
+             SECTION 5 — BENCHMARK & POSITIONING
+             Comparisons only. No internal risk data.
+        ══════════════════════════════ -->
+        <div>
+          <!-- Visual section divider — different color = different purpose -->
+          <div class="sec-divider">
+            <div class="sec-tag">
+              <div class="sec-tag-dot" style="background:#071B63;"></div>
+              <span id="sec5-divider-label">การเปรียบเทียบและตำแหน่งองค์กร</span>
+            </div>
+            <div class="sec-divider-line"></div>
+          </div>
+
+          <div class="bench-section-wrap">
+            <div class="bench-section-header">
+              <div>
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+                  <h2 id="sec5-title" style="font-size:18px;font-weight:800;color:#061849;">การเปรียบเทียบและตำแหน่งองค์กร</h2>
+                  <div class="bench-section-badge">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#071B63" stroke-width="2.5" stroke-linecap="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+                    <span id="sec5-badge">Benchmark</span>
+                  </div>
+                </div>
+                <p id="sec5-sub" style="font-size:13px;color:#52627A;">วัดว่าองค์กรของคุณอยู่ในตำแหน่งใดเมื่อเปรียบเทียบกับ Industry และ Global — ไม่ใช่ตัวชี้วัดความเสี่ยง</p>
+              </div>
+            </div>
+
+            <!-- Positioning overview -->
+            <div class="bench-overview-row">
+              <div class="bench-stat">
+                <div class="bench-stat-label" id="lbl-industry-rank">อันดับในอุตสาหกรรม</div>
+                <div class="bench-stat-value">Top 28%</div>
+                <div class="bench-stat-sub" id="lbl-industry-fmcg">FMCG Asia Pacific</div>
+              </div>
+              <div class="bench-stat">
+                <div class="bench-stat-label" id="lbl-global-pct">Global Percentile</div>
+                <div class="bench-stat-value">65th</div>
+                <div class="bench-stat-sub" id="lbl-global-sub">จากองค์กรทั่วโลก 2,400+</div>
+              </div>
+              <div class="bench-stat">
+                <div class="bench-stat-label" id="lbl-size-rank">เทียบขนาดองค์กร</div>
+                <div class="bench-stat-value">Top 22%</div>
+                <div class="bench-stat-sub" id="lbl-size-sub">500–1,000 พนักงาน</div>
+              </div>
+            </div>
+
+            <!-- Percentile track -->
+            <div class="percentile-wrap">
+              <div class="percentile-title" id="lbl-pct-title">ตำแหน่ง Global Percentile — คะแนนองค์กร 73.4</div>
+              <div class="percentile-track">
+                <div class="percentile-fill" style="width:65%;">
+                  <div class="percentile-marker"></div>
+                </div>
+              </div>
+              <div class="percentile-labels">
+                <span id="lbl-pct-0">0th — ต่ำสุด</span>
+                <span id="lbl-pct-25">25th</span>
+                <span id="lbl-pct-50">50th — ค่ากลาง</span>
+                <span id="lbl-pct-75">75th</span>
+                <span id="lbl-pct-100">100th — สูงสุด</span>
+              </div>
+            </div>
+
+            <!-- Comparison grid -->
+            <div class="bench-compare-grid">
+              <!-- Industry comparison -->
+              <div class="bench-compare-card">
+                <div class="bench-compare-title">
+                  <div class="bench-compare-icon" style="background:#EEF8FF;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#071B63" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                  </div>
+                  <span id="lbl-industry-cmp">เทียบ Industry Average (FMCG)</span>
+                </div>
+                <div class="bench-bar-list" id="industry-bars"></div>
+              </div>
+              <!-- Global comparison -->
+              <div class="bench-compare-card">
+                <div class="bench-compare-title">
+                  <div class="bench-compare-icon" style="background:#F3F7FA;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#52627A" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+                  </div>
+                  <span id="lbl-global-cmp">เทียบ Global Average</span>
+                </div>
+                <div class="bench-bar-list" id="global-bars"></div>
+              </div>
+            </div>
+
+            <!-- Best + Opportunity highlights -->
+            <div class="bench-highlight-row">
+              <div class="bench-best">
+                <div class="bench-hl-label" style="color:#15803D;" id="lbl-best-label">เสาหลักที่แข็งแกร่งที่สุด</div>
+                <div class="bench-hl-title" id="bench-best-title">Social — ความสัมพันธ์ทางสังคม</div>
+                <div class="bench-hl-val" id="bench-best-val">คะแนน 80.2 · สูงกว่า Industry 12 คะแนน · Top 15%</div>
+              </div>
+              <div class="bench-opp">
+                <div class="bench-hl-label" style="color:#92400E;" id="lbl-opp-label">โอกาสพัฒนา</div>
+                <div class="bench-hl-title" id="bench-opp-title">Money — สุขภาพทางการเงิน</div>
+                <div class="bench-hl-val" id="bench-opp-val">คะแนน 58.1 · ต่ำกว่า Industry 9 คะแนน · Percentile ที่ 42</div>
+              </div>
+            </div>
+
+            <!-- Context chips -->
+            <div class="bench-context-row">
+              <div class="bench-context-chip">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#52627A" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+                <span id="ctx-industry"><strong>Industry:</strong> FMCG</span>
+              </div>
+              <div class="bench-context-chip">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#52627A" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/></svg>
+                <span id="ctx-region"><strong>Region:</strong> Asia Pacific</span>
+              </div>
+              <div class="bench-context-chip">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#52627A" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                <span id="ctx-size"><strong>ขนาด:</strong> 500–1,000 พนักงาน</span>
+              </div>
+              <div class="bench-context-chip">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#52627A" stroke-width="2" stroke-linecap="round"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span id="ctx-updated"><strong>อัปเดต:</strong> Jun 2026</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- bottom padding -->
+        <div style="height:8px;"></div>
+
+      </div><!-- /content-inner -->
+    </main>
+  </div>
+</div><!-- /app -->
+
+<script>
+/* ══════════════════════════════════════════
+   DATA
+══════════════════════════════════════════ */
+const PILLARS = [
+  { keyTH:"จิตใจ",              keyEN:"Mind",        score:72, prev:68, color:"#818CF8", bg:"#F3F0FF", employees:504, trend:"+4" },
+  { keyTH:"ร่างกาย",             keyEN:"Body",        score:76, prev:74, color:"#10D5D2", bg:"#ECFDF5", employees:504, trend:"+2" },
+  { keyTH:"การเงิน",             keyEN:"Money",       score:58, prev:62, color:"#F59E0B", bg:"#FFFBEB", employees:504, trend:"−4" },
+  { keyTH:"สังคม",               keyEN:"Social",      score:80, prev:77, color:"#34D399", bg:"#F0FDF4", employees:504, trend:"+3" },
+  { keyTH:"การเติบโต",           keyEN:"Growth",      score:69, prev:65, color:"#F472B6", bg:"#FDF2F8", employees:504, trend:"+4" },
+  { keyTH:"การออกแบบงาน",        keyEN:"Work Design", score:71, prev:73, color:"#60A5FA", bg:"#EFF6FF", employees:504, trend:"−2" },
+];
+
+const RISK_METRICS = [
+  {
+    nameTH:"ความเสี่ยง Burnout",       nameEN:"Burnout Risk",
+    descTH:"ภาระงานและพลังงานสะสม",    descEN:"Workload and energy depletion",
+    score:42, max:100, prev:39, status:"attention",
+    statusTH:"ต้องดูแล", statusEN:"Needs Attention",
+    spark:[30,34,38,42,39,40,42], color:"#EF4444",
+    insightTH:"พนักงาน 28% มีคะแนนพลังงานต่ำกว่า 50 ติดต่อกัน 2 ไตรมาส",
+    insightEN:"28% of employees scored below 50 on energy for 2 consecutive quarters",
+  },
+  {
+    nameTH:"ระดับพลังงาน",             nameEN:"Energy Level",
+    descTH:"ความมีชีวิตชีวาและความกระฉับกระเฉง", descEN:"Vitality and physical readiness",
+    score:65, max:100, prev:63, status:"moderate",
+    statusTH:"ปานกลาง", statusEN:"Moderate",
+    spark:[58,60,61,65,63,64,65], color:"#F59E0B",
+    insightTH:"พลังงานกายเพิ่มขึ้นหลังเปิดโปรแกรม Yoga แต่ยังต่ำกว่าเป้าหมาย",
+    insightEN:"Physical energy improved post-Yoga program but still below target",
+  },
+  {
+    nameTH:"ความรู้สึกเป็นส่วนหนึ่ง",  nameEN:"Belonging",
+    descTH:"ความผูกพันและการมีส่วนร่วม", descEN:"Team connection and inclusion",
+    score:78, max:100, prev:75, status:"good",
+    statusTH:"ดี", statusEN:"Good",
+    spark:[68,70,72,75,74,76,78], color:"#22C55E",
+    insightTH:"คะแนนดีขึ้นอย่างต่อเนื่อง สอดคล้องกับการเพิ่มกิจกรรม Team Building",
+    insightEN:"Consistent improvement aligned with increased Team Building activities",
+  },
+  {
+    nameTH:"ความปลอดภัยทางจิตใจ",      nameEN:"Psychological Safety",
+    descTH:"การแสดงออกและความไว้วางใจ", descEN:"Expression and trust in environment",
+    score:55, max:100, prev:58, status:"attention",
+    statusTH:"ต้องดูแล", statusEN:"Needs Attention",
+    spark:[60,58,57,56,58,57,55], color:"#EF4444",
+    insightTH:"แนวโน้มลดลงใน 3 ไตรมาส สัมพันธ์กับการเปลี่ยนแปลงโครงสร้างองค์กร",
+    insightEN:"Declining trend over 3 quarters, correlated with organizational restructuring",
+  },
+  {
+    nameTH:"การสนับสนุนจากผู้จัดการ",   nameEN:"Manager Support",
+    descTH:"คุณภาพการดูแลและชี้แนะ",    descEN:"Quality of guidance and coaching",
+    score:70, max:100, prev:68, status:"moderate",
+    statusTH:"ปานกลาง", statusEN:"Moderate",
+    spark:[64,65,66,68,67,69,70], color:"#F59E0B",
+    insightTH:"คะแนนเพิ่มขึ้นหลัง Manager Coaching Program แต่ยังมีช่องว่างระหว่างแผนก",
+    insightEN:"Improved post Manager Coaching Program but gaps remain between departments",
+  },
+  {
+    nameTH:"ความพร้อมสำหรับการเติบโต",  nameEN:"Growth Readiness",
+    descTH:"แรงจูงใจและการพัฒนาตนเอง",  descEN:"Motivation and self-development drive",
+    score:74, max:100, prev:70, status:"good",
+    statusTH:"ดี", statusEN:"Good",
+    spark:[65,66,68,70,71,72,74], color:"#22C55E",
+    insightTH:"การเพิ่มกิจกรรม Leadership Workshop ส่งผลดีอย่างชัดเจน",
+    insightEN:"Leadership Workshop additions show clear positive impact",
+  },
+];
+
+const DEPTS = [
+  { nameTH:"การตลาด",  nameEN:"Marketing",   pct:78, color:"#818CF8" },
+  { nameTH:"ปฏิบัติการ",nameEN:"Operations",  pct:71, color:"#10D5D2" },
+  { nameTH:"การเงิน",  nameEN:"Finance",      pct:55, color:"#F59E0B" },
+  { nameTH:"ไอที",     nameEN:"IT",           pct:63, color:"#60A5FA" },
+];
+
+const ACTIVITIES_DATA = [
+  { nameTH:"โยคะและสุขภาพกาย",       nameEN:"Yoga & Physical",   count:124, color:"#10D5D2" },
+  { nameTH:"เวิร์กช็อปจัดการความเครียด",nameEN:"Stress Management", count:98,  color:"#818CF8" },
+  { nameTH:"การพัฒนาผู้นำ",           nameEN:"Leadership Dev",    count:87,  color:"#F472B6" },
+  { nameTH:"โค้ชชิ่งการเงิน",         nameEN:"Financial Coaching",count:63,  color:"#F59E0B" },
+  { nameTH:"Mindfulness",             nameEN:"Mindfulness",       count:40,  color:"#34D399" },
+];
+
+const BENCH_PILLARS = [
+  { nameTH:"จิตใจ",        nameEN:"Mind",        our:72, industry:68, global:65 },
+  { nameTH:"ร่างกาย",      nameEN:"Body",        our:76, industry:71, global:68 },
+  { nameTH:"การเงิน",      nameEN:"Money",       our:58, industry:67, global:62 },
+  { nameTH:"สังคม",        nameEN:"Social",      our:80, industry:68, global:65 },
+  { nameTH:"การเติบโต",    nameEN:"Growth",      our:69, industry:66, global:63 },
+  { nameTH:"ออกแบบงาน",    nameEN:"Work Design", our:71, industry:69, global:66 },
+];
+
+const NAV_ITEMS = [
+  { key:"dashboard",   iconPath:"M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6", active:true,
+    labelTH:"แดชบอร์ด", labelEN:"Dashboard" },
+  { key:"setup",       iconPath:"M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4",
+    labelTH:"ตั้งค่าองค์กร", labelEN:"Company Setup" },
+  { key:"campaigns",   iconPath:"M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4",
+    labelTH:"แคมเปญแบบประเมิน", labelEN:"Assessment Campaigns" },
+  { key:"employees",   iconPath:"M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zm8 0a4 4 0 100-8 4 4 0 000 8M23 21v-2a4 4 0 00-3-3.87",
+    labelTH:"จัดการพนักงาน", labelEN:"Employees", badge:"12" },
+  { key:"budget",      iconPath:"M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z",
+    labelTH:"งบประมาณและเครดิต", labelEN:"Budget & Credits" },
+  { key:"interventions",iconPath:"M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
+    labelTH:"จัดการกิจกรรม", labelEN:"Interventions" },
+  { key:"insights",    iconPath:"M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
+    labelTH:"ข้อมูลเชิงลึก", labelEN:"Insights" },
+  { key:"reports",     iconPath:"M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
+    labelTH:"รายงาน", labelEN:"Reports" },
+];
+
+/* ══════════════════════════════════════════
+   HELPERS
+══════════════════════════════════════════ */
+function svg(d,size=16,color="#52627A",sw=1.8){
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
+}
+
+function statusClass(s){
+  if(s==="good") return "risk-status-good";
+  if(s==="moderate") return "risk-status-moderate";
+  return "risk-status-attention";
+}
+
+/* ══════════════════════════════════════════
+   RENDER
+══════════════════════════════════════════ */
+let currentLang = "th";
+const isEN = ()=> currentLang==="en";
+
+function renderNav(){
+  document.getElementById("nav").innerHTML = NAV_ITEMS.map(item=>`
+    <button class="nav-item ${item.active?"active":""}" onclick="setActiveNav(this,'${item.key}')">
+      ${svg(item.iconPath,18,item.active?"#10D5D2":"#52627A",item.active?2:1.6)}
+      <span>${isEN()?item.labelEN:item.labelTH}</span>
+      ${item.badge?`<span class="nav-badge">${item.badge}</span>`:""}
+    </button>
+  `).join("");
+}
+
+function renderPillars(){
+  const maxVal = 100;
+  document.getElementById("pillar-grid").innerHTML = PILLARS.map(p=>{
+    const trendPos = p.trend.startsWith("+");
+    const trendNeg = p.trend.startsWith("−") || p.trend.startsWith("-");
+    let statusTH="ดี",statusEN="Good",cls="risk-status-good";
+    if(p.score<65){statusTH="ต้องดูแล";statusEN="Needs Attention";cls="risk-status-attention";}
+    else if(p.score<72){statusTH="ปานกลาง";statusEN="Moderate";cls="risk-status-moderate";}
+    return `
+    <div class="pillar-card">
+      <div class="pillar-card-header">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="pillar-icon" style="background:${p.bg};">
+            ${svg("M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",18,p.color,2)}
+          </div>
+          <div>
+            <div class="pillar-name">${isEN()?p.keyEN:p.keyTH}</div>
+            <div class="pillar-dept">${isEN()?"504 employees":"504 พนักงาน"}</div>
+          </div>
+        </div>
+        <span class="pillar-status-pill ${cls}" style="color:${cls==='risk-status-good'?'#15803D':cls==='risk-status-moderate'?'#854D0E':'#B91C1C'};background:${cls==='risk-status-good'?'#DCFCE7':cls==='risk-status-moderate'?'#FEF9C3':'#FEE2E2'};">
+          ${isEN()?statusEN:statusTH}
+        </span>
+      </div>
+      <div class="pillar-score-row">
+        <span class="pillar-score">${p.score}</span>
+        <span class="pillar-score-max">/100</span>
+      </div>
+      <div class="bar-bg">
+        <div class="bar-fill" style="width:${p.score}%;background:${p.color};"></div>
+      </div>
+      <div class="pillar-footer">
+        <span class="pillar-change" style="color:${trendPos?'#15803D':trendNeg?'#B91C1C':'#854D0E'};">
+          ${p.trend} ${isEN()?"vs last quarter":"vs ไตรมาสที่แล้ว"}
+        </span>
+        <span class="pillar-employees" style="font-size:11px;color:#52627A;">${isEN()?"Prev:":"ก่อนหน้า:"} ${p.prev}</span>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function renderDeptBars(){
+  document.getElementById("dept-bars").innerHTML = DEPTS.map(d=>`
+    <div class="mini-bar-item">
+      <div class="mini-bar-label-row">
+        <span class="mini-bar-name">${isEN()?d.nameEN:d.nameTH}</span>
+        <span class="mini-bar-val">${d.pct}%</span>
+      </div>
+      <div class="mini-bar-track">
+        <div class="mini-bar-fill" style="width:${d.pct}%;background:${d.color};"></div>
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderCreditBars(){
+  const vals = [{nameTH:"การตลาด",nameEN:"Marketing",pct:75,color:"#818CF8"},{nameTH:"ปฏิบัติการ",nameEN:"Operations",pct:62,color:"#10D5D2"},{nameTH:"การเงิน",nameEN:"Finance",pct:48,color:"#F59E0B"},{nameTH:"ไอที",nameEN:"IT",pct:58,color:"#60A5FA"}];
+  document.getElementById("credit-bars").innerHTML = vals.map(d=>`
+    <div class="mini-bar-item">
+      <div class="mini-bar-label-row">
+        <span class="mini-bar-name">${isEN()?d.nameEN:d.nameTH}</span>
+        <span class="mini-bar-val">${d.pct}%</span>
+      </div>
+      <div class="mini-bar-track">
+        <div class="mini-bar-fill" style="width:${d.pct}%;background:${d.color};"></div>
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderActivities(){
+  const max = ACTIVITIES_DATA[0].count;
+  document.getElementById("activity-type-list").innerHTML = ACTIVITIES_DATA.map(a=>`
+    <div class="activity-type-row">
+      <div style="display:flex;align-items:center;">
+        <div class="activity-type-dot" style="background:${a.color};"></div>
+        <span class="activity-type-name">${isEN()?a.nameEN:a.nameTH}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:60px;height:4px;background:#DCEAF5;border-radius:99px;overflow:hidden;">
+          <div style="height:100%;width:${Math.round(a.count/max*100)}%;background:${a.color};border-radius:99px;"></div>
+        </div>
+        <span class="activity-type-count">${a.count}</span>
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderRiskGrid(){
+  document.getElementById("risk-grid").innerHTML = RISK_METRICS.map(r=>{
+    const sparkMax = Math.max(...r.spark);
+    const sparkMin = Math.min(...r.spark);
+    const bars = r.spark.map(v=>{
+      const h = sparkMin===sparkMax ? 14 : Math.round(4 + ((v-sparkMin)/(sparkMax-sparkMin))*20);
+      return `<div class="spark-bar" style="height:${h}px;background:${r.color}22;"></div>`;
+    });
+    // last bar highlighted
+    const lastH = sparkMin===sparkMax ? 14 : Math.round(4 + ((r.spark[r.spark.length-1]-sparkMin)/(sparkMax-sparkMin))*20);
+    bars[bars.length-1] = `<div class="spark-bar" style="height:${lastH}px;background:${r.color};"></div>`;
+
+    const trendNum = r.score - r.prev;
+    const trendStr = trendNum >= 0 ? `+${trendNum}` : `${trendNum}`;
+    const trendClass = trendNum > 0 ? "trend-up" : trendNum < 0 ? "trend-down" : "trend-stable";
+    const trendLabel = isEN()
+      ? (trendNum>=0?`+${trendNum} vs prev quarter`:`${trendNum} vs prev quarter`)
+      : (trendNum>=0?`+${trendNum} จากไตรมาสที่แล้ว`:`${trendNum} จากไตรมาสที่แล้ว`);
+
+    const bgColor = r.status==="good"?"#FAFFFE":r.status==="moderate"?"#FFFDF4":"#FFF9F9";
+    return `
+    <div class="risk-card" style="background:${bgColor};">
+      <div class="risk-card-top">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <div class="risk-card-icon" style="background:${r.color}15;">
+            ${svg("M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",16,r.color,2)}
+          </div>
+          <div>
+            <div class="risk-card-name">${isEN()?r.nameEN:r.nameTH}</div>
+            <div class="risk-card-desc">${isEN()?r.descEN:r.descTH}</div>
+          </div>
+        </div>
+        <span class="risk-status-badge ${statusClass(r.status)}">${isEN()?(r.status==="good"?"Good":r.status==="moderate"?"Moderate":"Needs Attention"):(r.status==="good"?"ดี":r.status==="moderate"?"ปานกลาง":"ต้องดูแล")}</span>
+      </div>
+      <div class="risk-score-row">
+        <span class="risk-score" style="color:${r.color};">${r.score}</span>
+        <span class="risk-score-max">/100</span>
+      </div>
+      <div class="risk-trend-row">
+        <div class="risk-trend-chip ${trendClass}">${trendStr}</div>
+        <span class="risk-period">${trendLabel}</span>
+      </div>
+      <div class="sparkline">${bars.join("")}</div>
+      <div class="risk-insight-box">${isEN()?r.insightEN:r.insightTH}</div>
+    </div>`;
+  }).join("");
+}
+
+function renderBenchmarkBars(elId, compareKey){
+  const max = 100;
+  document.getElementById(elId).innerHTML = BENCH_PILLARS.map(p=>{
+    const compareVal = p[compareKey];
+    const diff = p.our - compareVal;
+    const sign = diff>0?"+":"";
+    return `
+    <div class="bench-bar-item">
+      <div class="bench-bar-name-row">
+        <span class="bench-bar-name">${isEN()?p.nameEN:p.nameTH}</span>
+        <div class="bench-bar-vals">
+          <span class="bench-bar-our">${isEN()?"Ours":"เรา"}: ${p.our}</span>
+          <span class="bench-bar-ind">${compareKey==="industry"?(isEN()?"Ind":"อุตฯ"):(isEN()?"Glob":"โกลบ")}: ${compareVal}</span>
+          <span style="font-size:11px;font-weight:700;color:${diff>=0?"#15803D":"#B91C1C"};">${sign}${diff}</span>
+        </div>
+      </div>
+      <div class="bench-bar-track" style="overflow:hidden;">
+        <div class="bench-bar-industry" style="width:${compareVal}%;opacity:0.35;"></div>
+        <div class="bench-bar-ours" style="width:${p.our}%;"></div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function renderStaticText(){
+  const e = isEN();
+  /* Header */
+  document.getElementById("hdr-title").textContent    = e?"HR Dashboard":"แดชบอร์ด HR";
+  document.getElementById("hdr-sub").textContent      = e?"Performia Demo Organization · FMCG · Asia Pacific · 500–1,000 employees":"Performia Demo Organization · FMCG · Asia Pacific · 500–1,000 พนักงาน";
+  /* Sidebar */
+  document.getElementById("sidebar-username").textContent = e?"Anong Srisuk":"อนง สรีสุข";
+  document.getElementById("sidebar-userrole").textContent = e?"HR Manager":"HR Manager";
+  document.getElementById("nav-lbl-main").textContent     = e?"MAIN MENU":"เมนูหลัก";
+  /* Filter */
+  document.getElementById("lbl-period").textContent   = e?"Period:":"ช่วงเวลา:";
+  document.getElementById("fc-12m").textContent       = e?"12 Months":"12 เดือน";
+  document.getElementById("fc-ytd").textContent       = e?"YTD 2026":"YTD 2026";
+  document.getElementById("lbl-filter").textContent   = e?"Filter":"กรองข้อมูล";
+  document.getElementById("lbl-export").textContent   = e?"Export Report":"ส่งออกรายงาน";
+  /* Sec 1 */
+  document.getElementById("sec1-title").textContent   = e?"Executive Summary":"ภาพรวมผู้บริหาร";
+  document.getElementById("sec1-sub").textContent     = e?"Organization wellbeing status — Q2 2026":"สรุปสถานะความเป็นอยู่ที่ดีขององค์กร ณ ไตรมาส 2/2026";
+  document.getElementById("lbl-org-score").textContent= e?"OVERALL SCORE":"คะแนนองค์กรรวม";
+  document.getElementById("lbl-score-out").textContent= e?"out of 100":"จาก 100 คะแนน";
+  document.getElementById("lbl-participation").textContent = e?"Participation Rate":"อัตราการเข้าร่วม";
+  document.getElementById("lbl-participation-sub").textContent = e?"504 of 600 employees":"504 จาก 600 พนักงาน";
+  document.getElementById("lbl-vs-last").textContent  = e?"+6% vs last quarter":"+6% จากไตรมาสที่แล้ว";
+  document.getElementById("lbl-util").textContent     = e?"Credit Utilization":"อัตราการใช้เครดิต";
+  document.getElementById("lbl-util-sub").textContent = e?"8,540 of 14,000 credits":"8,540 จาก 14,000 เครดิต";
+  document.getElementById("lbl-risk").textContent     = e?"At-Risk Employees":"พนักงานกลุ่มเสี่ยง";
+  document.getElementById("lbl-risk-sub").textContent = e?"Need additional support":"ต้องการการดูแลเพิ่มเติม";
+  document.getElementById("lbl-risk-trend").textContent = e?"+3% vs last quarter":"+3% จากไตรมาสที่แล้ว";
+  /* Sec 2 */
+  document.getElementById("sec2-title").textContent   = e?"Pillar Performance":"สมรรถภาพตาม 6 เสาหลัก";
+  document.getElementById("sec2-sub").textContent     = e?"Scores and trends per wellbeing dimension":"คะแนนและแนวโน้มของแต่ละมิติสุขภาวะ";
+  /* Sec 3 */
+  document.getElementById("sec3-title").textContent   = e?"Utilization & Engagement":"การใช้งานและการมีส่วนร่วม";
+  document.getElementById("sec3-sub").textContent     = e?"Budget, credits, and activity usage":"การใช้งบประมาณ เครดิต และกิจกรรม";
+  document.getElementById("lbl-budget-card").textContent = e?"Budget Usage":"การใช้งบประมาณ";
+  document.getElementById("lbl-budget-period").textContent = e?"Q2 2026":"Q2 2026";
+  document.getElementById("lbl-of-total").textContent = e?"of ฿1.4M":"จาก ฿1.4M";
+  document.getElementById("lbl-credit-card").textContent = e?"Credits by Department":"การใช้เครดิตรายแผนก";
+  document.getElementById("lbl-credit-total").textContent = e?"14,000 total credits":"14,000 เครดิตทั้งหมด";
+  document.getElementById("lbl-credits-used-sec").textContent = e?"credits used":"เครดิตที่ใช้แล้ว";
+  document.getElementById("lbl-activity-card").textContent = e?"Top Activities":"กิจกรรมยอดนิยม";
+  document.getElementById("lbl-activity-bookings").textContent = e?"412 bookings this quarter":"412 การจองในไตรมาสนี้";
+  /* Sec 4 */
+  document.getElementById("sec4-divider-label").textContent = e?"Risk & Insight View":"ภาพรวมความเสี่ยงและข้อมูลเชิงลึก";
+  document.getElementById("sec4-title").textContent   = e?"Risk & Insight View":"ภาพรวมความเสี่ยงและข้อมูลเชิงลึก";
+  document.getElementById("sec4-sub").textContent     = e?"How are we doing? Internal wellbeing condition — no benchmarks":"วัดสภาพความเป็นอยู่ที่ดีภายในองค์กรในปัจจุบัน — ไม่มีการเปรียบเทียบกับภายนอก";
+  document.getElementById("lbl-legend-internal").textContent = e?"Internal Metrics:":"ตัวชี้วัดภายใน:";
+  document.getElementById("lbl-leg-good").textContent = e?"Good":"ดี";
+  document.getElementById("lbl-leg-mod").textContent  = e?"Moderate":"ปานกลาง";
+  document.getElementById("lbl-leg-att").textContent  = e?"Needs Attention":"ต้องดูแล";
+  document.getElementById("callout-title").textContent= e?"Action Required":"พบความเสี่ยงที่ต้องดำเนินการ";
+  document.getElementById("callout-text").textContent = e?"Burnout Risk and Psychological Safety are at 'Needs Attention' for 2 consecutive quarters. Recommend launching a Wellbeing Intervention campaign for Marketing and Operations.":"Burnout Risk และ Psychological Safety อยู่ในระดับ 'ต้องดูแล' ติดต่อกัน 2 ไตรมาส แนะนำให้เปิดแคมเปญ Wellbeing Intervention สำหรับแผนก Marketing และ Operations";
+  document.getElementById("callout-btn").textContent  = e?"Take Action":"ดำเนินการ";
+  /* Sec 5 */
+  document.getElementById("sec5-divider-label").textContent = e?"Benchmark & Positioning":"การเปรียบเทียบและตำแหน่งองค์กร";
+  document.getElementById("sec5-title").textContent   = e?"Benchmark & Positioning":"การเปรียบเทียบและตำแหน่งองค์กร";
+  document.getElementById("sec5-sub").textContent     = e?"How do we compare? Organization position vs Industry and Global — not a risk indicator":"วัดว่าองค์กรของคุณอยู่ในตำแหน่งใดเมื่อเปรียบเทียบกับ Industry และ Global";
+  document.getElementById("lbl-industry-rank").textContent = e?"INDUSTRY RANK":"อันดับในอุตสาหกรรม";
+  document.getElementById("lbl-industry-fmcg").textContent = e?"FMCG Asia Pacific":"FMCG Asia Pacific";
+  document.getElementById("lbl-global-pct").textContent = e?"GLOBAL PERCENTILE":"Global Percentile";
+  document.getElementById("lbl-global-sub").textContent = e?"of 2,400+ global organizations":"จากองค์กรทั่วโลก 2,400+";
+  document.getElementById("lbl-size-rank").textContent = e?"SIZE COMPARISON":"เทียบขนาดองค์กร";
+  document.getElementById("lbl-size-sub").textContent  = e?"500–1,000 employees":"500–1,000 พนักงาน";
+  document.getElementById("lbl-pct-title").textContent = e?"Global Percentile Position — Organization Score 73.4":"ตำแหน่ง Global Percentile — คะแนนองค์กร 73.4";
+  document.getElementById("lbl-pct-0").textContent     = e?"0th — Lowest":"0th — ต่ำสุด";
+  document.getElementById("lbl-pct-25").textContent    = "25th";
+  document.getElementById("lbl-pct-50").textContent    = e?"50th — Median":"50th — ค่ากลาง";
+  document.getElementById("lbl-pct-75").textContent    = "75th";
+  document.getElementById("lbl-pct-100").textContent   = e?"100th — Highest":"100th — สูงสุด";
+  document.getElementById("lbl-industry-cmp").textContent = e?"vs Industry Average (FMCG)":"เทียบ Industry Average (FMCG)";
+  document.getElementById("lbl-global-cmp").textContent   = e?"vs Global Average":"เทียบ Global Average";
+  document.getElementById("lbl-best-label").textContent   = e?"BEST PERFORMING PILLAR":"เสาหลักที่แข็งแกร่งที่สุด";
+  document.getElementById("bench-best-title").textContent = e?"Social — Social Connection":"Social — ความสัมพันธ์ทางสังคม";
+  document.getElementById("bench-best-val").textContent   = e?"Score 80.2 · +12 above Industry · Top 15%":"คะแนน 80.2 · สูงกว่า Industry 12 คะแนน · Top 15%";
+  document.getElementById("lbl-opp-label").textContent    = e?"IMPROVEMENT OPPORTUNITY":"โอกาสพัฒนา";
+  document.getElementById("bench-opp-title").textContent  = e?"Money — Financial Health":"Money — สุขภาพทางการเงิน";
+  document.getElementById("bench-opp-val").textContent    = e?"Score 58.1 · −9 below Industry · 42nd Percentile":"คะแนน 58.1 · ต่ำกว่า Industry 9 คะแนน · Percentile ที่ 42";
+  document.getElementById("ctx-industry").innerHTML = e?"<strong>Industry:</strong> FMCG":"<strong>Industry:</strong> FMCG";
+  document.getElementById("ctx-region").innerHTML   = e?"<strong>Region:</strong> Asia Pacific":"<strong>Region:</strong> Asia Pacific";
+  document.getElementById("ctx-size").innerHTML     = e?"<strong>Size:</strong> 500–1,000 employees":"<strong>ขนาด:</strong> 500–1,000 พนักงาน";
+  document.getElementById("ctx-updated").innerHTML  = e?"<strong>Updated:</strong> Jun 2026":"<strong>อัปเดต:</strong> Jun 2026";
+}
+
+function renderAll(){
+  renderStaticText();
+  renderNav();
+  renderPillars();
+  renderDeptBars();
+  renderCreditBars();
+  renderActivities();
+  renderRiskGrid();
+  renderBenchmarkBars("industry-bars","industry");
+  renderBenchmarkBars("global-bars","global");
+}
+
+/* ══════════════════════════════════════════
+   INTERACTIONS
+══════════════════════════════════════════ */
+function setLang(lang){
+  currentLang = lang;
+  document.getElementById("btn-th").classList.toggle("active",lang==="th");
+  document.getElementById("btn-en").classList.toggle("active",lang==="en");
+  document.documentElement.lang = lang;
+  renderAll();
+}
+
+function setActiveNav(el,key){
+  document.querySelectorAll(".nav-item").forEach(n=>{
+    n.classList.remove("active");
+    n.querySelectorAll("svg path").forEach(p=>p.setAttribute("stroke","#52627A"));
+  });
+  el.classList.add("active");
+  // Scroll to section
+  const map = {dashboard:null,insights:"sec4-title",reports:"sec5-title"};
+  if(map[key]){
+    document.getElementById(map[key])?.scrollIntoView({behavior:"smooth",block:"start"});
+  } else {
+    document.getElementById("content").scrollTo({top:0,behavior:"smooth"});
+  }
+}
+
+// Filter chip behavior
+document.querySelectorAll(".filter-chip").forEach(btn=>{
+  btn.addEventListener("click",function(){
+    document.querySelectorAll(".filter-chip").forEach(b=>b.classList.remove("active"));
+    this.classList.add("active");
+  });
+});
+
+/* Init */
+renderAll();
+</script>
+</body>
+</html>

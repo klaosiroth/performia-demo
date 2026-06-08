@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Performia – รายละเอียดกิจกรรม</title>
+<script src="/assets/mock-data.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+/* =========================================
+   PERFORMIA DESIGN SYSTEM
+   Font   : Noto Sans Thai
+   Navy   : #0F1F6B
+   Aqua   : #1FC7D4
+   BG     : #F8FAFC
+   Border : #D9E4F2
+   Radius : 16px (cards 24px)
+   No gradient buttons
+========================================= */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0F1F6B; --navy-dk:#08144A; --aqua:#1FC7D4;
+  --bg:#F8FAFC; --surface:#FFFFFF; --soft:#EEF6FF;
+  --text:#0C1A40; --muted:#52627A; --border:#D9E4F2;
+  --success:#22C55E; --danger:#EF4444;
+  --sb:260px; --hh:72px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans Thai',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;font-size:14px;line-height:1.5}
+*{font-family:'Noto Sans Thai',sans-serif}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:8px}
+svg{display:inline-block;vertical-align:middle;flex-shrink:0}
+
+/* ── SIDEBAR ── */
+#sb{width:var(--sb);min-height:100vh;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50}
+.sb-logo{display:flex;align-items:center;gap:10px;padding:0 20px;height:var(--hh);border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-logo-mark{width:34px;height:34px;background:var(--navy);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--aqua);font-weight:900;font-size:15px}
+.sb-logo-text{font-size:17px;font-weight:800;color:var(--navy);letter-spacing:-.3px}
+.sb-nav{flex:1;padding:16px 12px;display:flex;flex-direction:column;gap:2px;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:10px;height:44px;padding:0 14px;border-radius:14px;font-size:14px;font-weight:500;color:var(--muted);cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:background .15s,color .15s;position:relative;font-family:inherit}
+.nav-item:hover{background:#F1F5FB;color:var(--text)}
+.nav-item.active{background:var(--soft);color:var(--navy);font-weight:600}
+.nav-item.active svg{color:var(--aqua)}
+.nav-item.active::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:3px;background:var(--aqua);border-radius:0 3px 3px 0}
+.sb-credits{background:var(--soft);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin:12px 12px 0}
+.sb-cr-lbl{font-size:11px;color:var(--muted);font-weight:500;margin-bottom:4px}
+.sb-cr-val{font-size:20px;font-weight:800;color:var(--navy);margin-bottom:8px}
+.sb-cr-val span{font-size:13px;font-weight:400;color:var(--muted)}
+.sb-cr-track{width:100%;height:5px;background:var(--border);border-radius:99px;margin-bottom:10px}
+.sb-cr-fill{height:100%;border-radius:99px;background:var(--aqua);transition:width .5s}
+.sb-cr-btn{width:100%;height:32px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--navy);font-size:12px;font-weight:600;font-family:inherit;cursor:pointer}
+.sb-footer{padding:16px 12px;border-top:1px solid var(--border);flex-shrink:0}
+.sb-user{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;cursor:pointer}
+.sb-av{width:36px;height:36px;border-radius:10px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--navy);flex-shrink:0}
+.sb-uname{font-size:13px;font-weight:600;color:var(--text)}
+.sb-urole{font-size:11px;color:var(--muted)}
+
+/* ── MAIN ── */
+#main{margin-left:var(--sb);flex:1;display:flex;flex-direction:column;min-height:100vh}
+
+/* ── HEADER ── */
+#hdr{position:sticky;top:0;z-index:40;background:var(--surface);border-bottom:1px solid var(--border);height:var(--hh);display:flex;align-items:center;justify-content:space-between;padding:0 32px;flex-shrink:0}
+.hdr-sub{font-size:11px;color:var(--muted);margin-bottom:1px}
+.hdr-ttl{font-size:18px;font-weight:700;color:var(--text)}
+.hdr-r{display:flex;align-items:center;gap:12px}
+.lang-tog{display:flex;border-radius:12px;overflow:hidden;border:1px solid var(--border);height:36px}
+.lang-btn{padding:0 14px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:var(--surface);color:var(--muted);font-family:inherit;height:100%;transition:background .15s,color .15s}
+.lang-btn.on{background:var(--navy);color:#fff}
+.hdr-icon{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted)}
+.hdr-av{width:36px;height:36px;border-radius:10px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--navy);cursor:pointer}
+
+/* ── PAGE LAYOUT ── */
+#page{display:flex;flex:1;align-items:flex-start}
+.detail-col{flex:1;padding:32px;padding-bottom:120px;min-width:0}
+
+/* ── BACK LINK ── */
+.back-a{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;margin-bottom:24px;transition:color .15s}
+.back-a:hover{color:var(--navy)}
+
+/* =========================================
+   HERO IMAGE — always 360px tall
+   Uses CSS background-image so image load
+   never collapses the block.
+   Text/badges always visible via overlay.
+========================================= */
+.hero{
+  position:relative;
+  width:100%;
+  height:360px;
+  border-radius:24px;
+  overflow:hidden;
+  margin-bottom:24px;
+  /* ← fallback bg until image loads */
+  background:#C7D5E8;
+}
+/* Image rendered as background so layout never collapses */
+.hero-bg{
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  transition:opacity .3s;
+}
+/* Fallback tile — shown when image absent/failed */
+.hero-fb{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  opacity:0; /* hidden by default */
+  pointer-events:none;
+  transition:opacity .2s;
+}
+.hero-fb.show{opacity:1}
+.hero-fb-label{font-size:13px;font-weight:600}
+/* Dark gradient always on top for text readability */
+.hero-grad{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,rgba(10,20,60,.82) 0%,rgba(10,20,60,.25) 50%,transparent 100%);
+  pointer-events:none;
+}
+/* Content sits on top of gradient */
+.hero-body{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  padding:28px 28px 24px;
+}
+.hero-chips{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.pchip{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:99px;font-size:12px;font-weight:600}
+.cchip{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:99px;font-size:11px;font-weight:600;background:rgba(10,20,60,.75);color:#fff;border:1px solid rgba(255,255,255,.2)}
+.hero-ttl{font-size:24px;font-weight:800;color:#fff;line-height:1.25;margin-bottom:12px}
+.hero-meta{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.hero-mi{display:flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,.82)}
+
+/* ── SKELETON LOADER ── */
+.skeleton{animation:sk 1.4s ease-in-out infinite}
+@keyframes sk{0%,100%{opacity:1}50%{opacity:.4}}
+.sk-block{background:#D9E4F2;border-radius:8px}
+.sk-hero{width:100%;height:360px;border-radius:24px;margin-bottom:24px}
+.sk-line{height:14px;margin-bottom:10px}
+.sk-line.w60{width:60%}
+.sk-line.w40{width:40%}
+.sk-card{background:#fff;border:1px solid var(--border);border-radius:24px;padding:24px;margin-bottom:16px}
+
+/* ── CONTENT CARDS ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:24px;margin-bottom:16px}
+.card-ttl{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;color:var(--text);margin-bottom:16px}
+.card-ttl svg{color:var(--aqua)}
+.rec-notice{background:var(--soft);border:1px solid var(--border);border-radius:24px;padding:20px;margin-bottom:16px}
+.rec-lbl{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600;background:rgba(31,199,212,.12);color:#0A8F8D;border:1px solid rgba(31,199,212,.3);margin-bottom:10px}
+.rec-h{font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px}
+.rec-p{font-size:13px;color:var(--muted);line-height:1.65}
+.who-row{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.who-row:last-child{border-bottom:none;padding-bottom:0}
+.who-n{width:22px;height:22px;border-radius:8px;background:var(--soft);color:var(--navy);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.who-t{font-size:13px;color:var(--muted);line-height:1.5}
+.gain-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gain-item{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:16px;background:#F5F9FF;border:1px solid var(--border)}
+.gain-ck{width:18px;height:18px;border-radius:6px;background:rgba(31,199,212,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.gain-t{font-size:12px;color:var(--muted);line-height:1.5}
+.impact-card{background:var(--navy);border-radius:24px;padding:24px;margin-bottom:16px}
+.impact-lbl{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:8px}
+.impact-t{font-size:16px;font-weight:700;color:#fff;line-height:1.5}
+.sch-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}
+.sch-row:last-child{border-bottom:none;padding-bottom:0}
+.sch-day{font-size:13px;font-weight:600;color:var(--text)}
+.sch-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:99px;font-size:12px;font-weight:500;background:var(--soft);color:var(--navy);border:1px solid var(--border)}
+
+/* ── BOOKING PANEL ── */
+.bp{width:296px;flex-shrink:0;padding:32px 24px 32px 0;position:sticky;top:var(--hh);align-self:flex-start}
+.bp-card{background:var(--surface);border:1px solid var(--border);border-radius:24px;overflow:hidden}
+/* Booking panel thumbnail — same image, always 96px tall */
+.bp-thumb{
+  width:100%;height:96px;
+  position:relative;
+  background:#C7D5E8;
+  flex-shrink:0;
+}
+.bp-thumb-bg{position:absolute;inset:0;background-size:cover;background-position:center}
+.bp-thumb-fb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0}
+.bp-thumb-fb.show{opacity:1}
+.bp-thumb-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,20,60,.6) 0%,transparent 60%)}
+.bp-thumb-ttl{position:absolute;bottom:0;left:0;right:0;padding:8px 12px;font-size:12px;font-weight:700;color:#fff;line-height:1.3}
+.bp-inner{padding:20px}
+.bp-ttl{font-size:14px;font-weight:700;color:var(--text);margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.brow{display:flex;align-items:flex-start;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);gap:12px}
+.brow:last-of-type{border-bottom:none;padding-bottom:0}
+.brow-l{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);flex-shrink:0}
+.brow-v{font-size:12px;font-weight:600;color:var(--text);text-align:right}
+.brow-v.aq{color:#0A8F8D;font-size:14px}
+.bp-ctas{padding:0 20px 20px;display:flex;flex-direction:column;gap:10px}
+
+/* ── BUTTONS ── */
+.btn-p{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:44px;padding:0 20px;border-radius:14px;font-size:14px;font-weight:600;background:var(--navy);color:#fff;border:none;cursor:pointer;font-family:inherit;transition:background .15s;width:100%}
+.btn-p:hover{background:var(--navy-dk)}
+.btn-s{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:44px;padding:0 20px;border-radius:14px;font-size:14px;font-weight:600;background:var(--surface);color:var(--navy);border:1px solid var(--border);cursor:pointer;font-family:inherit;transition:background .15s;width:100%}
+.btn-s:hover{background:var(--soft)}
+
+/* ── MOBILE BAR ── */
+#mob-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:30;padding:12px 16px 16px;background:var(--surface);border-top:1px solid var(--border);gap:8px}
+
+/* ── MODAL ── */
+#modal-bg{display:none;position:fixed;inset:0;z-index:100;background:rgba(10,20,60,.45);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px}
+#modal-bg.on{display:flex}
+.modal-box{background:var(--surface);border-radius:24px;max-width:380px;width:100%;border:1px solid var(--border);box-shadow:0 24px 64px rgba(10,20,60,.18);overflow:hidden}
+/* Modal thumbnail */
+.modal-thumb{
+  width:100%;height:130px;
+  position:relative;
+  background:#C7D5E8;
+  flex-shrink:0;
+}
+.modal-thumb-bg{position:absolute;inset:0;background-size:cover;background-position:center}
+.modal-thumb-fb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0}
+.modal-thumb-fb.show{opacity:1}
+.modal-thumb-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,20,60,.72) 0%,transparent 60%)}
+.modal-thumb-ttl{position:absolute;bottom:0;left:0;right:0;padding:12px 16px;font-size:14px;font-weight:700;color:#fff;line-height:1.3}
+.modal-body{padding:24px}
+.modal-ttl{font-size:17px;font-weight:800;color:var(--text);margin-bottom:4px}
+.modal-sub{font-size:12px;color:var(--muted);margin-bottom:20px}
+.modal-sum{background:#F5F9FF;border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:20px}
+.mrow{display:flex;align-items:center;justify-content:space-between;font-size:13px;padding:8px 0}
+.mrow+.mrow{border-top:1px solid var(--border)}
+.mrow-l{color:var(--muted)}
+.mrow-v{font-weight:700;display:flex;align-items:center;gap:5px;color:var(--text)}
+.mrow-v.ok{color:var(--success)}
+.mrow-v.err{color:var(--danger)}
+.modal-btns{display:flex;gap:10px}
+.btn-cancel{flex:1;height:44px;border-radius:14px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer}
+.btn-conf{flex:1;height:44px;border-radius:14px;border:none;background:var(--navy);color:#fff;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer}
+.btn-conf:hover{background:var(--navy-dk)}
+
+/* ── SUCCESS ── */
+#succ{display:none;flex:1;flex-direction:column;align-items:center;justify-content:flex-start;padding:40px 32px;text-align:center;overflow-y:auto}
+#succ.on{display:flex}
+/* Success image — same coverImage */
+.succ-img-wrap{
+  width:100%;max-width:480px;
+  height:200px;
+  border-radius:20px;overflow:hidden;
+  margin-bottom:28px;
+  position:relative;
+  background:#C7D5E8;
+}
+.succ-img-bg{position:absolute;inset:0;background-size:cover;background-position:center}
+.succ-img-fb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0}
+.succ-img-fb.show{opacity:1}
+.succ-img-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,20,60,.5) 0%,transparent 60%)}
+.succ-badge{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center}
+.succ-ck{width:60px;height:60px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(10,20,60,.2)}
+.succ-ttl{font-size:24px;font-weight:800;color:var(--text);margin-bottom:6px}
+.succ-sub{font-size:14px;color:var(--muted);margin-bottom:6px}
+.succ-act{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:28px}
+.succ-card{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:20px;margin-bottom:28px;max-width:480px;width:100%;text-align:left}
+.srow{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
+.srow:last-child{border-bottom:none;padding-bottom:0}
+.srow-l{display:flex;align-items:center;gap:6px;color:var(--muted)}
+.srow-v{font-weight:600;color:var(--text);text-align:right;max-width:220px}
+.succ-btns{display:flex;flex-direction:column;gap:10px;max-width:320px;width:100%}
+
+/* ── ERROR / NOT FOUND ── */
+#err{display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;padding:60px 32px;text-align:center;gap:16px}
+#err.on{display:flex}
+.err-icon{width:64px;height:64px;border-radius:20px;background:#F5F9FF;border:1px solid var(--border);display:flex;align-items:center;justify-content:center}
+.err-ttl{font-size:18px;font-weight:700;color:var(--text)}
+.err-sub{font-size:14px;color:var(--muted)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  #sb{display:none}
+  #main{margin-left:0}
+  .bp{display:none}
+  #mob-bar{display:flex}
+  .gain-grid{grid-template-columns:1fr}
+  .hero{height:260px}
+  .detail-col{padding:16px;padding-bottom:100px}
+}
+@media(max-width:640px){
+  .hero{height:220px;border-radius:16px}
+  .hero-ttl{font-size:20px}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside id="sb">
+  <div class="sb-logo">
+    <div class="sb-logo-mark">P</div>
+    <span class="sb-logo-text">Performia</span>
+  </div>
+  <nav class="sb-nav" id="sb-nav"></nav>
+  <div class="sb-credits">
+    <div class="sb-cr-lbl" data-i18n="creditsLbl"></div>
+    <div class="sb-cr-val" id="sb-cr-val">12 <span>/ 20</span></div>
+    <div class="sb-cr-track"><div class="sb-cr-fill" id="sb-cr-fill" style="width:60%"></div></div>
+    <button class="sb-cr-btn" data-i18n="viewWallet"></button>
+  </div>
+  <div class="sb-footer">
+    <div class="sb-user">
+      <div class="sb-av">สม</div>
+      <div>
+        <div class="sb-uname" id="sb-uname"></div>
+        <div class="sb-urole" data-i18n="userRole"></div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main id="main">
+
+  <header id="hdr">
+    <div>
+      <div class="hdr-sub" data-i18n="breadcrumb"></div>
+      <div class="hdr-ttl" data-i18n="pageTitle"></div>
+    </div>
+    <div class="hdr-r">
+      <div class="lang-tog">
+        <button class="lang-btn on" data-lang="th">TH</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+      <div class="hdr-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </div>
+      <div class="hdr-av">สม</div>
+    </div>
+  </header>
+
+  <!-- SKELETON (shown while loading) -->
+  <div id="skel" style="padding:32px;flex:1;display:none">
+    <div class="sk-block skeleton" style="width:120px;height:13px;margin-bottom:24px"></div>
+    <div class="sk-block skeleton sk-hero"></div>
+    <div class="sk-card">
+      <div class="sk-block skeleton sk-line w60"></div>
+      <div class="sk-block skeleton sk-line w40"></div>
+      <div class="sk-block skeleton sk-line" style="width:80%"></div>
+    </div>
+  </div>
+
+  <!-- DETAIL + BOOKING PANEL -->
+  <div id="page" style="display:none">
+
+    <div class="detail-col">
+      <a class="back-a" id="back-a" href="/employee/marketplace.html">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        <span data-i18n="backLbl"></span>
+      </a>
+
+      <!-- =============================================
+           HERO — layout NEVER collapses
+           Image loaded as CSS background-image so
+           height is always preserved by CSS, not img.
+      ============================================= -->
+      <div class="hero" id="hero">
+        <div class="hero-bg"  id="hero-bg"></div>
+        <div class="hero-fb"  id="hero-fb">
+          <svg id="hero-fb-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <span class="hero-fb-label" id="hero-fb-lbl" style="color:#fff;font-size:12px;font-weight:600"></span>
+        </div>
+        <div class="hero-grad"></div>
+        <div class="hero-body">
+          <div class="hero-chips">
+            <span class="pchip" id="hero-pill"></span>
+            <span class="cchip">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              <span id="hero-cr"></span>
+            </span>
+          </div>
+          <h2 class="hero-ttl" id="hero-ttl"></h2>
+          <div class="hero-meta">
+            <div class="hero-mi"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span id="hero-dur"></span></div>
+            <div class="hero-mi" id="hero-fmt"></div>
+            <div class="hero-mi"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span id="hero-seats"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Why Recommended -->
+      <div class="rec-notice">
+        <div class="rec-lbl">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+          <span data-i18n="recBadge"></span>
+        </div>
+        <div class="rec-h" data-i18n="whyRecH"></div>
+        <div class="rec-p" id="why-rec"></div>
+      </div>
+
+      <!-- Who For -->
+      <div class="card"><div class="card-ttl"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span data-i18n="whoH"></span></div><div id="who-for"></div></div>
+
+      <!-- What Gain -->
+      <div class="card"><div class="card-ttl"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><span data-i18n="gainH"></span></div><div class="gain-grid" id="what-gain"></div></div>
+
+      <!-- Impact -->
+      <div class="impact-card"><div class="impact-lbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(31,199,212,.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span data-i18n="impactH"></span></div><div class="impact-t" id="impact-t"></div></div>
+
+      <!-- Schedule -->
+      <div class="card"><div class="card-ttl"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span data-i18n="schedH"></span></div><div id="sessions"></div></div>
+    </div>
+
+    <!-- BOOKING PANEL -->
+    <div class="bp">
+      <div class="bp-card">
+        <div class="bp-thumb" id="bp-thumb">
+          <div class="bp-thumb-bg"  id="bp-bg"></div>
+          <div class="bp-thumb-fb"  id="bp-fb"></div>
+          <div class="bp-thumb-grad"></div>
+          <div class="bp-thumb-ttl" id="bp-ttl-txt"></div>
+        </div>
+        <div class="bp-inner">
+          <div class="bp-ttl" data-i18n="bpTtl"></div>
+          <div id="bp-rows"></div>
+        </div>
+        <div class="bp-ctas">
+          <button class="btn-p" id="btn-book"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span data-i18n="bookBtn"></span></button>
+          <button class="btn-s"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span data-i18n="approveBtn"></span></button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /#page -->
+
+  <!-- SUCCESS -->
+  <div id="succ">
+    <div class="succ-img-wrap">
+      <div class="succ-img-bg"  id="succ-bg"></div>
+      <div class="succ-img-fb"  id="succ-fb"></div>
+      <div class="succ-img-grad"></div>
+      <div class="succ-badge"><div class="succ-ck"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0F1F6B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div></div>
+    </div>
+    <h2 class="succ-ttl" data-i18n="succTtl"></h2>
+    <p class="succ-sub" data-i18n="succSub"></p>
+    <p class="succ-act" id="succ-act"></p>
+    <div class="succ-card" id="succ-card"></div>
+    <div class="succ-btns">
+      <button class="btn-p" id="s-bookings" data-i18n="viewBookings"></button>
+      <button class="btn-s" id="s-back"     data-i18n="backToActs"></button>
+    </div>
+  </div>
+
+  <!-- ERROR / NOT FOUND -->
+  <div id="err">
+    <div class="err-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#52627A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+    <div class="err-ttl" data-i18n="errTtl"></div>
+    <div class="err-sub" data-i18n="errSub"></div>
+    <a id="err-link" href="/employee/marketplace.html" class="btn-s" style="width:auto;margin-top:8px" data-i18n="errBtn"></a>
+  </div>
+
+  <!-- MOBILE BAR -->
+  <div id="mob-bar">
+    <button class="btn-p" id="btn-book-m" style="flex:1;margin:0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span data-i18n="bookBtn"></span></button>
+    <button class="btn-s" style="flex:1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span data-i18n="approveBtn"></span></button>
+  </div>
+
+</main>
+
+<!-- MODAL -->
+<div id="modal-bg">
+  <div class="modal-box">
+    <div class="modal-thumb">
+      <div class="modal-thumb-bg"  id="modal-bg-img"></div>
+      <div class="modal-thumb-fb"  id="modal-fb"></div>
+      <div class="modal-thumb-grad"></div>
+      <div class="modal-thumb-ttl" id="modal-ttl-txt"></div>
+    </div>
+    <div class="modal-body">
+      <h3 class="modal-ttl" data-i18n="modalTtl"></h3>
+      <p class="modal-sub" data-i18n="modalSub"></p>
+      <div class="modal-sum">
+        <div class="mrow"><span class="mrow-l" data-i18n="mUsed"></span><span class="mrow-v" id="m-used"></span></div>
+        <div class="mrow"><span class="mrow-l" data-i18n="mAfter"></span><span class="mrow-v" id="m-after"></span></div>
+      </div>
+      <div class="modal-btns">
+        <button class="btn-cancel" id="m-cancel" data-i18n="cancelBtn"></button>
+        <button class="btn-conf"   id="m-confirm" data-i18n="confirmBtn"></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =============================================
+   ACTIVITIES — single source of truth
+   coverImage is the canonical field used
+   on every surface: card, hero, panel, modal, success
+============================================= */
+const ACTIVITIES=[
+  {id:1,title:"Yoga for Better Energy",pillar:"Body",credits:2,duration:60,format:"online",seats:25,date:"15 Jul 2026",time:"10:00–11:00",location:"Zoom (link sent on booking)",coverImage:"https://images.unsplash.com/photo-1593811167562-9cef47bfc4d7?w=800&q=80",shortDesc:"Improve energy and physical wellbeing through mindful movement.",whyRec:{th:"แนะนำสำหรับคุณเนื่องจากผลประเมิน PERFORM-6™ ของคุณแสดงให้เห็นว่าการดูแลด้านพลังงานและการฟื้นฟูร่างกายจะช่วยสนับสนุนเป้าหมายของคุณ",en:"Recommended based on your PERFORM-6™ profile which identifies energy recovery and physical wellbeing as a key growth area."},whoFor:{th:["พนักงานที่ต้องการเพิ่มพลังงาน","ผู้ที่นั่งทำงานนานและต้องการเคลื่อนไหว","ทุกระดับความสามารถ ไม่ต้องมีประสบการณ์"],en:["Employees who want to boost energy and vitality","Those who sit for long hours and need movement","All fitness levels — no prior experience needed"]},whatGain:{th:["เพิ่มระดับพลังงานตลอดวัน","ลดความตึงเครียดของกล้ามเนื้อ","เทคนิคการหายใจเพื่อความสงบใจ","รูทีนเช้าที่ปฏิบัติได้จริง"],en:["Increased daily energy levels","Reduced muscle tension","Breathing techniques for mental calm","A practical morning routine"]},impact:{th:"ผู้เข้าร่วม 87% รายงานว่าพลังงานดีขึ้นภายใน 2 สัปดาห์",en:"87% of participants report improved energy within 2 weeks"},sessions:[{day:"Monday",time:"08:00–09:00"},{day:"Wednesday",time:"10:00–11:00"},{day:"Friday",time:"07:30–08:30"}]},
+  {id:2,title:"Mindfulness & Stress Reset",pillar:"Mind",credits:3,duration:45,format:"online",seats:18,date:"18 Jul 2026",time:"12:00–12:45",location:"Zoom (link sent on booking)",coverImage:"https://images.unsplash.com/photo-1602192509154-0b900ee1f851?w=800&q=80",shortDesc:"Science-backed breathing and mindfulness to reduce stress fast.",whyRec:{th:"PERFORM-6™ ของคุณชี้ให้เห็นว่าความเครียดสะสมส่งผลต่อประสิทธิภาพ กิจกรรมนี้ออกแบบมาเพื่อฟื้นฟูความสมดุลอย่างรวดเร็ว",en:"Your PERFORM-6™ shows accumulated stress is impacting performance. This session restores balance quickly."},whoFor:{th:["พนักงานที่รู้สึกเครียดหรือเหนื่อยล้า","ผู้ที่ต้องการเครื่องมือจัดการความเครียด","ทุกคนที่อยากเริ่มต้น mindfulness"],en:["Employees feeling overwhelmed or burned out","Those seeking practical stress tools","Anyone starting a mindfulness practice"]},whatGain:{th:["เทคนิค breathing ที่ใช้ได้ทันที","การโฟกัสที่ดีขึ้น","ลดระดับ cortisol ด้วยวิทยาศาสตร์","แผน 5 นาทีสำหรับรีเซ็ตความเครียด"],en:["Immediate breathing techniques","Improved focus under pressure","Science-backed cortisol reduction","A 5-minute daily reset plan"]},impact:{th:"91% รายงานว่าความเครียดลดลงหลังเซสชันแรก",en:"91% report reduced stress after the first session"},sessions:[{day:"Daily",time:"12:00–12:45"}]},
+  {id:3,title:"Financial Wellness Coaching",pillar:"Money",credits:4,duration:60,format:"inPerson",seats:8,date:"22 Jul 2026",time:"14:00–15:00",location:"Room 5B, HQ Bangkok",coverImage:"https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",shortDesc:"1-on-1 coaching to build financial resilience and confidence.",whyRec:{th:"ผลประเมินของคุณระบุว่าความมั่นใจด้านการเงินต้องการการสนับสนุน การโค้ชแบบตัวต่อตัวจะช่วยให้มีแผนการเงินที่ชัดเจน",en:"Your assessment identifies financial confidence as a support area. This coaching builds a clear, personalized plan."},whoFor:{th:["พนักงานที่ต้องการวางแผนการเงิน","ผู้ที่กังวลเรื่องค่าใช้จ่ายหรือการออม","ทุกคนที่ต้องการความมั่นใจด้านการเงิน"],en:["Employees wanting to plan personal finances","Those worried about expenses or savings","Anyone wanting to grow financial confidence"]},whatGain:{th:["แผนงบประมาณส่วนตัวที่ปฏิบัติได้","กลยุทธ์การออมที่เหมาะกับรายได้","ความเข้าใจสวัสดิการของบริษัท","ขั้นตอนแรกสู่การลงทุน"],en:["A practical personal budget plan","Savings strategies tailored to your income","Understanding your company benefits","First steps toward confident investing"]},impact:{th:"80% รายงานความเครียดทางการเงินลดลงภายใน 30 วัน",en:"80% report reduced financial stress within 30 days"},sessions:[{day:"Tuesday",time:"14:00–15:00"},{day:"Thursday",time:"10:00–11:00"}]},
+  {id:4,title:"Leadership Presence Workshop",pillar:"Growth",credits:5,duration:90,format:"hybrid",seats:12,date:"19 Jul 2026",time:"09:00–10:30",location:"Conference Hall A + Zoom",coverImage:"https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=800&q=80",shortDesc:"Build authentic leadership presence and communication skills.",whyRec:{th:"พัฒนาทักษะความเป็นผู้นำที่แท้จริงและการสื่อสารอย่างมีประสิทธิภาพ",en:"Develop authentic leadership skills and effective communication for career growth."},whoFor:{th:["ผู้นำทีมและหัวหน้างาน","พนักงานที่ต้องการพัฒนา leadership","ผู้เตรียมตัวสู่บทบาทผู้นำ"],en:["Team leaders and managers","Employees developing leadership skills","Those preparing for leadership roles"]},whatGain:{th:["เทคนิคการสื่อสารที่มีอิทธิพล","วิธีสร้างความไว้วางใจในทีม","Frameworks การตัดสินใจ","Feedback จากผู้เชี่ยวชาญ"],en:["Influential communication techniques","Methods to build team trust","Decision-making frameworks","Expert feedback and coaching"]},impact:{th:"78% ได้รับการเลื่อนตำแหน่งหรือรับผิดชอบมากขึ้นภายใน 6 เดือน",en:"78% received a promotion or expanded responsibilities within 6 months"},sessions:[{day:"Saturday",time:"09:00–10:30"}]},
+  {id:5,title:"Team Connection Circle",pillar:"Social",credits:1,duration:30,format:"online",seats:30,date:"16 Jul 2026",time:"17:00–17:30",location:"Zoom (link sent on booking)",coverImage:"https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80",shortDesc:"Structured team bonding to strengthen psychological safety.",whyRec:{th:"เสริมสร้างความสัมพันธ์ในทีมและสร้างพื้นที่ปลอดภัยทางจิตใจ",en:"Strengthen team bonds and build psychological safety for better collaboration."},whoFor:{th:["ทีมที่ต้องการสร้างความสัมพันธ์","พนักงานใหม่ที่ต้องการเชื่อมต่อ","ทุกคนที่ต้องการรู้สึกเป็นส่วนหนึ่ง"],en:["Teams wanting to strengthen bonds","New employees looking to connect","Anyone who wants to feel more connected"]},whatGain:{th:["ความสัมพันธ์ที่แน่นแฟ้น","ทักษะการฟังและเอาใจใส่","ความรู้สึกเป็นส่วนหนึ่งขององค์กร","กิจกรรม energizer"],en:["Stronger team bonds","Improved listening and empathy","A sense of organizational belonging","Structured energizer activities"]},impact:{th:"ทีมที่เข้าร่วมสม่ำเสมอรายงาน engagement เพิ่มขึ้น 34%",en:"Teams who participate regularly report 34% higher engagement"},sessions:[{day:"Every Friday",time:"17:00–17:30"}]},
+  {id:6,title:"Deep Work Design Sprint",pillar:"Work Design",credits:3,duration:75,format:"online",seats:20,date:"21 Jul 2026",time:"09:00–10:15",location:"Zoom (link sent on booking)",coverImage:"https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80",shortDesc:"Redesign your work habits for sustainable peak performance.",whyRec:{th:"เรียนรู้วิธีออกแบบสภาพแวดล้อมการทำงานที่เอื้อต่อสมาธิและผลผลิตสูงสุด",en:"Learn to design a work environment that enables deep focus and peak productivity."},whoFor:{th:["พนักงานที่รู้สึกถูกรบกวนบ่อย","ผู้ที่ต้องการเพิ่มผลผลิต","ทุกคนที่ต้องการสร้างนิสัยการทำงานที่ยั่งยืน"],en:["Employees who feel constantly interrupted","Those wanting more output without more effort","Anyone building sustainable work habits"]},whatGain:{th:["ระบบจัดการเวลาที่เหมาะกับงาน","เทคนิคปิดกั้นสิ่งรบกวน","แผน work design ส่วนตัว","วิธีสื่อสาร boundaries"],en:["A time management system for your work","Distraction-blocking techniques","A personal work design plan","How to communicate boundaries"]},impact:{th:"ผู้เข้าร่วมรายงานเวลา deep work เพิ่มขึ้น 2.5 ชม./วัน",en:"Participants report 2.5 more hours of deep work per day"},sessions:[{day:"Monday",time:"09:00–10:15"},{day:"Thursday",time:"14:00–15:15"}]},
+  {id:7,title:"Nutrition for Peak Performance",pillar:"Body",credits:2,duration:60,format:"online",seats:22,date:"23 Jul 2026",time:"12:00–13:00",location:"Zoom (link sent on booking)",coverImage:"https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=800&q=80",shortDesc:"Eat smart to fuel your energy, focus, and daily performance.",whyRec:{th:"โภชนาการที่เหมาะสมเป็นรากฐานของพลังงานและสมาธิตลอดวันทำงาน",en:"Proper nutrition is the foundation of sustained energy and focus throughout your workday."},whoFor:{th:["พนักงานที่ต้องการพลังงานที่มั่นคง","ผู้ที่รู้สึกอ่อนเพลียหลังมื้ออาหาร","ทุกคนที่ต้องการดูแลสุขภาพผ่านอาหาร"],en:["Employees wanting steady energy and focus","Those who feel sluggish after meals","Anyone starting their health journey"]},whatGain:{th:["อาหารที่เพิ่มพลังสมองและร่างกาย","แผนมื้ออาหารประจำสัปดาห์","เทคนิค meal prep สำหรับคนยุ่ง","รายการอาหารว่างเพื่อสุขภาพ"],en:["Foods that boost brain and body performance","An easy weekly meal plan","Meal prep techniques for busy schedules","A curated list of performance snacks"]},impact:{th:"83% รายงานพลังงานสม่ำเสมอมากขึ้น",en:"83% report more consistent energy throughout their workday"},sessions:[{day:"Wednesday",time:"12:00–13:00"}]},
+  {id:8,title:"Emotional Intelligence Lab",pillar:"Mind",credits:4,duration:120,format:"inPerson",seats:15,date:"26 Jul 2026",time:"09:00–11:00",location:"Room 3A, HQ Bangkok",coverImage:"https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=800&q=80",shortDesc:"Develop EQ skills for better relationships and resilience.",whyRec:{th:"EQ ที่แข็งแกร่งช่วยให้คุณสร้างความสัมพันธ์ที่ดีขึ้นและจัดการกับความท้าทายได้มีประสิทธิภาพ",en:"Strong EQ helps you build better relationships and handle challenges with greater effectiveness."},whoFor:{th:["ผู้นำที่ต้องการเข้าใจอารมณ์ของทีม","พนักงานที่ทำงานใกล้ชิดกับผู้อื่น","ทุกคนที่ต้องการพัฒนาความฉลาดทางอารมณ์"],en:["Leaders wanting to understand team emotions","Employees who work closely with others","Anyone developing emotional intelligence"]},whatGain:{th:["เข้าใจและจัดการอารมณ์ตนเอง","ทักษะเอาใจใส่และรับฟัง","จัดการความขัดแย้งอย่างสร้างสรรค์","เครื่องมือสร้างความสัมพันธ์ที่ยั่งยืน"],en:["Better self-awareness and emotion regulation","Empathy and deep listening skills","Constructive conflict resolution","Tools for lasting relationships"]},impact:{th:"ทีมที่มีสมาชิก EQ สูงมีผลงานสูงกว่า 20%",en:"Teams with high-EQ members outperform others by 20%"},sessions:[{day:"Friday",time:"09:00–11:00"}]}
+];
+
+/* =============================================
+   PILLAR STYLES
+============================================= */
+const PC={
+  Mind:        {text:"#5B21B6",bg:"rgba(91,33,182,.08)", border:"rgba(91,33,182,.2)", fbBg:"#EDE9FE",fbTxt:"#5B21B6"},
+  Body:        {text:"#047857",bg:"rgba(4,120,87,.08)",  border:"rgba(4,120,87,.2)",  fbBg:"#D1FAE5",fbTxt:"#047857"},
+  Money:       {text:"#92400E",bg:"rgba(146,64,14,.08)", border:"rgba(146,64,14,.2)", fbBg:"#FEF3C7",fbTxt:"#92400E"},
+  Social:      {text:"#9D174D",bg:"rgba(157,23,77,.08)", border:"rgba(157,23,77,.2)", fbBg:"#FCE7F3",fbTxt:"#9D174D"},
+  Growth:      {text:"#1E40AF",bg:"rgba(30,64,175,.08)", border:"rgba(30,64,175,.2)", fbBg:"#DBEAFE",fbTxt:"#1E40AF"},
+  "Work Design":{text:"#C2410C",bg:"rgba(194,65,12,.08)",border:"rgba(194,65,12,.2)", fbBg:"#FFEDD5",fbTxt:"#C2410C"},
+};
+
+const NAV=[
+  {k:"navHome",       route:"/employee/", ic:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>'},
+  {k:"navAssess",     route:"/employee/assessment.html", ic:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>'},
+  {k:"navProfile",    route:"/employee/", ic:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>'},
+  {k:"navActs",       route:"/employee/marketplace.html", ic:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>', active:true},
+  {k:"navWallet",     route:"/employee/marketplace.html", ic:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>'},
+  {k:"navBookings",   route:"/employee/marketplace.html", ic:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg>'},
+  {k:"navFeedback",   route:"/employee/", ic:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>'},
+  {k:"navHelp",       route:"/employee/", ic:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'},
+];
+
+const I18N={
+  th:{pageTitle:"รายละเอียดกิจกรรม",breadcrumb:"กิจกรรม › รายละเอียด",backLbl:"กลับไปยังกิจกรรม",navHome:"หน้าหลัก",navAssess:"แบบประเมิน",navProfile:"โปรไฟล์ PERFORM-6™",navActs:"กิจกรรม",navWallet:"กระเป๋าเครดิต",navBookings:"การจองของฉัน",navFeedback:"ความคิดเห็น",navHelp:"ศูนย์ช่วยเหลือ",creditsLbl:"เครดิตคงเหลือ",viewWallet:"ดูกระเป๋าเครดิต",userRole:"Senior Marketing Executive",userName:"สมชาย ใจดี",cUnit:"เครดิต",mUnit:"นาที",online:"ออนไลน์",inPerson:"แบบพบหน้า",hybrid:"ไฮบริด",sUnit:"ที่นั่ง",recBadge:"แนะนำสำหรับคุณ",whyRecH:"ทำไมถึงแนะนำสำหรับคุณ",whoH:"เหมาะสำหรับใคร",gainH:"คุณจะได้รับอะไร",impactH:"ผลลัพธ์ที่คาดหวัง",schedH:"ตารางและความพร้อมให้บริการ",bpTtl:"รายละเอียดการจอง",rCR:"เครดิตที่ต้องใช้",rRem:"เครดิตคงเหลือ",rSeats:"ที่นั่งว่าง",rDate:"วันที่",rTime:"เวลา",rLoc:"สถานที่",rFmt:"รูปแบบ",bookBtn:"จองกิจกรรมนี้",approveBtn:"ขออนุมัติ",modalTtl:"ยืนยันการจอง",modalSub:"กรุณาตรวจสอบรายละเอียดก่อนยืนยัน",mUsed:"เครดิตที่ใช้",mAfter:"เครดิตคงเหลือหลังการจอง",confirmBtn:"ยืนยัน",cancelBtn:"ยกเลิก",succTtl:"จองกิจกรรมสำเร็จ",succSub:"กิจกรรมถูกเพิ่มในรายการจองของคุณแล้ว",viewBookings:"กลับสู่แดชบอร์ด",backToActs:"กลับไปยังกิจกรรม",errTtl:"ไม่พบกิจกรรมนี้",errSub:"กิจกรรมที่คุณค้นหาอาจถูกลบหรือไม่มีอยู่",errBtn:"กลับไปยังกิจกรรม",noImg:"ไม่มีรูปภาพ",rDateLbl:"วันที่",rTimeLbl:"เวลา",rLocLbl:"สถานที่"},
+  en:{pageTitle:"Activity Detail",breadcrumb:"Activities › Detail",backLbl:"Back to Activities",navHome:"Home",navAssess:"Assessment",navProfile:"My Profile",navActs:"Activities",navWallet:"Credit Wallet",navBookings:"My Bookings",navFeedback:"Feedback",navHelp:"Help Center",creditsLbl:"Credits Remaining",viewWallet:"View Credit Wallet",userRole:"Senior Marketing Executive",userName:"Somchai Jaidee",cUnit:"Credits",mUnit:"min",online:"Online",inPerson:"In-Person",hybrid:"Hybrid",sUnit:"seats",recBadge:"Recommended for you",whyRecH:"Why This Is Recommended for You",whoH:"Who This Is For",gainH:"What You Will Gain",impactH:"Expected Impact",schedH:"Schedule & Availability",bpTtl:"Booking Details",rCR:"Credits Required",rRem:"Credits Remaining",rSeats:"Available Seats",rDate:"Date",rTime:"Time",rLoc:"Location",rFmt:"Format",bookBtn:"Book This Activity",approveBtn:"Request Approval",modalTtl:"Confirm Booking",modalSub:"Please review details before confirming.",mUsed:"Credits to use",mAfter:"Credits remaining after booking",confirmBtn:"Confirm",cancelBtn:"Cancel",succTtl:"Booking Confirmed",succSub:"This activity has been added to your bookings.",viewBookings:"Back to Dashboard",backToActs:"Back to Activities",errTtl:"Activity not found",errSub:"This activity may have been removed or does not exist.",errBtn:"Return to Activities",noImg:"No Image Available",rDateLbl:"Date",rTimeLbl:"Time",rLocLbl:"Location"}
+};
+
+const IC={
+  clk:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+  mon:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
+  map:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
+  shf:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/></svg>',
+  usr:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  cr: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>',
+  cal:'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+  ck: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1FC7D4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+  bar:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(31,199,212,.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>',
+};
+function fic(f){return f==='online'?IC.mon:f==='inPerson'?IC.map:IC.shf}
+
+/* =============================================
+   STATE
+============================================= */
+const QS=new URLSearchParams(location.search);
+let lang=QS.get('lang')||'th';
+const actId=parseInt(QS.get('id'))||1;
+const A=ACTIVITIES.find(a=>a.id===actId);
+let credRem=12;
+const CTOT=20;
+
+function t(k){return(I18N[lang]||I18N.th)[k]||k}
+
+/* =============================================
+   CSS BACKGROUND IMAGE HELPER
+   Sets background-image on a div — layout never
+   collapses because height is controlled by CSS.
+   Shows pillar fallback only when URL is absent.
+   Probes image load via a hidden Image() object;
+   on error toggles fallback div.
+============================================= */
+function setBgImage(bgEl, fbEl, activity){
+  const pc=PC[activity.pillar]||{fbBg:'#E5EDF5',fbTxt:'#52627A'};
+
+  /* Set fallback content + background (pre-rendered, hidden) */
+  fbEl.style.background=pc.fbBg;
+  fbEl.style.flexDirection='column';
+  fbEl.style.gap='6px';
+  fbEl.innerHTML=`<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="${pc.fbTxt}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`+
+    `<span style="font-size:11px;font-weight:600;color:${pc.fbTxt}">${t('noImg')}</span>`;
+
+  const url=activity.coverImage;
+  if(!url||url.trim()===''){
+    /* No URL at all — show fallback immediately */
+    bgEl.style.backgroundImage='none';
+    fbEl.classList.add('show');
+    return;
+  }
+
+  /* Probe image load without affecting layout */
+  const probe=new Image();
+  probe.onload=function(){
+    /* Image loaded OK — apply as background, hide fallback */
+    bgEl.style.backgroundImage=`url("${url}")`;
+    fbEl.classList.remove('show');
+  };
+  probe.onerror=function(){
+    /* Image failed — keep fallback visible */
+    bgEl.style.backgroundImage='none';
+    fbEl.classList.add('show');
+  };
+  /* Start loading — show fallback while probing */
+  fbEl.classList.add('show');
+  probe.src=url;
+}
+
+/* =============================================
+   I18N
+============================================= */
+function applyI18n(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=t(el.dataset.i18n));
+  document.getElementById('sb-uname').textContent=t('userName');
+  document.documentElement.lang=lang;
+}
+
+/* =============================================
+   SIDEBAR
+============================================= */
+function buildSidebar(){
+  document.getElementById('sb-nav').innerHTML=NAV.map(n=>
+    `<button class="nav-item${n.active?' active':''}" onclick="location.href='${n.route}'">${n.ic}<span>${t(n.k)}</span></button>`
+  ).join('');
+}
+function updateCredits(){
+  document.getElementById('sb-cr-val').innerHTML=`${credRem} <span>/ ${CTOT}</span>`;
+  document.getElementById('sb-cr-fill').style.width=(credRem/CTOT*100)+'%';
+}
+
+/* =============================================
+   SHOW / HIDE VIEWS
+============================================= */
+function showView(v){
+  document.getElementById('skel').style.display='none';
+  document.getElementById('page').style.display='none';
+  document.getElementById('succ').className='';
+  document.getElementById('err').className='';
+  document.getElementById('mob-bar').style.display='none';
+  if(v==='page'){
+    document.getElementById('page').style.display='flex';
+    document.getElementById('mob-bar').style.display='flex';
+  } else if(v==='succ'){
+    document.getElementById('succ').className='on';
+  } else if(v==='err'){
+    document.getElementById('err').className='on';
+  } else if(v==='skel'){
+    document.getElementById('skel').style.display='block';
+  }
+}
+
+/* =============================================
+   RENDER DETAIL
+   All image surfaces use A.coverImage
+============================================= */
+function renderDetail(){
+  if(!A){showView('err');applyI18n();return}
+
+  const pc=PC[A.pillar]||{text:'#52627A',bg:'rgba(82,98,122,.1)',border:'rgba(82,98,122,.2)'};
+
+  /* Back link */
+  document.getElementById('back-a').href=`/employee/marketplace.html?lang=${lang}`;
+
+  /* ── HERO IMAGE (CSS background, layout always 360px) ── */
+  setBgImage(
+    document.getElementById('hero-bg'),
+    document.getElementById('hero-fb'),
+    A
+  );
+
+  /* ── Hero text — always renders regardless of image ── */
+  const pill=document.getElementById('hero-pill');
+  pill.textContent=A.pillar;
+  pill.style.cssText=`color:${pc.text};background:${pc.bg};border:1px solid ${pc.border};padding:4px 12px;font-size:12px;font-weight:600`;
+  document.getElementById('hero-cr').textContent=`${A.credits} ${t('cUnit')}`;
+  document.getElementById('hero-ttl').textContent=A.title;
+  document.getElementById('hero-dur').textContent=`${A.duration} ${t('mUnit')}`;
+  document.getElementById('hero-seats').textContent=`${A.seats} ${t('sUnit')}`;
+  document.getElementById('hero-fmt').innerHTML=`${fic(A.format)}<span style="margin-left:5px">${t(A.format)}</span>`;
+
+  /* ── Booking panel thumbnail (same coverImage) ── */
+  setBgImage(
+    document.getElementById('bp-bg'),
+    document.getElementById('bp-fb'),
+    A
+  );
+  document.getElementById('bp-ttl-txt').textContent=A.title;
+
+  /* ── Why Recommended ── */
+  document.getElementById('why-rec').textContent=A.whyRec[lang];
+
+  /* ── Who For ── */
+  document.getElementById('who-for').innerHTML=A.whoFor[lang].map((s,i)=>
+    `<div class="who-row"><div class="who-n">${i+1}</div><div class="who-t">${s}</div></div>`
+  ).join('');
+
+  /* ── What Gain ── */
+  document.getElementById('what-gain').innerHTML=A.whatGain[lang].map(s=>
+    `<div class="gain-item"><div class="gain-ck">${IC.ck}</div><div class="gain-t">${s}</div></div>`
+  ).join('');
+
+  /* ── Impact ── */
+  document.getElementById('impact-t').textContent=A.impact[lang];
+
+  /* ── Sessions ── */
+  document.getElementById('sessions').innerHTML=A.sessions.map(s=>
+    `<div class="sch-row"><span class="sch-day">${s.day}</span><span class="sch-chip">${IC.clk} ${s.time}</span></div>`
+  ).join('');
+
+  /* ── Booking panel rows ── */
+  const rows=[
+    {ic:IC.cr,  l:t('rCR'),    v:`${A.credits} ${t('cUnit')}`,aq:true},
+    {ic:IC.cr,  l:t('rRem'),   v:`${credRem} ${t('cUnit')}`},
+    {ic:IC.usr, l:t('rSeats'), v:`${A.seats} ${t('sUnit')}`},
+    {ic:IC.cal, l:t('rDate'),  v:A.date},
+    {ic:IC.clk, l:t('rTime'),  v:A.time},
+    {ic:IC.map, l:t('rLoc'),   v:A.location},
+    {ic:fic(A.format),l:t('rFmt'),v:t(A.format)},
+  ];
+  document.getElementById('bp-rows').innerHTML=rows.map((r,i)=>
+    `<div class="brow" style="${i===rows.length-1?'border-bottom:none;padding-bottom:0':''}">
+      <span class="brow-l">${r.ic} ${r.l}</span>
+      <span class="brow-v${r.aq?' aq':''}">${r.v}</span>
+    </div>`
+  ).join('');
+
+  applyI18n();
+  showView('page');
+}
+
+/* =============================================
+   MODAL — coverImage as background
+============================================= */
+function openModal(){
+  if(!A) return;
+  const after=credRem-A.credits;
+
+  /* Bind modal thumbnail (same coverImage) */
+  setBgImage(
+    document.getElementById('modal-bg-img'),
+    document.getElementById('modal-fb'),
+    A
+  );
+  document.getElementById('modal-ttl-txt').textContent=A.title;
+
+  /* Credits summary */
+  document.getElementById('m-used').innerHTML=`${IC.cr} ${A.credits} ${t('cUnit')}`;
+  const ae=document.getElementById('m-after');
+  ae.textContent=`${after} ${t('cUnit')}`;
+  ae.className='mrow-v '+(after<3?'err':'ok');
+
+  document.getElementById('modal-bg').classList.add('on');
+}
+function closeModal(){document.getElementById('modal-bg').classList.remove('on')}
+
+/* =============================================
+   SUCCESS — coverImage as background
+============================================= */
+function showSuccess(){
+  document.getElementById('page').style.display='none';
+  document.getElementById('mob-bar').style.display='none';
+
+  /* Bind success image (same coverImage) */
+  setBgImage(
+    document.getElementById('succ-bg'),
+    document.getElementById('succ-fb'),
+    A
+  );
+
+  document.getElementById('succ-act').textContent=A.title;
+
+  const srows=[
+    {ic:IC.cal,l:t('rDateLbl'),v:A.date},
+    {ic:IC.clk,l:t('rTimeLbl'),v:A.time},
+    {ic:IC.map,l:t('rLocLbl'), v:A.location},
+  ];
+  document.getElementById('succ-card').innerHTML=srows.map((r,i)=>
+    `<div class="srow" style="${i===srows.length-1?'border-bottom:none;padding-bottom:0':''}">
+      <span class="srow-l">${r.ic} ${r.l}</span>
+      <span class="srow-v">${r.v}</span>
+    </div>`
+  ).join('');
+
+  document.getElementById('succ').className='on';
+  applyI18n();
+}
+
+/* =============================================
+   EVENTS
+============================================= */
+document.querySelectorAll('.lang-btn').forEach(btn=>{
+  btn.onclick=()=>{
+    lang=btn.dataset.lang;
+    document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('on',b.dataset.lang===lang));
+    document.getElementById('back-a').href=`/employee/marketplace.html?lang=${lang}`;
+    document.getElementById('err-link').href=`/employee/marketplace.html?lang=${lang}`;
+    buildSidebar();
+    renderDetail();
+  };
+});
+
+['btn-book','btn-book-m'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el) el.onclick=openModal;
+});
+document.getElementById('m-cancel').onclick=closeModal;
+document.getElementById('modal-bg').onclick=e=>{if(e.target===document.getElementById('modal-bg'))closeModal()};
+document.getElementById('m-confirm').onclick=()=>{
+  credRem-=A.credits;
+  try{
+    const bookings=JSON.parse(localStorage.getItem('performia_demo_bookings')||'[]');
+    bookings.push({id:A.id,title:A.title,date:A.date,time:A.time,location:A.location,bookedAt:new Date().toISOString()});
+    localStorage.setItem('performia_demo_bookings',JSON.stringify(bookings));
+  }catch(e){}
+  updateCredits();
+  closeModal();
+  showSuccess();
+};
+document.getElementById('s-bookings').onclick=()=>location.href=`/employee/`;
+document.getElementById('s-back').onclick    =()=>location.href=`/employee/marketplace.html?lang=${lang}`;
+
+/* =============================================
+   INIT
+============================================= */
+/* Show skeleton briefly for realistic load feel */
+showView('skel');
+document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('on',b.dataset.lang===lang));
+buildSidebar();
+updateCredits();
+applyI18n();
+/* Render after one frame so skeleton is visible */
+requestAnimationFrame(()=>requestAnimationFrame(()=>renderDetail()));
+</script>
+</body>
+</html>
