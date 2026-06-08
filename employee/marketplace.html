@@ -193,6 +193,20 @@ svg { display: inline-block; vertical-align: middle; flex-shrink: 0; }
   font-size: 12px; font-weight: 700; color: var(--navy);
   cursor: pointer;
 }
+.profile-menu { position: relative; }
+.profile-menu-btn { border: 0; background: transparent; padding: 0; font: inherit; cursor: pointer; }
+.profile-menu-panel {
+  position: absolute; right: 0; top: calc(100% + 8px); width: 188px;
+  background: var(--white); border: 1px solid var(--border); border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(6,24,73,0.14); padding: 6px; z-index: 100;
+}
+.profile-menu-item {
+  width: 100%; height: 36px; border: 0; border-radius: 9px; background: transparent;
+  color: var(--text-pri); font-size: 13px; font-weight: 500; font-family: inherit;
+  text-align: left; padding: 0 10px; cursor: pointer;
+}
+.profile-menu-item:hover { background: var(--soft-blue); }
+.profile-menu-item[data-switch-account] { color: var(--navy); font-weight: 600; }
 
 /* ── PAGE CONTENT ── */
 #content {
@@ -588,7 +602,16 @@ svg { display: inline-block; vertical-align: middle; flex-shrink: 0; }
       <div class="hdr-icon-btn" title="Notifications">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
       </div>
-      <div class="hdr-avatar">สม</div>
+      <div class="profile-menu">
+        <button class="profile-menu-btn" type="button" aria-haspopup="true" aria-expanded="false">
+          <div class="hdr-avatar">สม</div>
+        </button>
+        <div class="profile-menu-panel" hidden>
+          <button type="button" class="profile-menu-item" data-profile-label="profile">โปรไฟล์ของฉัน</button>
+          <button type="button" class="profile-menu-item" data-profile-label="settings">ตั้งค่า</button>
+          <button type="button" class="profile-menu-item" data-profile-label="switch" data-switch-account>สลับบัญชี</button>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -746,6 +769,39 @@ let activePillar = 'All', activeGroup = 'all', searchQ = '';
 
 function t(k) { return (I18N[lang]||I18N.th)[k]||k; }
 
+function profileMenuLabels() {
+  return lang === 'en' ? {profile:'Your profile',settings:'Settings',switch:'Switch Account'} : {profile:'โปรไฟล์ของฉัน',settings:'ตั้งค่า',switch:'สลับบัญชี'};
+}
+function updateProfileMenuLabels() {
+  const labels = profileMenuLabels();
+  document.querySelectorAll('[data-profile-label]').forEach(el => { el.textContent = labels[el.dataset.profileLabel]; });
+}
+function initProfileMenus() {
+  const closeAll = () => document.querySelectorAll('.profile-menu').forEach(menu => {
+    const btn = menu.querySelector('.profile-menu-btn'), panel = menu.querySelector('.profile-menu-panel');
+    if (panel) panel.hidden = true;
+    if (btn) btn.setAttribute('aria-expanded','false');
+  });
+  document.querySelectorAll('.profile-menu').forEach(menu => {
+    const btn = menu.querySelector('.profile-menu-btn'), panel = menu.querySelector('.profile-menu-panel');
+    if (!btn || !panel) return;
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const willOpen = panel.hidden;
+      closeAll();
+      panel.hidden = !willOpen;
+      btn.setAttribute('aria-expanded', String(willOpen));
+    });
+  });
+  document.addEventListener('click', e => { if (!e.target.closest('.profile-menu')) closeAll(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });
+  document.querySelectorAll('[data-switch-account]').forEach(btn => btn.addEventListener('click', () => {
+    localStorage.removeItem('performia_demo_role');
+    window.location.href = '/';
+  }));
+  updateProfileMenuLabels();
+}
+
 function fmtIcon(f) { return f==='online'?ICONS.monitor:f==='inPerson'?ICONS.mappin:ICONS.shuffle; }
 
 function pillarChip(pillar, sm) {
@@ -869,6 +925,7 @@ document.querySelectorAll('.lang-btn').forEach(btn=>{
     document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
     buildSidebar();
     render();
+    updateProfileMenuLabels();
   };
 });
 document.getElementById('search-input').oninput = e => { searchQ=e.target.value; render(); };
@@ -881,6 +938,7 @@ if (urlLang && I18N[urlLang]) {
 }
 buildSidebar();
 render();
+initProfileMenus();
 if (new URLSearchParams(location.search).get('recommended') === 'true') {
   requestAnimationFrame(() => {
     document.getElementById('rec-section')?.scrollIntoView({behavior:'smooth',block:'start'});

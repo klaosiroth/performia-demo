@@ -55,6 +55,12 @@ svg{display:inline-block;vertical-align:middle;flex-shrink:0}
 .sb-av{width:36px;height:36px;border-radius:10px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--navy);flex-shrink:0}
 .sb-uname{font-size:13px;font-weight:600;color:var(--text)}
 .sb-urole{font-size:11px;color:var(--muted)}
+.profile-menu{position:relative}
+.profile-menu-btn{width:100%;border:0;background:transparent;font:inherit;text-align:left;padding:0}
+.profile-menu-panel{position:absolute;right:0;bottom:calc(100% + 8px);width:188px;background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:0 12px 32px rgba(12,26,64,.14);padding:6px;z-index:100}
+.profile-menu-item{width:100%;height:36px;border:0;border-radius:9px;background:transparent;color:var(--text);font-size:13px;font-weight:500;font-family:inherit;text-align:left;padding:0 10px;cursor:pointer}
+.profile-menu-item:hover{background:var(--soft)}
+.profile-menu-item[data-switch-account]{color:var(--navy);font-weight:600}
 
 /* ── MAIN ── */
 #main{margin-left:var(--sb);flex:1;display:flex;flex-direction:column;min-height:100vh}
@@ -303,11 +309,20 @@ svg{display:inline-block;vertical-align:middle;flex-shrink:0}
     <button class="sb-cr-btn" data-i18n="viewWallet"></button>
   </div>
   <div class="sb-footer">
-    <div class="sb-user">
-      <div class="sb-av">สม</div>
-      <div>
-        <div class="sb-uname" id="sb-uname"></div>
-        <div class="sb-urole" data-i18n="userRole"></div>
+    <div class="profile-menu">
+      <button class="profile-menu-btn" type="button" aria-haspopup="true" aria-expanded="false">
+        <div class="sb-user">
+          <div class="sb-av">สม</div>
+          <div>
+            <div class="sb-uname" id="sb-uname"></div>
+            <div class="sb-urole" data-i18n="userRole"></div>
+          </div>
+        </div>
+      </button>
+      <div class="profile-menu-panel" hidden>
+        <button type="button" class="profile-menu-item" data-profile-label="profile">โปรไฟล์ของฉัน</button>
+        <button type="button" class="profile-menu-item" data-profile-label="settings">ตั้งค่า</button>
+        <button type="button" class="profile-menu-item" data-profile-label="switch" data-switch-account>สลับบัญชี</button>
       </div>
     </div>
   </div>
@@ -555,6 +570,39 @@ const CTOT=20;
 
 function t(k){return(I18N[lang]||I18N.th)[k]||k}
 
+function profileMenuLabels(){
+  return lang==='en'?{profile:'Your profile',settings:'Settings',switch:'Switch Account'}:{profile:'โปรไฟล์ของฉัน',settings:'ตั้งค่า',switch:'สลับบัญชี'};
+}
+function updateProfileMenuLabels(){
+  const labels=profileMenuLabels();
+  document.querySelectorAll('[data-profile-label]').forEach(el=>{el.textContent=labels[el.dataset.profileLabel];});
+}
+function initProfileMenus(){
+  const closeAll=()=>document.querySelectorAll('.profile-menu').forEach(menu=>{
+    const btn=menu.querySelector('.profile-menu-btn'),panel=menu.querySelector('.profile-menu-panel');
+    if(panel)panel.hidden=true;
+    if(btn)btn.setAttribute('aria-expanded','false');
+  });
+  document.querySelectorAll('.profile-menu').forEach(menu=>{
+    const btn=menu.querySelector('.profile-menu-btn'),panel=menu.querySelector('.profile-menu-panel');
+    if(!btn||!panel)return;
+    btn.addEventListener('click',e=>{
+      e.stopPropagation();
+      const willOpen=panel.hidden;
+      closeAll();
+      panel.hidden=!willOpen;
+      btn.setAttribute('aria-expanded',String(willOpen));
+    });
+  });
+  document.addEventListener('click',e=>{if(!e.target.closest('.profile-menu'))closeAll();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAll();});
+  document.querySelectorAll('[data-switch-account]').forEach(btn=>btn.addEventListener('click',()=>{
+    localStorage.removeItem('performia_demo_role');
+    window.location.href='/';
+  }));
+  updateProfileMenuLabels();
+}
+
 /* =============================================
    CSS BACKGROUND IMAGE HELPER
    Sets background-image on a div — layout never
@@ -788,6 +836,7 @@ document.querySelectorAll('.lang-btn').forEach(btn=>{
     document.getElementById('err-link').href=`/employee/marketplace.html?lang=${lang}`;
     buildSidebar();
     renderDetail();
+    updateProfileMenuLabels();
   };
 });
 
@@ -820,6 +869,7 @@ document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('on',b.data
 buildSidebar();
 updateCredits();
 applyI18n();
+initProfileMenus();
 /* Render after one frame so skeleton is visible */
 requestAnimationFrame(()=>requestAnimationFrame(()=>renderDetail()));
 </script>

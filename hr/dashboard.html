@@ -152,6 +152,20 @@ body{
   background:var(--navy);display:flex;align-items:center;justify-content:center;
   font-size:14px;font-weight:700;color:#fff;cursor:pointer;
 }
+.profile-menu{position:relative}
+.profile-menu-btn{border:0;background:transparent;padding:0;font:inherit;cursor:pointer}
+.profile-menu-panel{
+  position:absolute;right:0;top:calc(100% + 8px);width:188px;
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  box-shadow:0 12px 32px rgba(6,24,73,.14);padding:6px;z-index:100;
+}
+.profile-menu-item{
+  width:100%;height:36px;border:0;border-radius:9px;background:transparent;
+  color:var(--text-pri);font-size:13px;font-weight:500;font-family:inherit;
+  text-align:left;padding:0 10px;cursor:pointer;
+}
+.profile-menu-item:hover{background:var(--bg-soft)}
+.profile-menu-item[data-switch-account]{color:var(--navy);font-weight:600}
 
 /* ── Scrollable content ── */
 #content{flex:1;overflow-y:auto;padding:32px;}
@@ -586,7 +600,16 @@ body{
       <button class="header-icon-btn" title="Notifications">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#52627A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
       </button>
-      <div class="header-avatar-btn">อ</div>
+      <div class="profile-menu">
+        <button class="profile-menu-btn" type="button" aria-haspopup="true" aria-expanded="false">
+          <div class="header-avatar-btn">อ</div>
+        </button>
+        <div class="profile-menu-panel" hidden>
+          <button type="button" class="profile-menu-item" data-profile-label="profile">โปรไฟล์ของฉัน</button>
+          <button type="button" class="profile-menu-item" data-profile-label="settings">ตั้งค่า</button>
+          <button type="button" class="profile-menu-item" data-profile-label="switch" data-switch-account>สลับบัญชี</button>
+        </div>
+      </div>
     </header>
 
     <!-- Page content -->
@@ -1321,6 +1344,40 @@ function renderAll(){
   renderRiskGrid();
   renderBenchmarkBars("industry-bars","industry");
   renderBenchmarkBars("global-bars","global");
+  updateProfileMenuLabels();
+}
+
+function profileMenuLabels(){
+  return isEN()?{profile:"Your profile",settings:"Settings",switch:"Switch Account"}:{profile:"โปรไฟล์ของฉัน",settings:"ตั้งค่า",switch:"สลับบัญชี"};
+}
+function updateProfileMenuLabels(){
+  const labels=profileMenuLabels();
+  document.querySelectorAll("[data-profile-label]").forEach(el=>{el.textContent=labels[el.dataset.profileLabel];});
+}
+function initProfileMenus(){
+  const closeAll=()=>document.querySelectorAll(".profile-menu").forEach(menu=>{
+    const btn=menu.querySelector(".profile-menu-btn"),panel=menu.querySelector(".profile-menu-panel");
+    if(panel)panel.hidden=true;
+    if(btn)btn.setAttribute("aria-expanded","false");
+  });
+  document.querySelectorAll(".profile-menu").forEach(menu=>{
+    const btn=menu.querySelector(".profile-menu-btn"),panel=menu.querySelector(".profile-menu-panel");
+    if(!btn||!panel)return;
+    btn.addEventListener("click",e=>{
+      e.stopPropagation();
+      const willOpen=panel.hidden;
+      closeAll();
+      panel.hidden=!willOpen;
+      btn.setAttribute("aria-expanded",String(willOpen));
+    });
+  });
+  document.addEventListener("click",e=>{if(!e.target.closest(".profile-menu"))closeAll();});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")closeAll();});
+  document.querySelectorAll("[data-switch-account]").forEach(btn=>btn.addEventListener("click",()=>{
+    localStorage.removeItem("performia_demo_role");
+    window.location.href="/";
+  }));
+  updateProfileMenuLabels();
 }
 
 /* ══════════════════════════════════════════
@@ -1359,6 +1416,7 @@ document.querySelectorAll(".filter-chip").forEach(btn=>{
 
 /* Init */
 renderAll();
+initProfileMenus();
 </script>
 </body>
 </html>
