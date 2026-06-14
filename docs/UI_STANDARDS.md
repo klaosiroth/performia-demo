@@ -4,53 +4,123 @@ This document defines the shared UI standards for the Performia static HTML demo
 
 The standards preserve the current prototype direction: plain static HTML/CSS/JS, no framework migration, no build step, and no runtime backend.
 
-## 1. Page Shells
+# Shell Architecture Rules
 
-### Login Shell
+The Performia demo uses three shell types.
 
-Use only for the root login and role selector page:
+These shells are intentionally different and must not be merged.
 
-- Page: `/`
-- Current file: `index.html`
-- Purpose: demo login, role selection, and first brand impression.
-- Layout: split brand/login composition.
-- The login shell may keep its floating language switch.
-- The login shell may use richer visual treatment than app pages, including glass surfaces and gradient primary buttons.
-- Use `/assets/logo-white.png` on the dark navy brand panel.
-- Use `/assets/logo-color.png` on light login surfaces.
+## Login Shell
 
-### App Shell
+Pages:
 
-Use for employee portal pages and HR dashboard pages that behave like dashboard/application screens:
+- `index.html`
 
-- Employee home: `/employee/`
-- Employee marketplace: `/employee/marketplace.html`
-- Employee detail: `/employee/detail.html`
-- HR dashboard: `/hr/dashboard.html`
+Purpose:
 
-The app shell standard is:
+- Demo login.
+- Role selection.
+- First brand impression.
 
-- Left sidebar on desktop.
-- Top header on desktop.
-- Scrollable main content area.
-- White surfaces on a light page background.
-- Shared navigation, language switch, notification/export controls, and profile menu patterns.
+Standards:
 
-### Focused Flow Shell
+- Custom layout allowed.
+- Floating language switch allowed.
+- No sidebar.
+- No app-shell header.
+- Logo may use:
+  - `/assets/logo-white.png` on dark navy surfaces.
+  - `/assets/logo-color.png` on light surfaces.
 
-Use for focused single-task flows:
+Do not force Login Shell to match App Shell.
 
-- Assessment: `/employee/assessment.html`
+## App Shell
 
-The focused flow shell standard is:
+Pages:
 
-- No desktop sidebar.
-- Compact sticky header.
-- Centered content column.
-- Sticky progress and bottom action areas are allowed.
-- The assessment may keep its focused header language control if it remains documented and visually compact.
+- `employee/index.html`
+- `employee/marketplace.html`
+- `employee/detail.html`
+- `hr/dashboard.html`
 
-## 2. Brand Tokens
+Canonical Reference:
+
+- `employee/marketplace.html`
+
+All App Shell pages should align to marketplace shell behavior.
+
+Required Standards:
+
+- Sidebar width = `260px`.
+- Header height = `72px`.
+- Desktop content padding = `32px`.
+- Mobile content padding = `16px` to `20px`.
+- Content max width = `1440px`.
+
+Language:
+
+- Segmented `TH / EN` control.
+- State key = `performia_demo_lang`.
+
+Profile:
+
+- Header avatar always opens profile menu.
+
+Logo:
+
+- Desktop logo height = `40px`.
+- `logo-color` on light surfaces.
+- `logo-white` on dark surfaces.
+
+Navigation:
+
+- Consistent nav item behavior.
+- Consistent active state.
+- Consistent hover state.
+
+App Shell pages may differ in:
+
+- Page content.
+- Cards.
+- Dashboard metrics.
+- HR-specific sections.
+
+## Focused Flow Shell
+
+Pages:
+
+- `employee/assessment.html`
+
+Purpose:
+
+- Assessment experience.
+- Minimize distractions.
+- Single-task flow.
+
+Required Standards:
+
+- No sidebar.
+- Sticky header.
+- Header height = `56px`.
+- Content width = `720px` to `760px`.
+- Compact spacing.
+
+Language:
+
+- May use compact language control.
+- Must use `performia_demo_lang`.
+
+Do not force Focused Flow Shell to match App Shell.
+
+Specifically:
+
+- Do not add sidebar.
+- Do not use `72px` app header.
+- Do not copy marketplace layout.
+
+# Shared UI Standards
+
+## Brand Tokens
 
 Use these tokens as the default app-wide values:
 
@@ -70,7 +140,7 @@ Use these tokens as the default app-wide values:
 
 Avoid introducing alternate navy/aqua/background/border values unless preserving an existing source page requires it. If a page already uses close variants, prefer aligning new work to the tokens above.
 
-## 3. Logo Rules
+## Logo Rules
 
 Use the image logo as the standard logo implementation.
 
@@ -87,7 +157,7 @@ Do not duplicate a text logo beside the image logo. For example, do not render t
 
 Do not introduce new text-only logo marks in runtime pages. Existing CSS-only logo mark definitions should be treated as legacy unless they are actively rendered as fallback UI.
 
-## 4. App Shell Standards
+## App Shell Standards
 
 For app shell pages, use:
 
@@ -111,7 +181,7 @@ main
 
 Focused flow pages may use a smaller `56px` sticky header and a `720px` to `760px` content max width.
 
-## 5. Language Switch Standard
+## Language Switch Standard
 
 App shell pages must use a segmented `TH / EN` control.
 
@@ -131,7 +201,7 @@ The login shell may keep its floating language switch.
 
 The assessment focused flow may keep a compact header language control or dropdown if documented as a focused-flow exception. It should still store language in `performia_demo_lang` when persistence is needed.
 
-## 6. Profile Menu Standard
+## Profile Menu Standard
 
 The header avatar opens the profile menu on app shell pages.
 
@@ -161,7 +231,7 @@ Standard menu styling:
 
 If a sidebar user block is clickable, it should either open the same profile menu or be made visually static. Avoid mixing static avatars and menu avatars in a way that makes similar controls behave differently.
 
-## 7. Navigation Standards
+## Navigation Standards
 
 ### Employee Navigation Order
 
@@ -213,7 +283,7 @@ Standard app shell nav item:
 - Active icon: `#10D5D2`.
 - Active indicator: `3px` aqua left bar.
 
-## 8. Button Standards
+## Button Standards
 
 ### Primary Button
 
@@ -256,7 +326,7 @@ Standard app shell nav item:
 
 Gradient buttons are reserved for the login shell. App shell buttons should use flat navy/white styles.
 
-## 9. Card Standards
+## Card Standards
 
 ### Default App Card
 
@@ -288,7 +358,7 @@ Use marketplace card behavior as the canonical activity card standard:
 
 Avoid creating visually incompatible activity cards in assessment recommendations or employee home recommendations. If a compact variant is needed, document it as a variant of the same activity card.
 
-## 10. Spacing Standards
+## Spacing Standards
 
 Use this spacing scale for new UI changes:
 
@@ -313,7 +383,7 @@ Recommended defaults:
 - Header control gap: `10px` to `12px`.
 - Focused flow content padding: `20px`.
 
-## 11. Interaction Rules
+## Interaction Rules
 
 - If an element looks clickable, it must have a working click behavior or be styled as static.
 - Header avatars on app shell pages should open the profile menu.
@@ -326,3 +396,15 @@ Recommended defaults:
 - Do not link to original source filenames.
 - Preserve the current visual language when making incremental UI changes.
 - Before changing runtime UI, compare the target page against this document and keep shell-specific exceptions explicit.
+
+# Shell Consistency Priority
+
+When a page belongs to App Shell:
+
+1. Follow `employee/marketplace.html`.
+2. Follow `docs/UI_STANDARDS.md`.
+3. Preserve page-specific content.
+
+When a page belongs to Login Shell or Focused Flow Shell:
+
+Do not normalize it into App Shell.
