@@ -1383,6 +1383,7 @@ function initProfileMenus(){
 ══════════════════════════════════════════ */
 function setLang(lang){
   currentLang = lang;
+  try{localStorage.setItem("performia_demo_lang",lang)}catch(e){}
   document.getElementById("btn-th").classList.toggle("active",lang==="th");
   document.getElementById("btn-en").classList.toggle("active",lang==="en");
   document.documentElement.lang = lang;
@@ -1413,6 +1414,13 @@ document.querySelectorAll(".filter-chip").forEach(btn=>{
 });
 
 /* Init */
+try{
+  const savedLang=localStorage.getItem("performia_demo_lang");
+  if(savedLang==="th"||savedLang==="en") currentLang=savedLang;
+}catch(e){}
+document.getElementById("btn-th").classList.toggle("active",currentLang==="th");
+document.getElementById("btn-en").classList.toggle("active",currentLang==="en");
+document.documentElement.lang=currentLang;
 renderAll();
 initProfileMenus();
 </script>

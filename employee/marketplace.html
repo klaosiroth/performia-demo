@@ -767,7 +767,11 @@ const ICONS = {
 };
 
 /* ── STATE ── */
-let lang = (new URLSearchParams(location.search).get('lang')) || 'th';
+let lang = 'th';
+try {
+  const savedLang = localStorage.getItem('performia_demo_lang');
+  if (savedLang === 'th' || savedLang === 'en') lang = savedLang;
+} catch(e) {}
 let activePillar = 'All', activeGroup = 'all', searchQ = '';
 
 function t(k) { return (I18N[lang]||I18N.th)[k]||k; }
@@ -925,6 +929,7 @@ function render() {
 document.querySelectorAll('.lang-btn').forEach(btn=>{
   btn.onclick = () => {
     lang = btn.dataset.lang;
+    try { localStorage.setItem('performia_demo_lang', lang); } catch(e) {}
     document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
     buildSidebar();
     render();
@@ -934,11 +939,7 @@ document.querySelectorAll('.lang-btn').forEach(btn=>{
 document.getElementById('search-input').oninput = e => { searchQ=e.target.value; render(); };
 
 /* ── INIT ── */
-const urlLang = new URLSearchParams(location.search).get('lang');
-if (urlLang && I18N[urlLang]) {
-  lang = urlLang;
-  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
-}
+document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
 buildSidebar();
 render();
 initProfileMenus();

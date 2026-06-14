@@ -99,6 +99,8 @@
     background: #fff; border: 1px solid #DCEAF5; border-radius: 12px;
     box-shadow: 0 12px 32px rgba(6,24,73,0.14); padding: 6px; z-index: 80;
   }
+  .top-header .profile-menu-btn { width: auto; text-align: initial; }
+  .top-header .profile-menu-panel { top: calc(100% + 8px); bottom: auto; }
   .profile-menu-item {
     width: 100%; height: 36px; border: 0; border-radius: 9px; background: transparent;
     color: #061849; font-size: 13px; font-weight: 500; font-family: inherit;
@@ -449,7 +451,7 @@
 
         <!-- Language -->
         <div class="lang-switcher">
-          <button class="lang-btn active" onclick="setLang('th')" id="lang-th">ไทย</button>
+          <button class="lang-btn active" onclick="setLang('th')" id="lang-th">TH</button>
           <button class="lang-btn" onclick="setLang('en')" id="lang-en">EN</button>
         </div>
 
@@ -460,7 +462,16 @@
         </button>
 
         <!-- Avatar -->
-        <div style="width: 40px; height: 40px; border-radius: 12px; background: #071B63; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; flex-shrink: 0;">S</div>
+        <div class="profile-menu">
+          <button class="profile-menu-btn" type="button" aria-haspopup="true" aria-expanded="false" style="padding: 0; background: transparent; border: 0; cursor: pointer;">
+            <div style="width: 40px; height: 40px; border-radius: 12px; background: #071B63; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: 700; flex-shrink: 0;">S</div>
+          </button>
+          <div class="profile-menu-panel" hidden>
+            <button type="button" class="profile-menu-item" data-profile-label="profile">โปรไฟล์ของฉัน</button>
+            <button type="button" class="profile-menu-item" data-profile-label="settings">ตั้งค่า</button>
+            <button type="button" class="profile-menu-item" data-profile-label="switch" data-switch-account>สลับบัญชี</button>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -1186,6 +1197,7 @@ const T = {
 function tx(id, val) { const e = document.getElementById(id); if (e) e.textContent = val; }
 
 function setLang(lang) {
+  try { localStorage.setItem('performia_demo_lang', lang); } catch(e) {}
   document.documentElement.lang = lang;
   document.getElementById('lang-th').classList.toggle('active', lang === 'th');
   document.getElementById('lang-en').classList.toggle('active', lang === 'en');
@@ -1303,7 +1315,13 @@ document.addEventListener('DOMContentLoaded', () => {
   go('a5-cta', '/employee/detail.html?id=5');
   go('a6-cta', '/employee/detail.html?id=6');
   ['b1-cta','b2-cta'].forEach(id => go(id, '/employee/marketplace.html'));
-  applyDemoState(document.documentElement.lang || 'th');
+  let storedLang = document.documentElement.lang || 'th';
+  try {
+    const savedLang = localStorage.getItem('performia_demo_lang');
+    if (savedLang === 'th' || savedLang === 'en') storedLang = savedLang;
+  } catch(e) {}
+  setLang(storedLang);
+  applyDemoState(storedLang);
   initProfileMenus();
 });
 </script>

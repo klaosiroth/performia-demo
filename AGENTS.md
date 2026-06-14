@@ -13,6 +13,7 @@ This is NOT a production application yet.
 - Do not rewrite the UI from scratch.
 - Do not convert the project to React, Next.js, Vue, or any framework.
 - Keep the existing visual design, layout, typography, colors, and interactions as close as possible to the original HTML files.
+- Before UI changes, read `docs/UI_STANDARDS.md`.
 - Only make changes needed to:
   - reorganize files
   - fix navigation links
