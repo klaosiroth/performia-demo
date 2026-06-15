@@ -7,6 +7,7 @@ performia-demo/
 │   ├── ROUTES_AND_LINKS.md
 │   └── MOCK_DATA_CONTRACT.md
 ├── index.html
+├── login.html
 ├── employee/
 │   ├── index.html
 │   ├── assessment.html

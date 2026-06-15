@@ -69,7 +69,8 @@ This demo must communicate that:
 
 | Page | Route | Source |
 |---|---|---|
-| Login / Role Selector | `/` | `index.html` |
+| Public Homepage | `/` | `index.html` |
+| Login / Role Selector | `/login.html` | `login.html` |
 | Employee Home | `/employee/` | `employee/index.html` |
 | Assessment | `/employee/assessment.html` | `employee/assessment.html` |
 | Marketplace | `/employee/marketplace.html` | `employee/marketplace.html` |

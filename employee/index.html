@@ -1351,7 +1351,7 @@ function initProfileMenus() {
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });
   document.querySelectorAll('[data-switch-account]').forEach(btn => btn.addEventListener('click', () => {
     localStorage.removeItem('performia_demo_role');
-    window.location.href = '/';
+    window.location.href = '/login.html';
   }));
   updateProfileMenuLabels(document.documentElement.lang || 'th');
 }

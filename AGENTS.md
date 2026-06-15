@@ -44,7 +44,8 @@ The agent is responsible for:
 
 Map the original source files as follows:
 
-- `performia-login-v8.html` → `index.html`
+- `performia-home.html` → `index.html`
+- `performia-login-v8.html` → `login.html`
 - `performia-employee-home.html` → `employee/index.html`
 - `performia-assessment.html` → `employee/assessment.html`
 - `performia-marketplace.html` → `employee/marketplace.html`
@@ -88,7 +89,9 @@ Pages:
 
 ## Login Behavior
 
-The root `index.html` acts as a demo login / role selector.
+The root `index.html` acts as the public marketing homepage.
+
+The `login.html` page acts as the demo login / role selector.
 
 Expected redirects:
 
@@ -143,6 +146,7 @@ Use root-relative links:
 
 ```txt
 /
+ /login.html
  /employee/
  /employee/assessment.html
  /employee/marketplace.html
@@ -175,17 +179,18 @@ Good:
 The demo must support this flow:
 
 1. Open `/`
-2. Select Employee Demo
-3. Land on `/employee/`
-4. Navigate to assessment
-5. Complete or simulate assessment
-6. Navigate to marketplace
-7. Open activity detail
-8. Simulate booking success
-9. Return to employee home
-10. Return to `/`
-11. Select HR Demo
-12. Land on `/hr/dashboard.html`
+2. Navigate to `/login.html`
+3. Select Employee Demo
+4. Land on `/employee/`
+5. Navigate to assessment
+6. Complete or simulate assessment
+7. Navigate to marketplace
+8. Open activity detail
+9. Simulate booking success
+10. Return to employee home
+11. Return to `/login.html`
+12. Select HR Demo
+13. Land on `/hr/dashboard.html`
 
 ## Quality Bar
 

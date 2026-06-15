@@ -14,13 +14,13 @@ These shells are intentionally different and must not be merged.
 
 Pages:
 
-- `index.html`
+- `login.html`
 
 Purpose:
 
 - Demo login.
 - Role selection.
-- First brand impression.
+- Demo portal entry after the public homepage.
 
 Standards:
 
@@ -218,7 +218,7 @@ Switch Account behavior:
 
 ```js
 localStorage.removeItem("performia_demo_role");
-window.location.href = "/";
+window.location.href = "/login.html";
 ```
 
 Standard menu styling:
@@ -390,7 +390,7 @@ Recommended defaults:
 
 - If an element looks clickable, it must have a working click behavior or be styled as static.
 - Header avatars on app shell pages should open the profile menu.
-- Switch Account must clear `performia_demo_role` and redirect to `/`.
+- Switch Account must clear `performia_demo_role` and redirect to `/login.html`.
 - Language persistence must use `performia_demo_lang`.
 - Do not add real authentication.
 - Do not add database or backend integration.

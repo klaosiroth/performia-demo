@@ -2,7 +2,8 @@
 
 | Source                       | Destination               |
 | ---------------------------- | ------------------------- |
-| performia-login-v8.html      | index.html                |
+| performia-home.html          | index.html                |
+| performia-login-v8.html      | login.html                |
 | performia-employee-home.html | employee/index.html       |
 | performia-assessment.html    | employee/assessment.html  |
 | performia-marketplace.html   | employee/marketplace.html |
