@@ -134,28 +134,6 @@ h1, h2, h3, h4 { font-family: var(--font); color: var(--text-1); }
   transform: translateY(-1px);
   box-shadow: 0 8px 24px rgba(16,213,210,.3);
 }
-.btn-outline {
-  background: transparent;
-  color: var(--text-2);
-  padding: 12px 26px;
-  border: 1.5px solid var(--border);
-}
-.btn-outline:hover {
-  border-color: var(--primary);
-  color: var(--primary);
-  background: rgba(7,27,99,.03);
-}
-.btn-outline-white {
-  background: transparent;
-  color: rgba(255,255,255,.75);
-  padding: 12px 26px;
-  border: 1.5px solid rgba(255,255,255,.22);
-}
-.btn-outline-white:hover {
-  border-color: rgba(255,255,255,.55);
-  color: #fff;
-  background: rgba(255,255,255,.05);
-}
 .btn-lg { padding: 15px 32px; font-size: 15px; border-radius: var(--r-lg); }
 .btn-sm { padding: 9px 18px; font-size: 13px; }
 
@@ -185,17 +163,6 @@ h1, h2, h3, h4 { font-family: var(--font); color: var(--text-1); }
   margin-right: 44px;
   flex-shrink: 0;
 }
-.nav-logo img { width: auto; height: 40px; display: block; }
-.logo-mark {
-  width: 34px; height: 34px;
-  background: var(--primary);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.logo-mark svg { width: 18px; height: 18px; }
-.logo-text { font-size: 19px; font-weight: 900; color: var(--primary); letter-spacing: -.03em; }
 .nav-links {
   display: flex;
   align-items: center;
@@ -344,15 +311,8 @@ h1, h2, h3, h4 { font-family: var(--font); color: var(--text-1); }
   font-size: 17.5px;
   line-height: 1.72;
   color: rgba(255,255,255,.52);
-  margin-bottom: 38px;
+  margin-bottom: 30px;
   font-weight: 400;
-}
-
-.hero-actions {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 56px;
 }
 
 .hero-stats {
@@ -1301,9 +1261,8 @@ h1, h2, h3, h4 { font-family: var(--font); color: var(--text-1); }
   font-size: 17px;
   color: rgba(255,255,255,.5);
   line-height: 1.7;
-  margin-bottom: 36px;
+  margin-bottom: 28px;
 }
-.cta-btns { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 52px; }
 .cta-trust {
   display: flex;
   justify-content: center;
@@ -1336,15 +1295,7 @@ footer {
   gap: 52px;
 }
 .footer-logo { display: flex; align-items: center; margin-bottom: 14px; }
-.footer-logo img { width: auto; height: 40px; display: block; }
-.footer-lm { width: 30px; height: 30px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-.footer-lm svg { width: 15px; height: 15px; stroke: var(--primary-dark); }
-.footer-lt { font-size: 17px; font-weight: 900; color: #fff; letter-spacing: -.03em; }
 .footer-tag { font-size: 13px; color: rgba(255,255,255,.3); line-height: 1.65; margin-bottom: 18px; }
-.footer-socials { display: flex; gap: 8px; }
-.soc { width: 31px; height: 31px; border: 1px solid rgba(255,255,255,.12); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.35); transition: var(--dur) var(--ease); }
-.soc:hover { border-color: var(--accent); color: var(--accent); }
-.soc svg { width: 14px; height: 14px; }
 .footer-col-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: rgba(255,255,255,.35); margin-bottom: 16px; }
 .footer-links { list-style: none; display: flex; flex-direction: column; gap: 9px; }
 .footer-links a { font-size: 13px; color: rgba(255,255,255,.38); transition: var(--dur) var(--ease); }
@@ -1414,6 +1365,7 @@ footer {
 @media (max-width: 768px) {
   .wrap { padding: 0 20px; }
   .section { padding: 72px 0; }
+  .nav-logo { margin-right: auto; }
   .nav-links { display: none; }
   .hero-inner { padding: 56px 0; }
   .challenge-grid { grid-template-columns: 1fr; }
@@ -1432,6 +1384,10 @@ footer {
   .pd-right { width: 100%; }
 }
 @media (max-width: 480px) {
+  .nav-right { gap: 6px; }
+  .nav-div { margin: 0 2px; }
+  .lang-btn { padding: 6px 10px; }
+  #nav .btn-sm { padding: 9px 14px; }
   .pillars-grid { grid-template-columns: 1fr 1fr; }
   .report-grid { grid-template-columns: 1fr; }
   .challenge-grid { grid-template-columns: 1fr; }
@@ -1448,7 +1404,11 @@ footer {
 <nav id="nav">
   <div class="wrap nav-inner">
     <a href="/" class="nav-logo" aria-label="Performia">
-      <img src="/assets/logo-color.png" alt="Performia">
+      <img
+        src="/assets/logo-color.png"
+        alt="Performia"
+        style="width:auto;height:40px;display:block;"
+      >
     </a>
 
     <ul class="nav-links">
@@ -1465,11 +1425,8 @@ footer {
         <button class="lang-btn" data-lang-switch="th">TH</button>
       </div>
       <div class="nav-div"></div>
-      <a href="/login.html" class="btn btn-outline btn-sm">
+      <a href="/login.html" class="btn btn-primary btn-sm">
         <span class="en">Sign In</span><span class="th">เข้าสู่ระบบ</span>
-      </a>
-      <a class="btn btn-primary btn-sm" data-demo-placeholder aria-disabled="true" role="button">
-        <span class="en">Book a Demo</span><span class="th">นัดสาธิต</span>
       </a>
     </div>
   </div>
@@ -1502,17 +1459,6 @@ footer {
 
         <p class="hero-sub en">The Human Performance & Wellbeing Budget Platform that helps organizations improve employee wellbeing, measure performance outcomes, and generate business impact.</p>
         <p class="hero-sub th">แพลตฟอร์มงบประมาณด้านประสิทธิภาพและความเป็นอยู่ที่ดีของบุคลากร ที่ช่วยองค์กรปรับปรุงสวัสดิภาพพนักงาน วัดผลประสิทธิภาพ และสร้างผลกระทบทางธุรกิจ</p>
-
-        <div class="hero-actions">
-          <a class="btn btn-accent btn-lg" data-demo-placeholder aria-disabled="true" role="button">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="2" width="14" height="11" rx="1.5"/><path d="M5 1v2M11 1v2M1 6h14"/></svg>
-            <span class="en">Book a Demo</span><span class="th">นัดสาธิต</span>
-          </a>
-          <a class="btn btn-outline-white btn-lg" data-demo-placeholder aria-disabled="true" role="button">
-            <span class="en">Contact Sales</span><span class="th">ติดต่อฝ่ายขาย</span>
-            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7.5h9M8 3l4 4.5-4 4.5"/></svg>
-          </a>
-        </div>
 
         <div class="hero-stats">
           <div>
@@ -2487,7 +2433,7 @@ footer {
 ============================================= -->
 <section id="benchmark" class="section">
   <div class="wrap">
-    <div style="display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end;margin-bottom:48px" class="reveal">
+    <div style="margin-bottom:48px" class="reveal">
       <div>
         <div class="eyebrow"><span class="en">Benchmark Intelligence</span><span class="th">ข่าวกรองเกณฑ์มาตรฐาน</span></div>
         <h2 class="h-lg" style="max-width:520px">
@@ -2499,9 +2445,6 @@ footer {
           <span class="th">ข่าวกรองเกณฑ์มาตรฐานของ Performia ให้ข้อมูลเปรียบเทียบที่ผู้บริหารต้องการสำหรับการลงทุนทุนมนุษย์อย่างมีหลักฐาน</span>
         </p>
       </div>
-      <a class="btn btn-primary" data-demo-placeholder aria-disabled="true" role="button">
-        <span class="en">Request Report</span><span class="th">ขอรายงาน</span>
-      </a>
     </div>
 
     <div class="bench-grid">
@@ -2867,16 +2810,6 @@ footer {
       </h2>
       <p class="cta-sub en">Discover how Performia helps organizations improve human performance and measurable business outcomes. Speak with our team to build your business case.</p>
       <p class="cta-sub th">ค้นพบว่า Performia ช่วยองค์กรปรับปรุงประสิทธิภาพบุคลากรและผลลัพธ์ทางธุรกิจที่วัดได้ได้อย่างไร</p>
-      <div class="cta-btns">
-        <a class="btn btn-accent btn-lg" data-demo-placeholder aria-disabled="true" role="button">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="2" width="14" height="11" rx="1.5"/><path d="M5 1v2M11 1v2M1 6h14"/></svg>
-          <span class="en">Book a Demo</span><span class="th">นัดสาธิต</span>
-        </a>
-        <a class="btn btn-outline-white btn-lg" data-demo-placeholder aria-disabled="true" role="button">
-          <span class="en">Talk to Our Team</span><span class="th">คุยกับทีมของเรา</span>
-          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7.5h9M8 3l4 4.5-4 4.5"/></svg>
-        </a>
-      </div>
       <div class="cta-trust">
         <div class="trust-item">
           <svg viewBox="0 0 14 14" fill="none" stroke-linecap="round" stroke-width="1.5"><path d="M7 1l4 3v5c0 2.2-4 4-4 4S3 11.2 3 9V4z"/></svg>
@@ -2911,15 +2844,14 @@ footer {
     <div class="footer-body">
       <div>
         <div class="footer-logo">
-          <img src="/assets/logo-white.png" alt="Performia">
+          <img
+            src="/assets/logo-white.png"
+            alt="Performia"
+            style="width:auto;height:40px;display:block;"
+          >
         </div>
         <p class="footer-tag en">The Enterprise Human Performance Intelligence Platform. Measure, improve, and report on human performance at scale.</p>
         <p class="footer-tag th">แพลตฟอร์มข่าวกรองประสิทธิภาพบุคลากรระดับองค์กร วัด ปรับปรุง และรายงานประสิทธิภาพบุคลากรในระดับใหญ่</p>
-        <div class="footer-socials">
-          <a class="soc" aria-label="LinkedIn" data-demo-placeholder aria-disabled="true" role="button">
-            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2.667 4.667a1.333 1.333 0 100-2.667 1.333 1.333 0 000 2.667zM1.333 6h2.667v8H1.333V6zM6 6h2.557v1.1h.036C8.967 6.4 9.9 5.867 11.2 5.867c2.933 0 3.467 1.933 3.467 4.444V14h-2.667v-3.067c0-.933 0-2.133-1.3-2.133-1.3 0-1.5 1.017-1.5 2.067V14H6V6z"/></svg>
-          </a>
-        </div>
       </div>
 
       <div>
