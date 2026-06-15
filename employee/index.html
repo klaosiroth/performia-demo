@@ -1259,23 +1259,73 @@ function applyDemoState(lang) {
   if (stat) stat.textContent = bookings.length || 2;
   let done = false;
   try { done = localStorage.getItem('performia_demo_assessment_done') === 'true'; } catch(e) {}
-  if (!done) return;
-  if (lang === 'en') {
-    tx('assess-title', 'PERFORM-6 assessment completed');
-    tx('assess-desc', 'Your profile is ready. Explore recommended activities that match your result.');
-    tx('assess-time', 'Done');
-    tx('assess-cta-text', 'View Activities');
+  const progress = done ? null : getAssessmentProgress();
+
+  if (done) {
+    if (lang === 'en') {
+      tx('assess-title', 'Your PERFORM-6™ assessment is complete');
+      tx('assess-desc', 'Your profile is ready. Explore recommended activities that match your result.');
+      tx('assess-time', 'Done');
+      tx('assess-cta-text', 'View Results');
+    } else {
+      tx('assess-title', 'คุณทำแบบประเมิน PERFORM-6™ เรียบร้อยแล้ว');
+      tx('assess-desc', 'โปรไฟล์ของคุณพร้อมแล้ว เลือกดูกิจกรรมที่เหมาะกับผลลัพธ์ของคุณ');
+      tx('assess-time', 'เสร็จแล้ว');
+      tx('assess-cta-text', 'ดูผลลัพธ์');
+    }
+  } else if (progress) {
+    if (lang === 'en') {
+      tx('assess-title', 'You have an assessment in progress');
+      tx('assess-desc', 'Continue from where you left off.');
+      tx('assess-time', 'In progress');
+      tx('assess-cta-text', 'Continue Assessment');
+    } else {
+      tx('assess-title', 'คุณมีแบบประเมินที่ยังทำไม่เสร็จ');
+      tx('assess-desc', 'ทำต่อจากจุดที่คุณบันทึกไว้');
+      tx('assess-time', 'กำลังทำ');
+      tx('assess-cta-text', 'ทำต่อ');
+    }
   } else {
-    tx('assess-title', 'ทำแบบประเมิน PERFORM-6™ แล้ว');
-    tx('assess-desc', 'โปรไฟล์ของคุณพร้อมแล้ว เลือกดูกิจกรรมที่เหมาะกับผลลัพธ์ของคุณ');
-    tx('assess-time', 'เสร็จแล้ว');
-    tx('assess-cta-text', 'ดูกิจกรรม');
+    if (lang === 'en') {
+      tx('assess-title', 'Start your PERFORM-6™ assessment');
+      tx('assess-desc', 'Answer a few questions to get recommendations that fit you.');
+      tx('assess-time', '6-8 min');
+      tx('assess-cta-text', 'Start Assessment');
+    } else {
+      tx('assess-title', 'เริ่มทำแบบประเมิน PERFORM-6™');
+      tx('assess-desc', 'ตอบคำถามเพื่อรับคำแนะนำการดูแลที่เหมาะกับคุณ');
+      tx('assess-time', '6-8 นาที');
+      tx('assess-cta-text', 'เริ่มทำแบบประเมิน');
+    }
   }
 }
 
 function profileMenuLabels(lang) {
   return lang === 'en' ? {profile:'Your profile',settings:'Settings',switch:'Switch Account'} : {profile:'โปรไฟล์ของฉัน',settings:'ตั้งค่า',switch:'สลับบัญชี'};
 }
+
+function isPlainObject(v) {
+  return !!v && typeof v === 'object' && !Array.isArray(v);
+}
+
+function getAssessmentProgress() {
+  let raw = null;
+  try { raw = localStorage.getItem('performia_demo_assessment_progress'); } catch(e) {}
+  if (!raw) return null;
+
+  try {
+    const data = JSON.parse(raw);
+    if (!isPlainObject(data)) return null;
+    if (data.version !== 1) return null;
+    if (data.status !== 'in_progress') return null;
+    if (!Number.isInteger(data.currentIndex) || data.currentIndex < 0) return null;
+    if (!isPlainObject(data.answers)) return null;
+    return data;
+  } catch(e) {
+    return null;
+  }
+}
+
 function updateProfileMenuLabels(lang) {
   const labels = profileMenuLabels(lang);
   document.querySelectorAll('[data-profile-label]').forEach(el => { el.textContent = labels[el.dataset.profileLabel]; });
