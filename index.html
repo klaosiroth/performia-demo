@@ -182,10 +182,10 @@ h1, h2, h3, h4 { font-family: var(--font); color: var(--text-1); }
 .nav-logo {
   display: flex;
   align-items: center;
-  gap: 10px;
   margin-right: 44px;
   flex-shrink: 0;
 }
+.nav-logo img { width: auto; height: 40px; display: block; }
 .logo-mark {
   width: 34px; height: 34px;
   background: var(--primary);
@@ -1335,7 +1335,8 @@ footer {
   grid-template-columns: 220px 1fr 1fr 1fr 1fr;
   gap: 52px;
 }
-.footer-logo { display: flex; align-items: center; gap: 9px; margin-bottom: 14px; }
+.footer-logo { display: flex; align-items: center; margin-bottom: 14px; }
+.footer-logo img { width: auto; height: 40px; display: block; }
 .footer-lm { width: 30px; height: 30px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
 .footer-lm svg { width: 15px; height: 15px; stroke: var(--primary-dark); }
 .footer-lt { font-size: 17px; font-weight: 900; color: #fff; letter-spacing: -.03em; }
@@ -1446,13 +1447,8 @@ footer {
 ============================================= -->
 <nav id="nav">
   <div class="wrap nav-inner">
-    <a href="#" class="nav-logo">
-      <div class="logo-mark">
-        <svg viewBox="0 0 18 18" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round">
-          <path d="M3.5 9.5l3.5 3.5L14.5 5"/>
-        </svg>
-      </div>
-      <span class="logo-text">Performia</span>
+    <a href="/" class="nav-logo" aria-label="Performia">
+      <img src="/assets/logo-color.png" alt="Performia">
     </a>
 
     <ul class="nav-links">
@@ -1469,10 +1465,10 @@ footer {
         <button class="lang-btn" data-lang-switch="th">TH</button>
       </div>
       <div class="nav-div"></div>
-      <a href="#final-cta" class="btn btn-outline btn-sm">
+      <a href="/login.html" class="btn btn-outline btn-sm">
         <span class="en">Sign In</span><span class="th">เข้าสู่ระบบ</span>
       </a>
-      <a href="#final-cta" class="btn btn-primary btn-sm">
+      <a class="btn btn-primary btn-sm" data-demo-placeholder aria-disabled="true" role="button">
         <span class="en">Book a Demo</span><span class="th">นัดสาธิต</span>
       </a>
     </div>
@@ -1508,11 +1504,11 @@ footer {
         <p class="hero-sub th">แพลตฟอร์มงบประมาณด้านประสิทธิภาพและความเป็นอยู่ที่ดีของบุคลากร ที่ช่วยองค์กรปรับปรุงสวัสดิภาพพนักงาน วัดผลประสิทธิภาพ และสร้างผลกระทบทางธุรกิจ</p>
 
         <div class="hero-actions">
-          <a href="#final-cta" class="btn btn-accent btn-lg">
+          <a class="btn btn-accent btn-lg" data-demo-placeholder aria-disabled="true" role="button">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="2" width="14" height="11" rx="1.5"/><path d="M5 1v2M11 1v2M1 6h14"/></svg>
             <span class="en">Book a Demo</span><span class="th">นัดสาธิต</span>
           </a>
-          <a href="#final-cta" class="btn btn-outline-white btn-lg">
+          <a class="btn btn-outline-white btn-lg" data-demo-placeholder aria-disabled="true" role="button">
             <span class="en">Contact Sales</span><span class="th">ติดต่อฝ่ายขาย</span>
             <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7.5h9M8 3l4 4.5-4 4.5"/></svg>
           </a>
@@ -2503,7 +2499,7 @@ footer {
           <span class="th">ข่าวกรองเกณฑ์มาตรฐานของ Performia ให้ข้อมูลเปรียบเทียบที่ผู้บริหารต้องการสำหรับการลงทุนทุนมนุษย์อย่างมีหลักฐาน</span>
         </p>
       </div>
-      <a href="#final-cta" class="btn btn-primary">
+      <a class="btn btn-primary" data-demo-placeholder aria-disabled="true" role="button">
         <span class="en">Request Report</span><span class="th">ขอรายงาน</span>
       </a>
     </div>
@@ -2570,7 +2566,7 @@ footer {
         <div class="ben-desc th">ข่าวกรองเกณฑ์มาตรฐานของ Performia วางกลยุทธ์ทุนมนุษย์ของคุณเทียบกับคู่แข่ง ภาค และมาตรฐานโลก ให้คณะกรรมการและนักลงทุนมีหลักฐานเปรียบเทียบ</div>
       </div>
       <div class="ben-right">
-        <a href="#final-cta" class="btn btn-accent btn-lg">
+        <a class="btn btn-accent btn-lg" data-demo-placeholder aria-disabled="true" role="button">
           <span class="en">See Benchmark Report</span><span class="th">ดูรายงานเกณฑ์มาตรฐาน</span>
         </a>
       </div>
@@ -2872,11 +2868,11 @@ footer {
       <p class="cta-sub en">Discover how Performia helps organizations improve human performance and measurable business outcomes. Speak with our team to build your business case.</p>
       <p class="cta-sub th">ค้นพบว่า Performia ช่วยองค์กรปรับปรุงประสิทธิภาพบุคลากรและผลลัพธ์ทางธุรกิจที่วัดได้ได้อย่างไร</p>
       <div class="cta-btns">
-        <a href="#" class="btn btn-accent btn-lg">
+        <a class="btn btn-accent btn-lg" data-demo-placeholder aria-disabled="true" role="button">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="2" width="14" height="11" rx="1.5"/><path d="M5 1v2M11 1v2M1 6h14"/></svg>
           <span class="en">Book a Demo</span><span class="th">นัดสาธิต</span>
         </a>
-        <a href="#" class="btn btn-outline-white btn-lg">
+        <a class="btn btn-outline-white btn-lg" data-demo-placeholder aria-disabled="true" role="button">
           <span class="en">Talk to Our Team</span><span class="th">คุยกับทีมของเรา</span>
           <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7.5h9M8 3l4 4.5-4 4.5"/></svg>
         </a>
@@ -2915,15 +2911,12 @@ footer {
     <div class="footer-body">
       <div>
         <div class="footer-logo">
-          <div class="footer-lm">
-            <svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M2.5 7.5l3.5 3.5L12.5 4"/></svg>
-          </div>
-          <span class="footer-lt">Performia</span>
+          <img src="/assets/logo-white.png" alt="Performia">
         </div>
         <p class="footer-tag en">The Enterprise Human Performance Intelligence Platform. Measure, improve, and report on human performance at scale.</p>
         <p class="footer-tag th">แพลตฟอร์มข่าวกรองประสิทธิภาพบุคลากรระดับองค์กร วัด ปรับปรุง และรายงานประสิทธิภาพบุคลากรในระดับใหญ่</p>
         <div class="footer-socials">
-          <a href="#" class="soc" aria-label="LinkedIn">
+          <a class="soc" aria-label="LinkedIn" data-demo-placeholder aria-disabled="true" role="button">
             <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2.667 4.667a1.333 1.333 0 100-2.667 1.333 1.333 0 000 2.667zM1.333 6h2.667v8H1.333V6zM6 6h2.557v1.1h.036C8.967 6.4 9.9 5.867 11.2 5.867c2.933 0 3.467 1.933 3.467 4.444V14h-2.667v-3.067c0-.933 0-2.133-1.3-2.133-1.3 0-1.5 1.017-1.5 2.067V14H6V6z"/></svg>
           </a>
         </div>
@@ -2968,11 +2961,11 @@ footer {
         <div class="footer-col-title en">Contact</div>
         <div class="footer-col-title th">ติดต่อ</div>
         <ul class="footer-links">
-          <li><a href="#final-cta"><span class="en">Book a Demo</span><span class="th">นัดสาธิต</span></a></li>
-          <li><a href="#final-cta"><span class="en">Talk to Sales</span><span class="th">ติดต่อฝ่ายขาย</span></a></li>
-          <li><a href="#"><span class="en">About Performia</span><span class="th">เกี่ยวกับ Performia</span></a></li>
-          <li><a href="#"><span class="en">Privacy Policy</span><span class="th">นโยบายความเป็นส่วนตัว</span></a></li>
-          <li><a href="#"><span class="en">Terms of Service</span><span class="th">ข้อกำหนดการใช้บริการ</span></a></li>
+          <li><a data-demo-placeholder aria-disabled="true" role="button"><span class="en">Book a Demo</span><span class="th">นัดสาธิต</span></a></li>
+          <li><a data-demo-placeholder aria-disabled="true" role="button"><span class="en">Talk to Sales</span><span class="th">ติดต่อฝ่ายขาย</span></a></li>
+          <li><a data-demo-placeholder aria-disabled="true" role="button"><span class="en">About Performia</span><span class="th">เกี่ยวกับ Performia</span></a></li>
+          <li><a data-demo-placeholder aria-disabled="true" role="button"><span class="en">Privacy Policy</span><span class="th">นโยบายความเป็นส่วนตัว</span></a></li>
+          <li><a data-demo-placeholder aria-disabled="true" role="button"><span class="en">Terms of Service</span><span class="th">ข้อกำหนดการใช้บริการ</span></a></li>
         </ul>
       </div>
     </div>
@@ -2987,9 +2980,9 @@ footer {
           <button class="footer-lang-btn" data-lang-switch="th">TH</button>
         </div>
         <div class="footer-legal">
-          <a href="#"><span class="en">Privacy</span><span class="th">ความเป็นส่วนตัว</span></a>
-          <a href="#"><span class="en">Terms</span><span class="th">ข้อกำหนด</span></a>
-          <a href="#"><span class="en">Cookies</span><span class="th">คุกกี้</span></a>
+          <a data-demo-placeholder aria-disabled="true" role="button"><span class="en">Privacy</span><span class="th">ความเป็นส่วนตัว</span></a>
+          <a data-demo-placeholder aria-disabled="true" role="button"><span class="en">Terms</span><span class="th">ข้อกำหนด</span></a>
+          <a data-demo-placeholder aria-disabled="true" role="button"><span class="en">Cookies</span><span class="th">คุกกี้</span></a>
         </div>
       </div>
     </div>
@@ -3001,18 +2994,30 @@ footer {
    LANGUAGE TOGGLE
 ============================================= */
 function setLang(lang) {
-  document.documentElement.setAttribute('data-lang', lang);
-  // Sync all toggle buttons
+  if (lang !== 'th' && lang !== 'en') return;
+
+  document.documentElement.lang = lang;
+  document.documentElement.dataset.lang = lang;
+
+  try {
+    localStorage.setItem('performia_demo_lang', lang);
+  } catch (e) {}
+
   document.querySelectorAll('[data-lang-switch]').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.langSwitch === lang);
   });
-  // Update html lang attribute
-  document.documentElement.lang = lang === 'th' ? 'th' : 'en';
+
+  renderActivePillarDetail();
 }
 
-document.querySelectorAll('[data-lang-switch]').forEach(btn => {
-  btn.addEventListener('click', () => setLang(btn.dataset.langSwitch));
-});
+function getInitialLang() {
+  try {
+    const saved = localStorage.getItem('performia_demo_lang');
+    if (saved === 'th' || saved === 'en') return saved;
+  } catch (e) {}
+
+  return 'en';
+}
 
 /* =============================================
    NAV SCROLL
@@ -3085,37 +3090,49 @@ const pillarData = {
 
 const detail = document.getElementById('pillar-detail');
 
+function renderPillarDetail(card, shouldScroll) {
+  const p = card.dataset.pillar;
+  const d = pillarData[p];
+  const lang = document.documentElement.dataset.lang || 'en';
+
+  document.querySelectorAll('.pillar-card').forEach(c => c.classList.remove('active'));
+  card.classList.add('active');
+
+  document.getElementById('pd-title').textContent = lang === 'th' ? d.name_th : d.name_en;
+  document.getElementById('pd-desc').textContent = lang === 'th' ? d.desc_th : d.desc_en;
+
+  const tags = document.getElementById('pd-tags');
+  tags.innerHTML = d.tags_en.map(t => `<span class="pd-tag">${t}</span>`).join('');
+
+  const metrics = detail.querySelector('.pd-metrics');
+  metrics.innerHTML = d.metrics.map(m => `
+    <div class="pd-metric">
+      <div class="pd-metric-icon" style="background:rgba(16,213,210,.15)">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="#10D5D2" stroke-width="1.8" stroke-linecap="round">
+          <path d="M2 11l3-4 2.5 2 3-4.5 2.5 2"/>
+        </svg>
+      </div>
+      <div class="pd-metric-text">${lang === 'th' ? m.label_th : m.label_en}</div>
+      <div class="pd-metric-val">${m.val}</div>
+    </div>
+  `).join('');
+
+  detail.classList.add('visible');
+  detail.style.display = '';
+
+  if (shouldScroll) {
+    detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+function renderActivePillarDetail() {
+  const active = document.querySelector('.pillar-card.active');
+  if (active) renderPillarDetail(active, false);
+}
+
 document.querySelectorAll('.pillar-card').forEach(card => {
   card.addEventListener('click', () => {
-    const p = card.dataset.pillar;
-    const d = pillarData[p];
-    const lang = document.documentElement.getAttribute('data-lang') || 'en';
-
-    document.querySelectorAll('.pillar-card').forEach(c => c.classList.remove('active'));
-    card.classList.add('active');
-
-    document.getElementById('pd-title').textContent = lang === 'th' ? d.name_th : d.name_en;
-    document.getElementById('pd-desc').textContent = lang === 'th' ? d.desc_th : d.desc_en;
-
-    const tags = document.getElementById('pd-tags');
-    tags.innerHTML = d.tags_en.map(t => `<span class="pd-tag">${t}</span>`).join('');
-
-    const metrics = detail.querySelector('.pd-metrics');
-    metrics.innerHTML = d.metrics.map(m => `
-      <div class="pd-metric">
-        <div class="pd-metric-icon" style="background:rgba(16,213,210,.15)">
-          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="#10D5D2" stroke-width="1.8" stroke-linecap="round">
-            <path d="M2 11l3-4 2.5 2 3-4.5 2.5 2"/>
-          </svg>
-        </div>
-        <div class="pd-metric-text">${lang === 'th' ? m.label_th : m.label_en}</div>
-        <div class="pd-metric-val">${m.val}</div>
-      </div>
-    `).join('');
-
-    detail.classList.add('visible');
-    detail.style.display = '';
-    detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    renderPillarDetail(card, true);
   });
 });
 
@@ -3129,30 +3146,19 @@ document.querySelectorAll('.workflow-step').forEach((step, i) => {
   });
 });
 
-/* =============================================
-   RE-RENDER PILLAR DETAIL ON LANG CHANGE
-============================================= */
-const origSetLang = setLang;
-window._setLang = setLang;
-// Patch to re-render active pillar detail on language change
-function setLang(lang) {
-  document.documentElement.setAttribute('data-lang', lang);
-  document.querySelectorAll('[data-lang-switch]').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.langSwitch === lang);
+document.querySelectorAll('[data-lang-switch]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    setLang(btn.dataset.langSwitch);
   });
-  document.documentElement.lang = lang === 'th' ? 'th' : 'en';
-
-  // Re-render active pillar
-  const active = document.querySelector('.pillar-card.active');
-  if (active) active.click();
-}
-
-document.querySelectorAll('[data-lang-switch]').forEach(btn => {
-  btn.replaceWith(btn.cloneNode(true));
 });
-document.querySelectorAll('[data-lang-switch]').forEach(btn => {
-  btn.addEventListener('click', () => setLang(btn.dataset.langSwitch));
+
+document.querySelectorAll("[data-demo-placeholder]").forEach(element => {
+  element.addEventListener("click", event => {
+    event.preventDefault();
+  });
 });
+
+setLang(getInitialLang());
 
 </script>
 </body>
