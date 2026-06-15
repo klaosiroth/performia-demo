@@ -264,11 +264,15 @@ h1, h2, h3, h4 { font-family: var(--font); color: var(--text-1); }
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: 540px 1fr;
-  gap: 80px;
+  grid-template-columns: minmax(0, 1.08fr) minmax(440px, .92fr);
+  gap: 56px;
   align-items: center;
   padding: 96px 0;
   width: 100%;
+}
+
+.hero-inner > div:first-child {
+  max-width: 620px;
 }
 
 /* Hero badge */
@@ -348,7 +352,7 @@ h1, h2, h3, h4 { font-family: var(--font); color: var(--text-1); }
 .intel-network {
   position: relative;
   width: 100%;
-  max-width: 540px;
+  max-width: 560px;
   aspect-ratio: 1;
 }
 
