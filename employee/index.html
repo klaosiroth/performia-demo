@@ -501,11 +501,11 @@
               <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                 <button class="btn-primary" style="background: #fff; color: #071B63;" id="hero-cta1">
                   <i data-lucide="compass" style="width: 16px; height: 16px;"></i>
-                  <span>ดูกิจกรรมที่เหมาะกับฉัน</span>
+                  <span id="hero-cta1-text">ดูกิจกรรมที่เหมาะกับฉัน</span>
                 </button>
                 <button class="btn-secondary" style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #fff;" id="hero-cta2">
                   <i data-lucide="user-circle" style="width: 16px; height: 16px;"></i>
-                  <span>ดูโปรไฟล์ของฉัน</span>
+                  <span id="hero-cta2-text">ดูโปรไฟล์ของฉัน</span>
                 </button>
               </div>
             </div>
@@ -608,7 +608,7 @@
             <p style="font-size: 12px; color: #52627A; line-height: 1.7; margin-bottom: 16px; flex: 1;" id="credit-micro">ใช้เครดิตของคุณกับกิจกรรมที่ช่วยดูแลตัวเองได้ตลอดปี</p>
             <button class="btn-primary" style="width: 100%; justify-content: center;" id="credit-cta">
               <i data-lucide="arrow-right" style="width: 15px; height: 15px;"></i>
-              <span>ใช้เครดิตกับกิจกรรม</span>
+              <span id="credit-cta-text">ใช้เครดิตกับกิจกรรม</span>
             </button>
           </div>
 
@@ -703,7 +703,7 @@
             </div>
             <button class="btn-primary" id="assess-cta">
               <i data-lucide="play-circle" style="width: 16px; height: 16px;"></i>
-              <span>ทำต่อ</span>
+              <span id="assess-cta-text">ทำต่อ</span>
             </button>
           </div>
         </div>
@@ -737,7 +737,7 @@
                   <span id="p1-count">4 กิจกรรม</span>
                 </div>
                 <button class="btn-secondary" style="height: 36px; border-radius: 10px; padding: 0 14px; font-size: 12px;" id="p1-cta">
-                  <span>ดูกิจกรรม</span>
+                  <span id="p1-cta-text">ดูกิจกรรม</span>
                   <i data-lucide="arrow-right" style="width: 13px; height: 13px;"></i>
                 </button>
               </div>
@@ -760,7 +760,7 @@
                   <span id="p2-count">6 กิจกรรม</span>
                 </div>
                 <button class="btn-secondary" style="height: 36px; border-radius: 10px; padding: 0 14px; font-size: 12px;" id="p2-cta">
-                  <span>ดูกิจกรรม</span>
+                  <span id="p2-cta-text">ดูกิจกรรม</span>
                   <i data-lucide="arrow-right" style="width: 13px; height: 13px;"></i>
                 </button>
               </div>
@@ -783,7 +783,7 @@
                   <span id="p3-count">5 กิจกรรม</span>
                 </div>
                 <button class="btn-secondary" style="height: 36px; border-radius: 10px; padding: 0 14px; font-size: 12px;" id="p3-cta">
-                  <span>ดูกิจกรรม</span>
+                  <span id="p3-cta-text">ดูกิจกรรม</span>
                   <i data-lucide="arrow-right" style="width: 13px; height: 13px;"></i>
                 </button>
               </div>
@@ -1212,7 +1212,7 @@ function setLang(lang) {
   tx('page-title', t.pageTitle); tx('page-sub', t.pageSub); tx('search-ph', t.searchPh);
   tx('hero-tag', t.heroTag);
   tx('hero-headline', t.heroHeadline); tx('hero-sub', t.heroSub);
-  tx('hero-cta1', t.heroCta1); tx('hero-cta2', t.heroCta2);
+  tx('hero-cta1-text', t.heroCta1); tx('hero-cta2-text', t.heroCta2);
   tx('stat1-lbl', t.stat1Lbl); tx('stat2-lbl', t.stat2Lbl); tx('stat2-unit', t.stat2Unit);
   tx('s1-lbl', t.s1Lbl); tx('s2-lbl', t.s2Lbl); tx('s3-lbl', t.s3Lbl);
   tx('s4-lbl', t.s4Lbl); tx('s5-lbl', t.s5Lbl); tx('s6-lbl', t.s6Lbl);
@@ -1220,7 +1220,7 @@ function setLang(lang) {
   tx('s4-val', t.s4Val); tx('s5-val', t.s5Val); tx('s6-val', t.s6Val);
   tx('credit-title', t.creditTitle); tx('credit-fy', t.creditFy); tx('credit-chip', t.creditChip);
   tx('cr-rem', t.crRem); tx('cr-used', t.crUsed); tx('cr-total', t.crTotal);
-  tx('credit-micro', t.creditMicro); tx('credit-cta', t.creditCta);
+  tx('credit-micro', t.creditMicro); tx('credit-cta-text', t.creditCta);
   tx('snap-title', t.snapTitle); tx('snap-link', t.snapLink);
   tx('sn1-name', t.sn1); tx('sn2-name', t.sn2); tx('sn3-name', t.sn3);
   tx('sn4-name', t.sn4); tx('sn5-name', t.sn5); tx('sn6-name', t.sn6);
@@ -1228,11 +1228,11 @@ function setLang(lang) {
   tx('sn4-val', t.sv4); tx('sn5-val', t.sv5); tx('sn6-val', t.sv6);
   tx('snap-cta-desc', t.snapCtaDesc); tx('snap-cta-text', t.snapCtaText);
   tx('assess-title', t.assessTitle); tx('assess-desc', t.assessDesc);
-  tx('assess-time', t.assessTime); tx('assess-cta', t.assessCta);
+  tx('assess-time', t.assessTime); tx('assess-cta-text', t.assessCta);
   tx('focus-title', t.focusTitle); tx('focus-sub', t.focusSub); tx('focus-link', t.focusLink);
-  tx('p1-chip', t.p1Chip); tx('p1-name', t.p1Name); tx('p1-desc', t.p1Desc); tx('p1-count', t.p1Count); tx('p1-cta', t.p1Cta);
-  tx('p2-chip', t.p2Chip); tx('p2-name', t.p2Name); tx('p2-desc', t.p2Desc); tx('p2-count', t.p2Count); tx('p2-cta', t.p2Cta);
-  tx('p3-chip', t.p3Chip); tx('p3-name', t.p3Name); tx('p3-desc', t.p3Desc); tx('p3-count', t.p3Count); tx('p3-cta', t.p3Cta);
+  tx('p1-chip', t.p1Chip); tx('p1-name', t.p1Name); tx('p1-desc', t.p1Desc); tx('p1-count', t.p1Count); tx('p1-cta-text', t.p1Cta);
+  tx('p2-chip', t.p2Chip); tx('p2-name', t.p2Name); tx('p2-desc', t.p2Desc); tx('p2-count', t.p2Count); tx('p2-cta-text', t.p2Cta);
+  tx('p3-chip', t.p3Chip); tx('p3-name', t.p3Name); tx('p3-desc', t.p3Desc); tx('p3-count', t.p3Count); tx('p3-cta-text', t.p3Cta);
   tx('act-title', t.actTitle); tx('act-sub', t.actSub); tx('act-link', t.actLink);
   tx('a1-chip', t.a1Chip); tx('a1-desc', t.a1Desc); tx('a1-loc', t.a1Loc); tx('a1-cta', t.a1Cta);
   tx('a2-chip', t.a2Chip); tx('a2-desc', t.a2Desc); tx('a2-loc', t.a2Loc); tx('a2-cta', t.a2Cta);
@@ -1264,12 +1264,12 @@ function applyDemoState(lang) {
     tx('assess-title', 'PERFORM-6 assessment completed');
     tx('assess-desc', 'Your profile is ready. Explore recommended activities that match your result.');
     tx('assess-time', 'Done');
-    tx('assess-cta', 'View Activities');
+    tx('assess-cta-text', 'View Activities');
   } else {
     tx('assess-title', 'ทำแบบประเมิน PERFORM-6™ แล้ว');
     tx('assess-desc', 'โปรไฟล์ของคุณพร้อมแล้ว เลือกดูกิจกรรมที่เหมาะกับผลลัพธ์ของคุณ');
     tx('assess-time', 'เสร็จแล้ว');
-    tx('assess-cta', 'ดูกิจกรรม');
+    tx('assess-cta-text', 'ดูกิจกรรม');
   }
 }
 
