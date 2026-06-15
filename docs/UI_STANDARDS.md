@@ -123,6 +123,15 @@ Specifically:
 
 # Shared UI Standards
 
+## Public Homepage Standard
+
+The public marketing homepage is `index.html` at `/`.
+
+- Sign In is the only connected primary navigation action.
+- Sign In routes to `/login.html`.
+- Marketing sections may remain informational without CTA buttons.
+- Placeholder marketing actions must not simulate success, reload the page, or change routes.
+
 ## Brand Tokens
 
 Use these tokens as the default app-wide values:
