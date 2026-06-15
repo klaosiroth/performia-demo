@@ -107,8 +107,10 @@ Required Standards:
 
 Language:
 
-- May use compact language control.
-- Must use `performia_demo_lang`.
+- Uses the shared segmented `TH / EN` control.
+- Language state uses `performia_demo_lang`.
+- The selected language must persist across all runtime pages.
+- May place the segmented control in the compact focused header.
 
 Do not force Focused Flow Shell to match App Shell.
 
@@ -117,6 +119,7 @@ Specifically:
 - Do not add sidebar.
 - Do not use `72px` app header.
 - Do not copy marketplace layout.
+- Do not convert assessment into App Shell.
 
 # Shared UI Standards
 
@@ -199,7 +202,7 @@ Use only `performia_demo_lang` for persisted language state.
 
 The login shell may keep its floating language switch.
 
-The assessment focused flow may keep a compact header language control or dropdown if documented as a focused-flow exception. It should still store language in `performia_demo_lang` when persistence is needed.
+The assessment focused flow uses the same segmented `TH / EN` language control in its compact focused header. It must store language in `performia_demo_lang`.
 
 ## Profile Menu Standard
 
