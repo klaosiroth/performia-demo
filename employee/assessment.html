@@ -230,12 +230,32 @@ body{background:var(--bg);min-height:100vh;color:var(--text-body);}
   display:flex;align-items:flex-start;gap:12px;
 }
 
-/* ── Language dropdown ── */
-.lang-dd{position:absolute;top:calc(100% + 8px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xs);overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.10);min-width:130px;z-index:400;display:none;}
-.lang-dd.open{display:block;}
-.lang-opt{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-body);transition:background .15s;}
-.lang-opt:hover{background:var(--bg);}
-.lang-opt.active{color:var(--accent);background:var(--accent-light);}
+/* ── Language switcher ── */
+.lang-switcher{
+  display:flex;
+  align-items:center;
+  height:36px;
+  background:#FFFFFF;
+  border:1px solid #DCEAF5;
+  border-radius:12px;
+  overflow:hidden;
+}
+.lang-btn{
+  height:100%;
+  padding:0 14px;
+  border:0;
+  background:#FFFFFF;
+  color:#52627A;
+  font-family:inherit;
+  font-size:12px;
+  font-weight:600;
+  cursor:pointer;
+  transition:background .15s,color .15s;
+}
+.lang-btn.active{
+  background:#071B63;
+  color:#FFFFFF;
+}
 
 /* ── Persona badge ── */
 .persona-card{background:var(--accent-light);border:1.5px solid rgba(31,199,212,.28);border-radius:var(--radius);padding:18px 20px;display:flex;align-items:center;gap:14px;}
@@ -277,21 +297,24 @@ body{background:var(--bg);min-height:100vh;color:var(--text-body);}
         <span id="lbl-saved" style="font-size:11px;font-weight:500;color:var(--text-muted);"></span>
       </div>
       <!-- Language switcher -->
-      <div style="position:relative;">
-        <button id="lang-btn" onclick="toggleLang()" style="padding:5px 12px;border-radius:9999px;cursor:pointer;background:var(--surface);border:1.5px solid var(--border);font-size:12px;font-weight:600;color:var(--text-body);display:flex;align-items:center;gap:5px;">
-          <span id="lang-code">TH</span>
-          <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+      <div class="lang-switcher" role="group" aria-label="Language">
+        <button
+          type="button"
+          class="lang-btn"
+          id="lang-th"
+          onclick="setLocale('th')"
+        >
+          TH
         </button>
-        <div class="lang-dd" id="lang-dd">
-          <div class="lang-opt active" id="opt-th" onclick="setLocale('th')">
-            <span>TH</span><span>ภาษาไทย</span>
-            <svg id="chk-th" style="margin-left:auto;" width="14" height="14" fill="none" stroke="var(--accent)" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-          </div>
-          <div class="lang-opt" id="opt-en" onclick="setLocale('en')">
-            <span>EN</span><span>English</span>
-            <svg id="chk-en" style="margin-left:auto;display:none;" width="14" height="14" fill="none" stroke="var(--accent)" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-          </div>
-        </div>
+
+        <button
+          type="button"
+          class="lang-btn"
+          id="lang-en"
+          onclick="setLocale('en')"
+        >
+          EN
+        </button>
       </div>
     </div>
   </div>
@@ -1091,34 +1114,49 @@ function renderResult(){
   }).join("");
 }
 
-// ═══════════════════════════════════════════════════════════════
-// LANGUAGE
-// ═══════════════════════════════════════════════════════════════
-function toggleLang(){document.getElementById("lang-dd").classList.toggle("open");}
-document.addEventListener("click",e=>{
-  if(!document.getElementById("lang-btn").contains(e.target)&&!document.getElementById("lang-dd").contains(e.target))
-    document.getElementById("lang-dd").classList.remove("open");
-});
 function setLocale(nl){
-  locale=nl;document.documentElement.lang=nl;
-  document.getElementById("lang-dd").classList.remove("open");
-  document.getElementById("lang-code").textContent=nl==="th"?"TH":"EN";
-  document.getElementById("opt-th").classList.toggle("active",nl==="th");
-  document.getElementById("opt-en").classList.toggle("active",nl==="en");
-  document.getElementById("chk-th").style.display=nl==="th"?"block":"none";
-  document.getElementById("chk-en").style.display=nl==="en"?"block":"none";
-  const cur=document.querySelector(".screen.active")?.id;
-  if(cur==="screen-intro") renderIntro();
-  else if(cur==="screen-privacy") renderPrivacy();
-  else if(cur==="screen-assessment") renderAssessment();
-  else if(cur==="screen-result") renderResult();
+  if(nl!=="th"&&nl!=="en")return;
+
+  locale=nl;
+  document.documentElement.lang=nl;
+
+  try{
+    localStorage.setItem("performia_demo_lang",nl);
+  }catch(e){}
+
+  document.getElementById("lang-th")?.classList.toggle("active",nl==="th");
+  document.getElementById("lang-en")?.classList.toggle("active",nl==="en");
+
+  const currentScreen=document.querySelector(".screen.active")?.id;
+
+  if(currentScreen==="screen-intro"){
+    renderIntro();
+  }else if(currentScreen==="screen-privacy"){
+    renderPrivacy();
+  }else if(currentScreen==="screen-assessment"){
+    renderAssessment();
+  }else if(currentScreen==="screen-result"){
+    renderResult();
+  }
+}
+
+function getInitialLocale(){
+  try{
+    const saved=localStorage.getItem("performia_demo_lang");
+
+    if(saved==="th"||saved==="en"){
+      return saved;
+    }
+  }catch(e){}
+
+  return "th";
 }
 
 // ═══════════════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════════════
 document.getElementById("save-badge").style.display="none";
-renderIntro();
+setLocale(getInitialLocale());
 renderPrivacy();
 </script>
 </body>
