@@ -1,0 +1,3242 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Performia — Human Performance Intelligence Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* =============================================
+   DESIGN TOKENS
+============================================= */
+:root {
+  --primary:       #071B63;
+  --primary-dark:  #031244;
+  --primary-mid:   #0D2B8A;
+  --accent:        #10D5D2;
+  --accent-soft:   rgba(16,213,210,0.12);
+  --bg:            #F8FBFD;
+  --surface:       #FFFFFF;
+  --border:        #DCEAF5;
+  --text-1:        #061849;
+  --text-2:        #52627A;
+  --text-3:        #8A9BB5;
+  --success:       #16A34A;
+  --warning:       #D97706;
+  --danger:        #DC2626;
+  --r:             16px;
+  --r-lg:          20px;
+  --r-xl:          24px;
+  --s-sm:          0 2px 8px rgba(6,24,73,.07);
+  --s-md:          0 6px 24px rgba(6,24,73,.10);
+  --s-lg:          0 16px 48px rgba(6,24,73,.12);
+  --s-xl:          0 32px 80px rgba(6,24,73,.15);
+  --font:          'Noto Sans Thai', sans-serif;
+  --ease:          cubic-bezier(.4,0,.2,1);
+  --dur:           .25s;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body { font-family: var(--font); background: var(--bg); color: var(--text-1); line-height: 1.6; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+
+/* =============================================
+   I18N — show/hide lang blocks
+============================================= */
+[data-lang="en"] .th  { display: none !important; }
+[data-lang="th"] .en  { display: none !important; }
+
+/* =============================================
+   LAYOUT
+============================================= */
+.wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 52px;
+}
+.section {
+  padding: 104px 0;
+}
+.section-sm { padding: 72px 0; }
+
+/* =============================================
+   TYPOGRAPHY
+============================================= */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 18px;
+}
+.eyebrow::before {
+  content: '';
+  width: 18px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+h1, h2, h3, h4 { font-family: var(--font); color: var(--text-1); }
+.h-xl  { font-size: clamp(38px,4.4vw,62px); font-weight: 900; line-height: 1.08; letter-spacing: -.04em; }
+.h-lg  { font-size: clamp(30px,3.2vw,48px); font-weight: 800; line-height: 1.12; letter-spacing: -.03em; }
+.h-md  { font-size: clamp(22px,2.2vw,32px); font-weight: 700; line-height: 1.18; letter-spacing: -.025em; }
+.h-sm  { font-size: 20px; font-weight: 700; line-height: 1.25; letter-spacing: -.02em; }
+.body-lg { font-size: 18px; line-height: 1.72; color: var(--text-2); }
+.body-md { font-size: 16px; line-height: 1.68; color: var(--text-2); }
+.body-sm { font-size: 14px; line-height: 1.65; color: var(--text-2); }
+.center { text-align: center; }
+.accent-word { color: var(--accent); }
+.white { color: #fff; }
+.white-60 { color: rgba(255,255,255,.6); }
+.white-35 { color: rgba(255,255,255,.35); }
+
+/* =============================================
+   BUTTONS
+============================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: var(--r);
+  border: none;
+  cursor: pointer;
+  transition: var(--dur) var(--ease);
+  white-space: nowrap;
+  letter-spacing: .01em;
+}
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  padding: 13px 26px;
+}
+.btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(7,27,99,.28);
+}
+.btn-accent {
+  background: var(--accent);
+  color: var(--primary-dark);
+  padding: 13px 26px;
+}
+.btn-accent:hover {
+  background: #0ec5c2;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(16,213,210,.3);
+}
+.btn-outline {
+  background: transparent;
+  color: var(--text-2);
+  padding: 12px 26px;
+  border: 1.5px solid var(--border);
+}
+.btn-outline:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: rgba(7,27,99,.03);
+}
+.btn-outline-white {
+  background: transparent;
+  color: rgba(255,255,255,.75);
+  padding: 12px 26px;
+  border: 1.5px solid rgba(255,255,255,.22);
+}
+.btn-outline-white:hover {
+  border-color: rgba(255,255,255,.55);
+  color: #fff;
+  background: rgba(255,255,255,.05);
+}
+.btn-lg { padding: 15px 32px; font-size: 15px; border-radius: var(--r-lg); }
+.btn-sm { padding: 9px 18px; font-size: 13px; }
+
+/* =============================================
+   NAV
+============================================= */
+#nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 900;
+  height: 66px;
+  background: rgba(248,251,253,.92);
+  backdrop-filter: blur(22px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+  transition: box-shadow var(--dur) var(--ease);
+}
+#nav.scrolled { box-shadow: 0 2px 20px rgba(6,24,73,.08); }
+.nav-inner {
+  display: flex;
+  align-items: center;
+  height: 66px;
+  gap: 0;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 44px;
+  flex-shrink: 0;
+}
+.logo-mark {
+  width: 34px; height: 34px;
+  background: var(--primary);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logo-mark svg { width: 18px; height: 18px; }
+.logo-text { font-size: 19px; font-weight: 900; color: var(--primary); letter-spacing: -.03em; }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  list-style: none;
+  flex: 1;
+}
+.nav-links a {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-2);
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: var(--dur) var(--ease);
+}
+.nav-links a:hover { color: var(--primary); background: rgba(7,27,99,.04); }
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Language Toggle */
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.lang-btn {
+  padding: 6px 13px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--dur) var(--ease);
+  color: var(--text-3);
+  letter-spacing: .04em;
+  font-family: var(--font);
+  background: none;
+  border: none;
+}
+.lang-btn.active {
+  background: var(--primary);
+  color: #fff;
+}
+.nav-div {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  margin: 0 4px;
+}
+
+/* =============================================
+   HERO
+============================================= */
+#hero {
+  padding-top: 66px;
+  min-height: 100vh;
+  background: var(--primary-dark);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+/* Subtle grid */
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(16,213,210,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16,213,210,.035) 1px, transparent 1px);
+  background-size: 72px 72px;
+  pointer-events: none;
+}
+
+/* Radial glows */
+.hero-glow { position: absolute; border-radius: 50%; pointer-events: none; }
+.glow-1 {
+  width: 700px; height: 700px;
+  top: -200px; right: 0;
+  background: radial-gradient(circle, rgba(16,213,210,.07) 0%, transparent 65%);
+}
+.glow-2 {
+  width: 500px; height: 500px;
+  bottom: -180px; left: 60px;
+  background: radial-gradient(circle, rgba(7,27,99,.6) 0%, transparent 65%);
+}
+.glow-3 {
+  width: 400px; height: 400px;
+  top: 40%; right: 10%;
+  background: radial-gradient(circle, rgba(16,213,210,.04) 0%, transparent 60%);
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 540px 1fr;
+  gap: 80px;
+  align-items: center;
+  padding: 96px 0;
+  width: 100%;
+}
+
+/* Hero badge */
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(16,213,210,.09);
+  border: 1px solid rgba(16,213,210,.22);
+  border-radius: 100px;
+  padding: 5px 15px 5px 9px;
+  margin-bottom: 30px;
+}
+.badge-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: blink 2.2s ease infinite;
+}
+@keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+.badge-text {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.hero-h1 {
+  font-size: clamp(40px,4.8vw,66px);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -.04em;
+  color: #fff;
+  margin-bottom: 22px;
+}
+.hero-h1 em { font-style: normal; color: var(--accent); }
+
+.hero-sub {
+  font-size: 17.5px;
+  line-height: 1.72;
+  color: rgba(255,255,255,.52);
+  margin-bottom: 38px;
+  font-weight: 400;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 56px;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 36px;
+  padding-top: 36px;
+  border-top: 1px solid rgba(255,255,255,.07);
+}
+.h-stat-val {
+  font-size: 28px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -.04em;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.h-stat-val span { color: var(--accent); }
+.h-stat-lbl {
+  font-size: 11px;
+  color: rgba(255,255,255,.35);
+  font-weight: 500;
+  letter-spacing: .02em;
+}
+
+/* Hero visual — abstract intelligence network */
+.hero-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.intel-network {
+  position: relative;
+  width: 100%;
+  max-width: 540px;
+  aspect-ratio: 1;
+}
+
+.intel-network svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Floating info chips */
+.intel-chip {
+  position: absolute;
+  background: rgba(255,255,255,.96);
+  border: 1px solid rgba(255,255,255,.9);
+  border-radius: 14px;
+  padding: 12px 16px;
+  box-shadow: 0 12px 40px rgba(3,18,68,.28), 0 2px 8px rgba(3,18,68,.14);
+  white-space: nowrap;
+  animation: chipFloat 5s ease-in-out infinite;
+}
+.chip-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--text-3);
+  margin-bottom: 3px;
+}
+.chip-value {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -.03em;
+  line-height: 1;
+  color: var(--text-1);
+}
+.chip-sub {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--success);
+  margin-top: 2px;
+}
+.chip-sub.warn { color: var(--warning); }
+
+.chip-1 { top: 8%; left: -5%; animation-delay: 0s; }
+.chip-2 { top: 12%; right: 2%; animation-delay: 1.4s; }
+.chip-3 { bottom: 16%; right: -3%; animation-delay: 2.8s; }
+.chip-4 { bottom: 8%; left: 4%; animation-delay: .7s; }
+
+@keyframes chipFloat {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+/* =============================================
+   SECTION — CHALLENGE
+============================================= */
+#challenge { background: var(--surface); }
+
+.challenge-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 52px;
+}
+
+.challenge-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 32px 28px;
+  position: relative;
+  overflow: hidden;
+  transition: var(--dur) var(--ease);
+}
+.challenge-card:hover {
+  border-color: rgba(7,27,99,.16);
+  box-shadow: var(--s-lg);
+  transform: translateY(-3px);
+}
+.challenge-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--primary);
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  opacity: 0;
+  transition: opacity var(--dur);
+}
+.challenge-card:hover::before { opacity: 1; }
+
+.challenge-icon {
+  width: 44px; height: 44px;
+  background: rgba(7,27,99,.07);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+.challenge-icon svg { width: 22px; height: 22px; stroke: var(--primary); }
+
+.challenge-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 8px;
+}
+.challenge-desc { font-size: 13.5px; color: var(--text-2); line-height: 1.6; }
+
+.challenge-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  margin-top: 16px;
+}
+.challenge-stat-num {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--primary);
+  letter-spacing: -.03em;
+}
+.challenge-stat-lbl {
+  font-size: 11px;
+  color: var(--text-3);
+  font-weight: 500;
+}
+
+/* =============================================
+   SECTION — WHY HUMAN PERFORMANCE MATTERS
+============================================= */
+#why-hp {
+  background: var(--bg);
+}
+
+.impact-chains {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 56px;
+}
+
+.impact-chain {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  transition: var(--dur) var(--ease);
+  position: relative;
+  overflow: hidden;
+}
+.impact-chain:hover {
+  border-color: rgba(16,213,210,.35);
+  box-shadow: var(--s-md);
+  transform: translateY(-2px);
+}
+
+.chain-cause {
+  background: var(--primary);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.chain-cause-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: rgba(255,255,255,.4);
+  margin-bottom: 6px;
+}
+.chain-cause-value {
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -.02em;
+}
+
+.chain-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  color: var(--accent);
+}
+.chain-arrow svg { width: 16px; height: 16px; stroke: var(--accent); }
+
+.chain-effect {
+  background: rgba(16,213,210,.07);
+  border: 1px solid rgba(16,213,210,.2);
+  border-radius: 10px;
+  padding: 14px;
+}
+.chain-effect-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: rgba(16,213,210,.7);
+  margin-bottom: 5px;
+}
+.chain-effect-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-1);
+  letter-spacing: -.01em;
+}
+
+.chain-metric {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-3);
+}
+.chain-metric strong { color: var(--success); font-weight: 700; }
+
+/* =============================================
+   SECTION — JV MATRIX
+============================================= */
+#jv-matrix {
+  background: var(--primary-dark);
+  position: relative;
+  overflow: hidden;
+}
+.matrix-grid-bg {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(16,213,210,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16,213,210,.03) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+.matrix-glow {
+  position: absolute;
+  width: 800px; height: 800px;
+  top: -300px; right: -200px;
+  background: radial-gradient(circle, rgba(16,213,210,.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.jv-inner { position: relative; z-index: 2; }
+.jv-inner .eyebrow { color: var(--accent); }
+.jv-inner .h-lg { color: #fff; }
+.jv-inner .body-md { color: rgba(255,255,255,.5); }
+
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+  margin-top: 52px;
+}
+
+.pillar-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: var(--r-xl);
+  padding: 28px 20px;
+  cursor: pointer;
+  transition: var(--dur) var(--ease);
+  position: relative;
+  overflow: hidden;
+}
+.pillar-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 0 0 var(--r-xl) var(--r-xl);
+  transition: var(--dur);
+}
+.pillar-card:hover,
+.pillar-card.active {
+  background: rgba(255,255,255,.07);
+  border-color: rgba(255,255,255,.14);
+  transform: translateY(-3px);
+}
+.pillar-card:hover::after,
+.pillar-card.active::after { opacity: 1; }
+
+.pillar-icon {
+  width: 42px; height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.pillar-icon svg { width: 21px; height: 21px; }
+
+.pillar-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 7px;
+  letter-spacing: -.01em;
+}
+.pillar-desc {
+  font-size: 11.5px;
+  color: rgba(255,255,255,.4);
+  line-height: 1.55;
+}
+
+/* Pillar accent colors */
+.p-mind   .pillar-icon { background: rgba(16,213,210,.15); }
+.p-mind   .pillar-icon svg { stroke: var(--accent); }
+.p-mind::after   { background: var(--accent); }
+
+.p-body   .pillar-icon { background: rgba(220,38,38,.12); }
+.p-body   .pillar-icon svg { stroke: #FC8181; }
+.p-body::after   { background: #FC8181; }
+
+.p-money  .pillar-icon { background: rgba(217,119,6,.12); }
+.p-money  .pillar-icon svg { stroke: #FCD34D; }
+.p-money::after  { background: #FCD34D; }
+
+.p-social .pillar-icon { background: rgba(52,211,153,.12); }
+.p-social .pillar-icon svg { stroke: #34D399; }
+.p-social::after { background: #34D399; }
+
+.p-growth .pillar-icon { background: rgba(167,139,250,.12); }
+.p-growth .pillar-icon svg { stroke: #A78BFA; }
+.p-growth::after { background: #A78BFA; }
+
+.p-work   .pillar-icon { background: rgba(147,197,253,.12); }
+.p-work   .pillar-icon svg { stroke: #93C5FD; }
+.p-work::after   { background: #93C5FD; }
+
+/* Pillar detail panel */
+.pillar-detail {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: var(--r-xl);
+  padding: 36px 40px;
+  margin-top: 24px;
+  display: none;
+  animation: fadeIn .25s var(--ease);
+}
+.pillar-detail.visible { display: flex; gap: 60px; }
+@keyframes fadeIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: none; } }
+.pd-left { flex: 1; }
+.pd-title { font-size: 24px; font-weight: 800; color: #fff; letter-spacing: -.025em; margin-bottom: 12px; }
+.pd-desc  { font-size: 15px; color: rgba(255,255,255,.5); line-height: 1.7; margin-bottom: 20px; }
+.pd-tags  { display: flex; flex-wrap: wrap; gap: 8px; }
+.pd-tag {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 100px;
+  padding: 4px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,.6);
+}
+.pd-right { width: 280px; flex-shrink: 0; }
+.pd-metrics { display: flex; flex-direction: column; gap: 10px; }
+.pd-metric {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.pd-metric-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.pd-metric-icon svg { width: 15px; height: 15px; }
+.pd-metric-text { font-size: 12px; color: rgba(255,255,255,.55); }
+.pd-metric-val  { margin-left: auto; font-size: 14px; font-weight: 800; color: #fff; }
+
+/* =============================================
+   SECTION — HOW IT WORKS
+============================================= */
+#how-it-works { background: var(--surface); }
+
+.workflow {
+  display: flex;
+  gap: 0;
+  margin-top: 52px;
+  position: relative;
+}
+
+/* connector line */
+.workflow::before {
+  content: '';
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  right: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
+  opacity: .18;
+}
+
+.workflow-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 12px;
+  position: relative;
+  cursor: pointer;
+  transition: var(--dur) var(--ease);
+}
+.workflow-step:hover .ws-circle { background: var(--primary); border-color: var(--primary); }
+.workflow-step:hover .ws-num { color: #fff; }
+
+.ws-circle {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  transition: var(--dur) var(--ease);
+  position: relative;
+  z-index: 2;
+}
+
+.ws-circle.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 8px rgba(7,27,99,.1);
+}
+.ws-circle.active .ws-num { color: #fff; }
+
+.ws-num {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--text-3);
+  letter-spacing: -.03em;
+  line-height: 1;
+}
+
+.ws-step-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--accent);
+  margin-bottom: 7px;
+}
+.ws-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 8px;
+  letter-spacing: -.015em;
+}
+.ws-desc {
+  font-size: 12.5px;
+  color: var(--text-2);
+  line-height: 1.58;
+}
+
+/* =============================================
+   SECTION — INTERVENTIONS
+============================================= */
+#interventions {
+  background: var(--bg);
+}
+
+.intervention-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 52px;
+}
+
+.interv-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  transition: var(--dur) var(--ease);
+}
+.interv-card:hover {
+  border-color: rgba(7,27,99,.16);
+  box-shadow: var(--s-lg);
+  transform: translateY(-3px);
+}
+
+.interv-visual {
+  height: 160px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Enterprise abstract visual for each pillar */
+.interv-visual-inner {
+  width: 100%; height: 100%;
+  position: absolute; inset: 0;
+}
+
+.interv-body {
+  padding: 22px 22px 24px;
+}
+.interv-pillar {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: 7px;
+}
+.interv-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 9px;
+  letter-spacing: -.01em;
+}
+.interv-desc {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+.interv-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.interv-tag {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  color: var(--text-2);
+}
+
+/* =============================================
+   SECTION — BUSINESS IMPACT
+============================================= */
+#business-impact {
+  background: var(--surface);
+}
+
+.impact-layout {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 48px;
+  align-items: start;
+  margin-top: 56px;
+}
+
+.signal-col, .insight-col { display: flex; flex-direction: column; gap: 12px; }
+
+.signal-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: var(--dur) var(--ease);
+  cursor: pointer;
+}
+.signal-card:hover { border-color: rgba(7,27,99,.18); box-shadow: var(--s-sm); }
+.signal-card.active {
+  border-color: var(--primary);
+  background: rgba(7,27,99,.03);
+}
+
+.signal-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.signal-card-title { font-size: 14px; font-weight: 700; color: var(--text-1); margin-bottom: 2px; }
+.signal-card-sub   { font-size: 11px; color: var(--text-2); }
+.signal-card-val   { margin-left: auto; font-size: 13px; font-weight: 800; color: var(--primary); flex-shrink: 0; }
+
+.impact-middle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding-top: 32px;
+}
+.impact-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.impact-arrow-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--accent);
+}
+.impact-arrow-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(180deg, var(--accent), transparent);
+}
+.impact-arrow-head {
+  width: 20px; height: 20px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.impact-arrow-head svg { width: 10px; height: 10px; stroke: var(--primary-dark); }
+
+.impact-platform-badge {
+  background: var(--primary);
+  border-radius: var(--r);
+  padding: 18px 20px;
+  text-align: center;
+  min-width: 140px;
+}
+.ipb-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: rgba(255,255,255,.35); margin-bottom: 5px; }
+.ipb-name  { font-size: 14px; font-weight: 800; color: #fff; letter-spacing: -.01em; }
+
+.insight-card {
+  background: var(--primary);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: var(--r);
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: var(--dur) var(--ease);
+}
+.insight-card:hover { transform: translateX(4px); }
+
+.insight-icon {
+  width: 36px; height: 36px;
+  background: rgba(16,213,210,.12);
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.insight-icon svg { width: 17px; height: 17px; stroke: var(--accent); }
+.insight-title { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+.insight-sub   { font-size: 11px; color: rgba(255,255,255,.45); }
+.insight-delta { margin-left: auto; font-size: 12px; font-weight: 800; color: #34D399; flex-shrink: 0; }
+
+/* =============================================
+   SECTION — BENCHMARK
+============================================= */
+#benchmark { background: var(--bg); }
+
+.bench-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 52px;
+}
+
+.bench-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 32px 26px;
+  position: relative;
+  overflow: hidden;
+  transition: var(--dur) var(--ease);
+}
+.bench-card:hover { box-shadow: var(--s-lg); transform: translateY(-3px); border-color: rgba(7,27,99,.16); }
+.bench-card-top { position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+
+.bench-ranking {
+  font-size: 52px;
+  font-weight: 900;
+  letter-spacing: -.06em;
+  line-height: 1;
+  margin-bottom: 5px;
+  color: var(--primary);
+}
+.bench-ranking span { color: var(--accent); }
+.bench-type {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--text-3);
+  margin-bottom: 12px;
+}
+.bench-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 12px;
+  line-height: 1.35;
+}
+.bench-track {
+  height: 5px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 7px;
+}
+.bench-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+.bench-note { font-size: 11px; color: var(--text-3); }
+
+/* Executive tool note */
+.bench-exec-note {
+  background: var(--primary);
+  border-radius: var(--r-xl);
+  padding: 32px 40px;
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+.ben-left {}
+.ben-right { flex-shrink: 0; }
+.ben-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+  margin-bottom: 8px;
+}
+.ben-title { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -.025em; margin-bottom: 10px; }
+.ben-desc  { font-size: 14px; color: rgba(255,255,255,.5); line-height: 1.65; }
+
+/* =============================================
+   SECTION — ESG REPORTING
+============================================= */
+#reporting { background: var(--surface); }
+
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-top: 52px;
+}
+
+.report-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 28px 22px;
+  transition: var(--dur) var(--ease);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.report-card:hover {
+  border-color: rgba(7,27,99,.16);
+  box-shadow: var(--s-md);
+  transform: translateY(-3px);
+}
+.report-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  opacity: 0;
+  transition: opacity var(--dur);
+}
+.report-card:hover::after { opacity: 1; }
+
+/* Abstract report visual */
+.report-visual {
+  height: 110px;
+  background: var(--primary-dark);
+  border-radius: 12px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.rv-inner {
+  width: 100%; height: 100%;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.rv-line {
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(255,255,255,.1);
+}
+.rv-line.accent { background: rgba(16,213,210,.5); }
+.rv-line.light  { background: rgba(255,255,255,.2); }
+
+.rc-type {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.rc-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 7px;
+  line-height: 1.3;
+}
+.rc-desc { font-size: 12px; color: var(--text-2); line-height: 1.55; }
+
+/* =============================================
+   SECTION — WHO IS IT FOR
+============================================= */
+#who-for { background: var(--bg); }
+
+.who-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 52px;
+}
+.who-grid-wide {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.who-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 28px 24px;
+  transition: var(--dur) var(--ease);
+  display: flex;
+  flex-direction: column;
+}
+.who-card:hover {
+  border-color: rgba(7,27,99,.16);
+  box-shadow: var(--s-md);
+  transform: translateY(-2px);
+}
+.who-card.featured {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.who-icon {
+  width: 42px; height: 42px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+.who-card:not(.featured) .who-icon { background: rgba(7,27,99,.07); }
+.who-card:not(.featured) .who-icon svg { stroke: var(--primary); }
+.who-card.featured .who-icon { background: rgba(16,213,210,.15); }
+.who-card.featured .who-icon svg { stroke: var(--accent); }
+
+.who-icon svg { width: 20px; height: 20px; }
+
+.who-name {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  letter-spacing: -.01em;
+}
+.who-card:not(.featured) .who-name { color: var(--text-1); }
+.who-card.featured .who-name { color: #fff; }
+
+.who-desc { font-size: 13px; line-height: 1.6; }
+.who-card:not(.featured) .who-desc { color: var(--text-2); }
+.who-card.featured .who-desc { color: rgba(255,255,255,.5); }
+
+/* =============================================
+   SECTION — FINAL CTA
+============================================= */
+#final-cta {
+  background: var(--primary-dark);
+  padding: 120px 0;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+#final-cta .hero-grid { opacity: .5; }
+
+.cta-body { position: relative; z-index: 2; max-width: 660px; margin: 0 auto; }
+.cta-body .eyebrow { justify-content: center; }
+.cta-h2 {
+  font-size: clamp(32px,3.8vw,52px);
+  font-weight: 900;
+  letter-spacing: -.04em;
+  line-height: 1.1;
+  color: #fff;
+  margin-bottom: 18px;
+}
+.cta-h2 em { font-style: normal; color: var(--accent); }
+.cta-sub {
+  font-size: 17px;
+  color: rgba(255,255,255,.5);
+  line-height: 1.7;
+  margin-bottom: 36px;
+}
+.cta-btns { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 52px; }
+.cta-trust {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  padding-top: 36px;
+  border-top: 1px solid rgba(255,255,255,.07);
+  flex-wrap: wrap;
+}
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: rgba(255,255,255,.3);
+  font-weight: 500;
+}
+.trust-item svg { width: 14px; height: 14px; stroke: rgba(255,255,255,.25); }
+
+/* =============================================
+   FOOTER
+============================================= */
+footer {
+  background: var(--primary-dark);
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+.footer-body {
+  padding: 64px 0 40px;
+  display: grid;
+  grid-template-columns: 220px 1fr 1fr 1fr 1fr;
+  gap: 52px;
+}
+.footer-logo { display: flex; align-items: center; gap: 9px; margin-bottom: 14px; }
+.footer-lm { width: 30px; height: 30px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+.footer-lm svg { width: 15px; height: 15px; stroke: var(--primary-dark); }
+.footer-lt { font-size: 17px; font-weight: 900; color: #fff; letter-spacing: -.03em; }
+.footer-tag { font-size: 13px; color: rgba(255,255,255,.3); line-height: 1.65; margin-bottom: 18px; }
+.footer-socials { display: flex; gap: 8px; }
+.soc { width: 31px; height: 31px; border: 1px solid rgba(255,255,255,.12); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.35); transition: var(--dur) var(--ease); }
+.soc:hover { border-color: var(--accent); color: var(--accent); }
+.soc svg { width: 14px; height: 14px; }
+.footer-col-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: rgba(255,255,255,.35); margin-bottom: 16px; }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+.footer-links a { font-size: 13px; color: rgba(255,255,255,.38); transition: var(--dur) var(--ease); }
+.footer-links a:hover { color: rgba(255,255,255,.75); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.footer-copy { font-size: 12px; color: rgba(255,255,255,.2); }
+.footer-legal { display: flex; gap: 16px; }
+.footer-legal a { font-size: 12px; color: rgba(255,255,255,.2); transition: var(--dur); }
+.footer-legal a:hover { color: rgba(255,255,255,.5); }
+
+/* Footer lang switcher */
+.footer-lang {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.footer-lang-btn {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255,255,255,.3);
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: var(--font);
+  transition: var(--dur);
+}
+.footer-lang-btn.active { color: var(--accent); }
+.footer-lang-sep { color: rgba(255,255,255,.15); font-size: 12px; }
+
+/* =============================================
+   SCROLL REVEAL
+============================================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .55s var(--ease), transform .55s var(--ease);
+}
+.reveal.in { opacity: 1; transform: none; }
+.d1 { transition-delay: .07s; }
+.d2 { transition-delay: .14s; }
+.d3 { transition-delay: .21s; }
+.d4 { transition-delay: .28s; }
+.d5 { transition-delay: .35s; }
+.d6 { transition-delay: .42s; }
+
+/* =============================================
+   PHOTOGRAPHY SYSTEM
+============================================= */
+
+.photo-frame {
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: var(--s-lg);
+  position: relative;
+}
+.photo-frame img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  display: block;
+  transition: transform .6s var(--ease);
+}
+.photo-frame:hover img { transform: scale(1.03); }
+.photo-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(3,18,68,.85) 0%, rgba(3,18,68,.28) 50%, transparent 100%);
+}
+
+/* Hero photo */
+.hero-photo-wrap {
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(3,18,68,.55), 0 8px 32px rgba(3,18,68,.3);
+  border: 1px solid rgba(255,255,255,.1);
+  aspect-ratio: 4/5;
+  position: relative;
+  max-width: 480px;
+}
+.hero-photo-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center 20%;
+  display: block;
+}
+.hero-photo-wrap .photo-overlay {
+  background: linear-gradient(to bottom, rgba(3,18,68,.3) 0%, transparent 40%, rgba(3,18,68,.55) 100%);
+}
+
+/* Challenge photo cards */
+.challenge-card.photo-card { padding: 0; overflow: hidden; }
+.challenge-card.photo-card .cc-photo {
+  height: 148px; overflow: hidden; position: relative;
+}
+.challenge-card.photo-card .cc-photo img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform .6s var(--ease);
+  filter: saturate(.85) brightness(.9);
+}
+.challenge-card.photo-card:hover .cc-photo img { transform: scale(1.05); filter: saturate(1) brightness(.95); }
+.challenge-card.photo-card .cc-photo-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 35%, rgba(3,18,68,.55) 100%);
+}
+.challenge-card.photo-card .cc-body { padding: 20px 22px 22px; }
+
+/* Pillar card photo thumbnails */
+.pillar-photo {
+  width: 100%; height: 76px;
+  border-radius: 10px; overflow: hidden;
+  margin-bottom: 14px; position: relative;
+  border: 1px solid rgba(255,255,255,.06);
+}
+.pillar-photo img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: saturate(.55) brightness(.5);
+  transition: filter .4s var(--ease), transform .5s var(--ease);
+}
+.pillar-card:hover .pillar-photo img,
+.pillar-card.active .pillar-photo img {
+  filter: saturate(.8) brightness(.65);
+  transform: scale(1.05);
+}
+
+/* Intervention photo tops */
+.interv-photo {
+  height: 188px; overflow: hidden;
+  position: relative; display: block;
+}
+.interv-photo img {
+  width: 100%; height: 100%; object-fit: cover;
+  object-position: center;
+  transition: transform .55s var(--ease);
+  filter: saturate(.85) brightness(.9);
+}
+.interv-card:hover .interv-photo img { transform: scale(1.04); filter: saturate(1) brightness(.95); }
+.interv-photo-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(3,18,68,.72) 0%, rgba(3,18,68,.08) 55%, transparent 100%);
+}
+.interv-photo-pill {
+  position: absolute; bottom: 12px; left: 14px;
+  background: rgba(255,255,255,.92);
+  border-radius: 100px; padding: 4px 12px;
+  font-size: 10px; font-weight: 700;
+  color: var(--primary); letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+/* Business impact photo */
+.impact-photo-col {
+  position: relative;
+}
+.impact-photo-frame {
+  border-radius: var(--r-xl); overflow: hidden;
+  box-shadow: var(--s-xl); border: 1px solid var(--border);
+  height: 400px; position: relative;
+}
+.impact-photo-frame img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center 25%;
+}
+.impact-photo-frame .photo-overlay {
+  background: linear-gradient(to top, rgba(3,18,68,.7) 0%, transparent 55%);
+}
+.impact-photo-caption {
+  position: absolute; bottom: 20px; left: 20px; right: 20px;
+  background: rgba(255,255,255,.97);
+  border-radius: var(--r); padding: 14px 18px;
+  box-shadow: var(--s-md);
+  display: flex; align-items: center; gap: 12px;
+}
+.ipc-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  flex-shrink: 0;
+}
+.ipc-name { font-size: 13px; font-weight: 700; color: var(--text-1); margin-bottom: 1px; }
+.ipc-role { font-size: 11px; color: var(--text-2); }
+.ipc-stat { margin-left: auto; text-align: right; }
+.ipc-stat-val { font-size: 20px; font-weight: 900; color: var(--primary); letter-spacing: -.04em; line-height: 1; }
+.ipc-stat-lbl { font-size: 9px; color: var(--text-3); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; }
+
+/* ESG / Reporting photo band */
+.reporting-photo-band {
+  margin-top: 48px; border-radius: var(--r-xl);
+  overflow: hidden; height: 280px;
+  position: relative; box-shadow: var(--s-xl);
+  border: 1px solid var(--border);
+}
+.reporting-photo-band img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center 35%;
+}
+.rpb-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, rgba(3,18,68,.90) 0%, rgba(3,18,68,.55) 55%, rgba(3,18,68,.18) 100%);
+  display: flex; align-items: center; padding: 0 56px;
+}
+.rpb-content { max-width: 500px; }
+.rpb-eye {
+  font-size: 10px; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+}
+.rpb-title {
+  font-size: clamp(22px, 2.4vw, 30px); font-weight: 800;
+  color: #fff; letter-spacing: -.03em; line-height: 1.15; margin-bottom: 12px;
+}
+.rpb-desc { font-size: 15px; color: rgba(255,255,255,.55); line-height: 1.65; }
+
+/* =============================================
+   RESPONSIVE
+============================================= */
+@media (max-width: 1100px) {
+  .wrap { padding: 0 32px; }
+  .hero-inner { grid-template-columns: 1fr; }
+  .intel-network { max-width: 400px; margin: 0 auto; }
+  .pillars-grid { grid-template-columns: repeat(3,1fr); }
+  .impact-chains { grid-template-columns: repeat(2,1fr); }
+  .bench-grid { grid-template-columns: 1fr 1fr; }
+  .report-grid { grid-template-columns: repeat(3,1fr); }
+  .footer-body { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+@media (max-width: 768px) {
+  .wrap { padding: 0 20px; }
+  .section { padding: 72px 0; }
+  .nav-links { display: none; }
+  .hero-inner { padding: 56px 0; }
+  .challenge-grid { grid-template-columns: 1fr; }
+  .pillars-grid { grid-template-columns: repeat(2,1fr); }
+  .impact-chains { grid-template-columns: 1fr; }
+  .impact-layout { grid-template-columns: 1fr; }
+  .impact-middle { display: none; }
+  .intervention-grid { grid-template-columns: 1fr; }
+  .bench-grid { grid-template-columns: 1fr; }
+  .report-grid { grid-template-columns: 1fr 1fr; }
+  .who-grid, .who-grid-wide { grid-template-columns: 1fr; }
+  .footer-body { grid-template-columns: 1fr; gap: 28px; }
+  .hero-stats { flex-wrap: wrap; gap: 20px; }
+  .bench-exec-note { flex-direction: column; gap: 20px; }
+  .pillar-detail.visible { flex-direction: column; }
+  .pd-right { width: 100%; }
+}
+@media (max-width: 480px) {
+  .pillars-grid { grid-template-columns: 1fr 1fr; }
+  .report-grid { grid-template-columns: 1fr; }
+  .challenge-grid { grid-template-columns: 1fr; }
+  .workflow { flex-direction: column; gap: 24px; }
+  .workflow::before { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- =============================================
+   NAVIGATION
+============================================= -->
+<nav id="nav">
+  <div class="wrap nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 18 18" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round">
+          <path d="M3.5 9.5l3.5 3.5L14.5 5"/>
+        </svg>
+      </div>
+      <span class="logo-text">Performia</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#why-hp"><span class="en">Platform</span><span class="th">แพลตฟอร์ม</span></a></li>
+      <li><a href="#jv-matrix"><span class="en">Framework</span><span class="th">เฟรมเวิร์ก</span></a></li>
+      <li><a href="#benchmark"><span class="en">Benchmarks</span><span class="th">เปรียบเทียบ</span></a></li>
+      <li><a href="#reporting"><span class="en">Reporting</span><span class="th">รายงาน</span></a></li>
+      <li><a href="#who-for"><span class="en">Solutions</span><span class="th">โซลูชัน</span></a></li>
+    </ul>
+
+    <div class="nav-right">
+      <div class="lang-toggle" role="group" aria-label="Language switcher">
+        <button class="lang-btn active" data-lang-switch="en">EN</button>
+        <button class="lang-btn" data-lang-switch="th">TH</button>
+      </div>
+      <div class="nav-div"></div>
+      <a href="#final-cta" class="btn btn-outline btn-sm">
+        <span class="en">Sign In</span><span class="th">เข้าสู่ระบบ</span>
+      </a>
+      <a href="#final-cta" class="btn btn-primary btn-sm">
+        <span class="en">Book a Demo</span><span class="th">นัดสาธิต</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- =============================================
+   01. HERO
+============================================= -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow glow-1"></div>
+  <div class="hero-glow glow-2"></div>
+  <div class="hero-glow glow-3"></div>
+
+  <div class="wrap">
+    <div class="hero-inner">
+
+      <!-- Left content -->
+      <div>
+        <div class="hero-badge">
+          <div class="badge-dot"></div>
+          <span class="badge-text en">Human Performance Intelligence</span>
+          <span class="badge-text th">ระบบวิเคราะห์ประสิทธิภาพบุคลากร</span>
+        </div>
+
+        <h1 class="hero-h1">
+          <span class="en">Turn Wellbeing Into <em>Measurable</em> Performance</span>
+          <span class="th">เปลี่ยนความเป็นอยู่ที่ดี<br>เป็น<em>ประสิทธิภาพที่วัดได้</em></span>
+        </h1>
+
+        <p class="hero-sub en">The Human Performance & Wellbeing Budget Platform that helps organizations improve employee wellbeing, measure performance outcomes, and generate business impact.</p>
+        <p class="hero-sub th">แพลตฟอร์มงบประมาณด้านประสิทธิภาพและความเป็นอยู่ที่ดีของบุคลากร ที่ช่วยองค์กรปรับปรุงสวัสดิภาพพนักงาน วัดผลประสิทธิภาพ และสร้างผลกระทบทางธุรกิจ</p>
+
+        <div class="hero-actions">
+          <a href="#final-cta" class="btn btn-accent btn-lg">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="2" width="14" height="11" rx="1.5"/><path d="M5 1v2M11 1v2M1 6h14"/></svg>
+            <span class="en">Book a Demo</span><span class="th">นัดสาธิต</span>
+          </a>
+          <a href="#final-cta" class="btn btn-outline-white btn-lg">
+            <span class="en">Contact Sales</span><span class="th">ติดต่อฝ่ายขาย</span>
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7.5h9M8 3l4 4.5-4 4.5"/></svg>
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div>
+            <div class="h-stat-val"><span>92</span>%</div>
+            <div class="h-stat-lbl en">Avg. Participation</div>
+            <div class="h-stat-lbl th">อัตราการมีส่วนร่วม</div>
+          </div>
+          <div>
+            <div class="h-stat-val"><span>3.4</span>x</div>
+            <div class="h-stat-lbl en">Measured ROI</div>
+            <div class="h-stat-lbl th">ผลตอบแทนที่วัดได้</div>
+          </div>
+          <div>
+            <div class="h-stat-val">Top <span>18</span>%</div>
+            <div class="h-stat-lbl en">Industry Benchmark</div>
+            <div class="h-stat-lbl th">เกณฑ์มาตรฐานอุตสาหกรรม</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right — real photo + KPI chips -->
+      <div class="hero-visual">
+        <!-- Floating KPI chips -->
+        <div class="intel-chip chip-1">
+          <div class="chip-label en">HPS Score</div>
+          <div class="chip-label th">คะแนน HPS</div>
+          <div class="chip-value">79.4</div>
+          <div class="chip-sub">+6.2 vs Q3</div>
+        </div>
+        <div class="intel-chip chip-2">
+          <div class="chip-label en">Participation</div>
+          <div class="chip-label th">การมีส่วนร่วม</div>
+          <div class="chip-value">88%</div>
+          <div class="chip-sub">+12% MoM</div>
+        </div>
+        <div class="intel-chip chip-3">
+          <div class="chip-label en">ESG S-Score</div>
+          <div class="chip-label th">คะแนน ESG S</div>
+          <div class="chip-value">A+</div>
+          <div class="chip-sub">GRI Aligned</div>
+        </div>
+        <div class="intel-chip chip-4">
+          <div class="chip-label en">Budget ROI</div>
+          <div class="chip-label th">ROI งบประมาณ</div>
+          <div class="chip-value">3.4x</div>
+          <div class="chip-sub warn">Q4 2024</div>
+        </div>
+
+        <!-- Real photography — corporate team in modern office -->
+        <div class="hero-photo-wrap">
+          <img
+            src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=960&q=80&auto=format&fit=crop"
+            alt="Diverse enterprise professionals in a modern collaborative workspace"
+            loading="eager"
+          />
+          <div class="photo-overlay"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+   02. THE CHALLENGE
+============================================= -->
+<section id="challenge" class="section">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow"><span class="en">The Challenge</span><span class="th">ความท้าทาย</span></div>
+      <h2 class="h-lg" style="max-width:620px">
+        <span class="en">Organizations Invest in People. But Struggle to Measure Impact.</span>
+        <span class="th">องค์กรลงทุนในบุคลากร แต่ยังวัดผลกระทบไม่ได้</span>
+      </h2>
+    </div>
+
+    <div class="challenge-grid" style="margin-top:48px">
+
+      <div class="challenge-card photo-card reveal d1">
+        <div class="cc-photo">
+          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=640&q=75&auto=format&fit=crop" alt="Focused professional experiencing workplace stress" loading="lazy"/>
+          <div class="cc-photo-overlay"></div>
+        </div>
+        <div class="cc-body">
+          <div class="challenge-icon" style="margin-bottom:12px">
+            <svg viewBox="0 0 22 22" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M11 21a9 9 0 100-18 9 9 0 000 18z"/><path d="M11 7v5l3 3"/></svg>
+          </div>
+          <div class="challenge-title"><span class="en">Burnout at Scale</span><span class="th">ความเหนื่อยล้าทั่วองค์กร</span></div>
+          <div class="challenge-desc"><span class="en">76% of employees report symptoms of burnout, yet most organizations lack early warning systems to identify and address it before talent exits.</span><span class="th">76% ของพนักงานมีอาการเหนื่อยหน่าย แต่องค์กรส่วนใหญ่ยังขาดระบบเตือนภัยล่วงหน้า</span></div>
+          <div class="challenge-stat"><span class="challenge-stat-num">76%</span><span class="challenge-stat-lbl">Gallup, 2024</span></div>
+        </div>
+      </div>
+
+      <div class="challenge-card photo-card reveal d2">
+        <div class="cc-photo">
+          <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=640&q=75&auto=format&fit=crop" alt="HR team analyzing data in a meeting room" loading="lazy"/>
+          <div class="cc-photo-overlay"></div>
+        </div>
+        <div class="cc-body">
+          <div class="challenge-icon" style="margin-bottom:12px">
+            <svg viewBox="0 0 22 22" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <div class="challenge-title"><span class="en">Low Program Participation</span><span class="th">อัตราการมีส่วนร่วมต่ำ</span></div>
+          <div class="challenge-desc"><span class="en">Generic wellbeing programs average only 20–40% participation because they offer the same content to everyone rather than personalized interventions.</span><span class="th">โปรแกรมสวัสดิภาพทั่วไปมีอัตราการมีส่วนร่วมเฉลี่ยเพียง 20–40% เนื่องจากขาดการปรับแต่งเฉพาะบุคคล</span></div>
+          <div class="challenge-stat"><span class="challenge-stat-num">40%</span><span class="challenge-stat-lbl"><span class="en">avg. participation</span><span class="th">อัตราเฉลี่ย</span></span></div>
+        </div>
+      </div>
+
+      <div class="challenge-card photo-card reveal d3">
+        <div class="cc-photo">
+          <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=640&q=75&auto=format&fit=crop" alt="Business leaders discussing budget and strategy" loading="lazy"/>
+          <div class="cc-photo-overlay"></div>
+        </div>
+        <div class="cc-body">
+          <div class="challenge-icon" style="margin-bottom:12px">
+            <svg viewBox="0 0 22 22" fill="none" stroke-width="1.8" stroke-linecap="round"><line x1="11" y1="1" x2="11" y2="21"/><path d="M17 5H8.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H5"/></svg>
+          </div>
+          <div class="challenge-title"><span class="en">Budget Without Accountability</span><span class="th">งบประมาณที่ขาดความรับผิดชอบ</span></div>
+          <div class="challenge-desc"><span class="en">HR leaders spend billions on wellbeing programs with no data on which initiatives drive outcomes, resulting in vendor lock-in and wasted spend.</span><span class="th">ผู้นำ HR ใช้งบประมาณหลายพันล้านโดยไม่มีข้อมูลว่าโครงการใดสร้างผลลัพธ์ที่แท้จริง</span></div>
+          <div class="challenge-stat"><span class="challenge-stat-num">$322B</span><span class="challenge-stat-lbl"><span class="en">lost annually</span><span class="th">สูญเสียต่อปี</span></span></div>
+        </div>
+      </div>
+
+      <div class="challenge-card photo-card reveal d1">
+        <div class="cc-photo">
+          <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=640&q=75&auto=format&fit=crop" alt="Professional employee preparing to leave organization" loading="lazy"/>
+          <div class="cc-photo-overlay"></div>
+        </div>
+        <div class="cc-body">
+          <div class="challenge-icon" style="margin-bottom:12px">
+            <svg viewBox="0 0 22 22" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <div class="challenge-title"><span class="en">High Turnover Costs</span><span class="th">ต้นทุนการลาออกสูง</span></div>
+          <div class="challenge-desc"><span class="en">Replacing a single employee costs 1.5–2x their annual salary. Organizations without performance data cannot predict or prevent preventable attrition.</span><span class="th">การแทนที่พนักงานหนึ่งคนมีต้นทุน 1.5–2 เท่าของเงินเดือนประจำปี ซึ่งป้องกันได้ด้วยข้อมูล</span></div>
+          <div class="challenge-stat"><span class="challenge-stat-num">2x</span><span class="challenge-stat-lbl"><span class="en">replacement cost</span><span class="th">ต้นทุนทดแทน</span></span></div>
+        </div>
+      </div>
+
+      <div class="challenge-card photo-card reveal d2">
+        <div class="cc-photo">
+          <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=640&q=75&auto=format&fit=crop" alt="Disconnected teams with separate work tools" loading="lazy"/>
+          <div class="cc-photo-overlay"></div>
+        </div>
+        <div class="cc-body">
+          <div class="challenge-icon" style="margin-bottom:12px">
+            <svg viewBox="0 0 22 22" fill="none" stroke-width="1.8" stroke-linecap="round"><rect x="1" y="3" width="20" height="16" rx="2"/><path d="M1 9h20M8 3v18"/></svg>
+          </div>
+          <div class="challenge-title"><span class="en">Disconnected Programs</span><span class="th">โปรแกรมที่ขาดการเชื่อมต่อ</span></div>
+          <div class="challenge-desc"><span class="en">Most organizations run 8–12 separate wellness vendors with no unified data layer, making it impossible to understand the collective impact on human performance.</span><span class="th">องค์กรส่วนใหญ่มีผู้ให้บริการด้านสวัสดิภาพ 8–12 รายแยกจากกัน โดยไม่มีชั้นข้อมูลรวมกัน</span></div>
+          <div class="challenge-stat"><span class="challenge-stat-num">8–12</span><span class="challenge-stat-lbl"><span class="en">siloed vendors</span><span class="th">ผู้ให้บริการแยกส่วน</span></span></div>
+        </div>
+      </div>
+
+      <div class="challenge-card photo-card reveal d3">
+        <div class="cc-photo">
+          <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=640&q=75&auto=format&fit=crop" alt="Executive leadership ESG board meeting" loading="lazy"/>
+          <div class="cc-photo-overlay"></div>
+        </div>
+        <div class="cc-body">
+          <div class="challenge-icon" style="margin-bottom:12px">
+            <svg viewBox="0 0 22 22" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M2 9l9-7 9 7v11a2 2 0 01-2 2H4a2 2 0 01-2-2z"/><polyline points="8 22 8 12 14 12 14 22"/></svg>
+          </div>
+          <div class="challenge-title"><span class="en">No ESG Visibility</span><span class="th">ขาดการมองเห็นด้าน ESG</span></div>
+          <div class="challenge-desc"><span class="en">61% of ESG reporters now require human capital data, yet most HR functions cannot produce the quantified social indicators boards and investors demand.</span><span class="th">61% ของผู้รายงาน ESG ต้องการข้อมูลทุนมนุษย์ แต่ฝ่าย HR ส่วนใหญ่ไม่สามารถผลิตข้อมูลดังกล่าวได้</span></div>
+          <div class="challenge-stat"><span class="challenge-stat-num">61%</span><span class="challenge-stat-lbl">GRI, 2024</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+   03. WHY HUMAN PERFORMANCE MATTERS
+============================================= -->
+<section id="why-hp" class="section">
+  <div class="wrap">
+    <div class="reveal center" style="max-width:600px;margin:0 auto">
+      <div class="eyebrow"><span class="en">Human Capital Science</span><span class="th">วิทยาศาสตร์ทุนมนุษย์</span></div>
+      <h2 class="h-lg">
+        <span class="en">Human Factors Drive Every Business Outcome</span>
+        <span class="th">ปัจจัยมนุษย์ขับเคลื่อนผลลัพธ์ทางธุรกิจทุกด้าน</span>
+      </h2>
+      <p class="body-md" style="margin-top:14px">
+        <span class="en">The evidence is clear: the state of your people determines the performance of your organization. Performia makes that relationship measurable.</span>
+        <span class="th">หลักฐานชัดเจน: สภาพของบุคลากรกำหนดประสิทธิภาพขององค์กร Performia ทำให้ความสัมพันธ์นี้วัดได้</span>
+      </p>
+    </div>
+
+    <div class="impact-chains">
+
+      <div class="impact-chain reveal d1">
+        <div class="chain-cause">
+          <div class="chain-cause-label en">Human Factor</div>
+          <div class="chain-cause-label th">ปัจจัยมนุษย์</div>
+          <div class="chain-cause-value en">Cognitive Energy</div>
+          <div class="chain-cause-value th">พลังงานทางปัญญา</div>
+        </div>
+        <div class="chain-arrow">
+          <svg viewBox="0 0 16 16" fill="none" stroke-width="2.5" stroke-linecap="round"><path d="M8 3v10M4 9l4 4 4-4"/></svg>
+        </div>
+        <div class="chain-effect">
+          <div class="chain-effect-label en">Business Outcome</div>
+          <div class="chain-effect-label th">ผลลัพธ์ทางธุรกิจ</div>
+          <div class="chain-effect-value en">Productivity &amp; Focus</div>
+          <div class="chain-effect-value th">ผลผลิตและสมาธิ</div>
+        </div>
+        <div class="chain-metric en">Orgs in top HPS quartile see <strong>+14% productivity</strong></div>
+        <div class="chain-metric th">องค์กรในกลุ่ม HPS สูงสุดมีผลผลิต <strong>+14%</strong></div>
+      </div>
+
+      <div class="impact-chain reveal d2">
+        <div class="chain-cause">
+          <div class="chain-cause-label en">Human Factor</div>
+          <div class="chain-cause-label th">ปัจจัยมนุษย์</div>
+          <div class="chain-cause-value en">Belonging & Trust</div>
+          <div class="chain-cause-value th">ความผูกพันและไว้วางใจ</div>
+        </div>
+        <div class="chain-arrow">
+          <svg viewBox="0 0 16 16" fill="none" stroke-width="2.5" stroke-linecap="round"><path d="M8 3v10M4 9l4 4 4-4"/></svg>
+        </div>
+        <div class="chain-effect">
+          <div class="chain-effect-label en">Business Outcome</div>
+          <div class="chain-effect-label th">ผลลัพธ์ทางธุรกิจ</div>
+          <div class="chain-effect-value en">Retention Rate</div>
+          <div class="chain-effect-value th">อัตราการคงอยู่</div>
+        </div>
+        <div class="chain-metric en">High-belonging teams show <strong>40% less attrition</strong></div>
+        <div class="chain-metric th">ทีมที่มีความผูกพันสูงมีอัตราลาออก <strong>ลด 40%</strong></div>
+      </div>
+
+      <div class="impact-chain reveal d3">
+        <div class="chain-cause">
+          <div class="chain-cause-label en">Human Factor</div>
+          <div class="chain-cause-label th">ปัจจัยมนุษย์</div>
+          <div class="chain-cause-value en">Growth Readiness</div>
+          <div class="chain-cause-value th">ความพร้อมด้านการเติบโต</div>
+        </div>
+        <div class="chain-arrow">
+          <svg viewBox="0 0 16 16" fill="none" stroke-width="2.5" stroke-linecap="round"><path d="M8 3v10M4 9l4 4 4-4"/></svg>
+        </div>
+        <div class="chain-effect">
+          <div class="chain-effect-label en">Business Outcome</div>
+          <div class="chain-effect-label th">ผลลัพธ์ทางธุรกิจ</div>
+          <div class="chain-effect-value en">Internal Mobility</div>
+          <div class="chain-effect-value th">การเคลื่อนย้ายภายใน</div>
+        </div>
+        <div class="chain-metric en">Grows internal mobility by <strong>2.3x</strong></div>
+        <div class="chain-metric th">เพิ่มการเคลื่อนย้ายภายใน <strong>2.3x</strong></div>
+      </div>
+
+      <div class="impact-chain reveal d4">
+        <div class="chain-cause">
+          <div class="chain-cause-label en">Human Factor</div>
+          <div class="chain-cause-label th">ปัจจัยมนุษย์</div>
+          <div class="chain-cause-value en">Psychological Safety</div>
+          <div class="chain-cause-value th">ความปลอดภัยทางจิตใจ</div>
+        </div>
+        <div class="chain-arrow">
+          <svg viewBox="0 0 16 16" fill="none" stroke-width="2.5" stroke-linecap="round"><path d="M8 3v10M4 9l4 4 4-4"/></svg>
+        </div>
+        <div class="chain-effect">
+          <div class="chain-effect-label en">Business Outcome</div>
+          <div class="chain-effect-label th">ผลลัพธ์ทางธุรกิจ</div>
+          <div class="chain-effect-value en">Innovation Index</div>
+          <div class="chain-effect-value th">ดัชนีนวัตกรรม</div>
+        </div>
+        <div class="chain-metric en">Predicts innovation output with <strong>r=.71 correlation</strong></div>
+        <div class="chain-metric th">ทำนายผลนวัตกรรมด้วย <strong>ความสัมพันธ์ r=.71</strong></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+   04. JV HUMAN PERFORMANCE MATRIX
+============================================= -->
+<section id="jv-matrix" class="section">
+  <div class="matrix-grid-bg"></div>
+  <div class="matrix-glow"></div>
+  <div class="wrap jv-inner">
+    <div class="reveal">
+      <div class="eyebrow"><span class="en">Framework</span><span class="th">เฟรมเวิร์ก</span></div>
+      <h2 class="h-lg white" style="max-width:540px">
+        <span class="en">The JV Human Performance Matrix™</span>
+        <span class="th">เมทริกซ์ประสิทธิภาพบุคลากร JV™</span>
+      </h2>
+      <p class="body-md white-60" style="max-width:500px;margin-top:12px">
+        <span class="en">A validated measurement framework mapping human performance across 6 core pillars and 24 dimensions — the diagnostic foundation of the Performia platform.</span>
+        <span class="th">เฟรมเวิร์กการวัดที่ผ่านการตรวจสอบแล้ว ครอบคลุม 6 เสาหลักและ 24 มิติ — รากฐานการวินิจฉัยของ Performia</span>
+      </p>
+    </div>
+
+    <div class="pillars-grid reveal" style="margin-top:48px">
+
+      <div class="pillar-card p-mind active" data-pillar="mind">
+        <div class="pillar-photo">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=70&auto=format&fit=crop&crop=face" alt="Focused professional employee" loading="lazy"/>
+        </div>
+        <div class="pillar-icon">
+          <svg viewBox="0 0 22 22" fill="none" stroke-width="1.7" stroke-linecap="round">
+            <circle cx="11" cy="11" r="9"/>
+            <path d="M11 6v5l3 3"/>
+          </svg>
+        </div>
+        <div class="pillar-name en">Mind</div>
+        <div class="pillar-name th">จิตใจ</div>
+        <div class="pillar-desc en">Cognitive performance, resilience, stress management, and emotional regulation.</div>
+        <div class="pillar-desc th">ประสิทธิภาพทางปัญญา ความยืดหยุ่น การจัดการความเครียด</div>
+      </div>
+
+      <div class="pillar-card p-body" data-pillar="body">
+        <div class="pillar-photo">
+          <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&q=70&auto=format&fit=crop" alt="Active employee wellbeing at work" loading="lazy"/>
+        </div>
+        <div class="pillar-icon">
+          <svg viewBox="0 0 22 22" fill="none" stroke-width="1.7" stroke-linecap="round">
+            <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+          </svg>
+        </div>
+        <div class="pillar-name en">Body</div>
+        <div class="pillar-name th">ร่างกาย</div>
+        <div class="pillar-desc en">Physical vitality, movement, nutrition, sleep quality, and energy management.</div>
+        <div class="pillar-desc th">ความมีชีวิตชีวาทางร่างกาย การเคลื่อนไหว โภชนาการ คุณภาพการนอน</div>
+      </div>
+
+      <div class="pillar-card p-money" data-pillar="money">
+        <div class="pillar-photo">
+          <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=400&q=70&auto=format&fit=crop" alt="Financial planning consultation" loading="lazy"/>
+        </div>
+        <div class="pillar-icon">
+          <svg viewBox="0 0 22 22" fill="none" stroke-width="1.7" stroke-linecap="round">
+            <line x1="11" y1="1" x2="11" y2="21"/>
+            <path d="M17 5H8.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H5"/>
+          </svg>
+        </div>
+        <div class="pillar-name en">Money</div>
+        <div class="pillar-name th">การเงิน</div>
+        <div class="pillar-desc en">Financial wellbeing, planning capability, economic security, and literacy.</div>
+        <div class="pillar-desc th">ความเป็นอยู่ทางการเงิน ความสามารถในการวางแผน ความมั่นคงทางเศรษฐกิจ</div>
+      </div>
+
+      <div class="pillar-card p-social" data-pillar="social">
+        <div class="pillar-photo">
+          <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&q=70&auto=format&fit=crop" alt="Team collaboration and belonging" loading="lazy"/>
+        </div>
+        <div class="pillar-icon">
+          <svg viewBox="0 0 22 22" fill="none" stroke-width="1.7" stroke-linecap="round">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+          </svg>
+        </div>
+        <div class="pillar-name en">Social</div>
+        <div class="pillar-name th">สังคม</div>
+        <div class="pillar-desc en">Belonging, connection quality, relationship strength, and team psychological safety.</div>
+        <div class="pillar-desc th">ความรู้สึกเป็นส่วนหนึ่ง คุณภาพการเชื่อมต่อ ความแข็งแกร่งของความสัมพันธ์</div>
+      </div>
+
+      <div class="pillar-card p-growth" data-pillar="growth">
+        <div class="pillar-photo">
+          <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&q=70&auto=format&fit=crop" alt="Employee mentoring and career development" loading="lazy"/>
+        </div>
+        <div class="pillar-icon">
+          <svg viewBox="0 0 22 22" fill="none" stroke-width="1.7" stroke-linecap="round">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+            <polyline points="17 6 23 6 23 12"/>
+          </svg>
+        </div>
+        <div class="pillar-name en">Growth</div>
+        <div class="pillar-name th">การเติบโต</div>
+        <div class="pillar-desc en">Learning agility, development velocity, career clarity, and purpose alignment.</div>
+        <div class="pillar-desc th">ความคล่องตัวในการเรียนรู้ ความชัดเจนในอาชีพ การจัดเรียงกับเป้าหมาย</div>
+      </div>
+
+      <div class="pillar-card p-work" data-pillar="work">
+        <div class="pillar-photo">
+          <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=400&q=70&auto=format&fit=crop" alt="Modern calm office work environment" loading="lazy"/>
+        </div>
+        <div class="pillar-icon">
+          <svg viewBox="0 0 22 22" fill="none" stroke-width="1.7" stroke-linecap="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+        </div>
+        <div class="pillar-name en">Work Design</div>
+        <div class="pillar-name th">การออกแบบงาน</div>
+        <div class="pillar-desc en">Role clarity, workload balance, autonomy, and organizational environment quality.</div>
+        <div class="pillar-desc th">ความชัดเจนในบทบาท ความสมดุลของภาระงาน ความเป็นอิสระ คุณภาพสภาพแวดล้อม</div>
+      </div>
+
+    </div>
+
+    <!-- Pillar detail panel -->
+    <div class="pillar-detail visible" id="pillar-detail">
+      <div class="pd-left">
+        <div class="pd-title" id="pd-title">Mind</div>
+        <div class="pd-desc" id="pd-desc">Cognitive performance, resilience, stress management, and emotional regulation. The Mind pillar assesses how employees think, feel, and adapt under organizational pressure.</div>
+        <div class="pd-tags" id="pd-tags">
+          <span class="pd-tag">Cognitive Resilience</span>
+          <span class="pd-tag">Stress Management</span>
+          <span class="pd-tag">Emotional Regulation</span>
+          <span class="pd-tag">Focus & Clarity</span>
+          <span class="pd-tag">Mental Agility</span>
+        </div>
+      </div>
+      <div class="pd-right">
+        <div class="pd-metrics">
+          <div class="pd-metric">
+            <div class="pd-metric-icon" style="background:rgba(16,213,210,.15)">
+              <svg viewBox="0 0 15 15" fill="none" stroke="#10D5D2" stroke-width="1.8" stroke-linecap="round"><path d="M2 9l9-7 9 7v11a2 2 0 01-2 2H4a2 2 0 01-2-2z" transform="scale(.7) translate(2,2)"/></svg>
+            </div>
+            <div class="pd-metric-text en">Dimension Coverage</div>
+            <div class="pd-metric-text th">ความครอบคลุม</div>
+            <div class="pd-metric-val">4 Dims</div>
+          </div>
+          <div class="pd-metric">
+            <div class="pd-metric-icon" style="background:rgba(16,213,210,.15)">
+              <svg viewBox="0 0 15 15" fill="none" stroke="#10D5D2" stroke-width="1.8" stroke-linecap="round"><path d="M7.5 13.5a6 6 0 100-12 6 6 0 000 12z" transform="scale(.8) translate(1,1)"/></svg>
+            </div>
+            <div class="pd-metric-text en">Business Correlation</div>
+            <div class="pd-metric-text th">ความสัมพันธ์ทางธุรกิจ</div>
+            <div class="pd-metric-val">r=.71</div>
+          </div>
+          <div class="pd-metric">
+            <div class="pd-metric-icon" style="background:rgba(16,213,210,.15)">
+              <svg viewBox="0 0 15 15" fill="none" stroke="#10D5D2" stroke-width="1.8" stroke-linecap="round"><line x1="1" y1="10" x2="4" y2="10"/><line x1="7.5" y1="3" x2="7.5" y2="6"/><line x1="14" y1="10" x2="11" y2="10"/><circle cx="7.5" cy="9" r="3"/></svg>
+            </div>
+            <div class="pd-metric-text en">Productivity Impact</div>
+            <div class="pd-metric-text th">ผลกระทบต่อผลผลิต</div>
+            <div class="pd-metric-val">+14%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- =============================================
+   05. HOW PERFORMIA WORKS
+============================================= -->
+<section id="how-it-works" class="section">
+  <div class="wrap">
+    <div class="reveal center" style="max-width:580px;margin:0 auto">
+      <div class="eyebrow"><span class="en">How It Works</span><span class="th">วิธีการทำงาน</span></div>
+      <h2 class="h-lg">
+        <span class="en">From Human Signal to Business Action</span>
+        <span class="th">จากสัญญาณมนุษย์สู่การดำเนินธุรกิจ</span>
+      </h2>
+      <p class="body-md" style="margin-top:12px">
+        <span class="en">A closed-loop intelligence process that continuously turns individual data into organizational insights and targeted interventions.</span>
+        <span class="th">กระบวนการข่าวกรองแบบวงปิดที่เปลี่ยนข้อมูลบุคคลเป็นข้อมูลเชิงลึกขององค์กรและการแทรกแซงที่ตรงเป้าหมาย</span>
+      </p>
+    </div>
+
+    <div class="workflow reveal">
+
+      <div class="workflow-step">
+        <div class="ws-circle active">
+          <div class="ws-num">01</div>
+        </div>
+        <div class="ws-step-label en">Assess</div>
+        <div class="ws-step-label th">ประเมิน</div>
+        <div class="ws-title en">Measure Baseline</div>
+        <div class="ws-title th">วัดเส้นฐาน</div>
+        <div class="ws-desc en">Validated 6-pillar assessment maps individual and organizational human performance across 24 dimensions.</div>
+        <div class="ws-desc th">การประเมิน 6 เสาหลักที่ผ่านการตรวจสอบแล้ว วัดประสิทธิภาพบุคลากรใน 24 มิติ</div>
+      </div>
+
+      <div class="workflow-step">
+        <div class="ws-circle">
+          <div class="ws-num">02</div>
+        </div>
+        <div class="ws-step-label en">Analyze</div>
+        <div class="ws-step-label th">วิเคราะห์</div>
+        <div class="ws-title en">Generate Intelligence</div>
+        <div class="ws-title th">สร้างข่าวกรอง</div>
+        <div class="ws-desc en">AI engine identifies patterns, risk signals, opportunity gaps, and benchmark positioning across the organization.</div>
+        <div class="ws-desc th">AI ระบุรูปแบบ สัญญาณความเสี่ยง ช่องว่างโอกาส และตำแหน่งเกณฑ์มาตรฐาน</div>
+      </div>
+
+      <div class="workflow-step">
+        <div class="ws-circle">
+          <div class="ws-num">03</div>
+        </div>
+        <div class="ws-step-label en">Personalize</div>
+        <div class="ws-step-label th">ปรับแต่ง</div>
+        <div class="ws-title en">Match Interventions</div>
+        <div class="ws-title th">จับคู่การแทรกแซง</div>
+        <div class="ws-desc en">Recommendation engine surfaces the right programs, services, and activities for each individual based on their pillar scores.</div>
+        <div class="ws-desc th">เครื่องมือแนะนำนำเสนอโปรแกรมและกิจกรรมที่เหมาะสมสำหรับแต่ละบุคคล</div>
+      </div>
+
+      <div class="workflow-step">
+        <div class="ws-circle">
+          <div class="ws-num">04</div>
+        </div>
+        <div class="ws-step-label en">Intervene</div>
+        <div class="ws-step-label th">แทรกแซง</div>
+        <div class="ws-title en">Fund & Deploy</div>
+        <div class="ws-title th">จัดสรรและดำเนินการ</div>
+        <div class="ws-desc en">Employees access vetted interventions via credit wallet. Every booking, transaction, and completion is tracked in real-time.</div>
+        <div class="ws-desc th">พนักงานเข้าถึงการแทรกแซงผ่านกระเป๋าเครดิต ทุกธุรกรรมถูกติดตามแบบเรียลไทม์</div>
+      </div>
+
+      <div class="workflow-step">
+        <div class="ws-circle">
+          <div class="ws-num">05</div>
+        </div>
+        <div class="ws-step-label en">Measure</div>
+        <div class="ws-step-label th">วัดผล</div>
+        <div class="ws-title en">Quantify Impact</div>
+        <div class="ws-title th">วัดปริมาณผลกระทบ</div>
+        <div class="ws-desc en">Analytics dashboard connects intervention completion to performance improvement, business outcomes, and ESG indicators.</div>
+        <div class="ws-desc th">แดชบอร์ดเชื่อมต่อการแทรกแซงกับผลลัพธ์ทางธุรกิจและตัวชี้วัด ESG</div>
+      </div>
+
+      <div class="workflow-step">
+        <div class="ws-circle">
+          <div class="ws-num">06</div>
+        </div>
+        <div class="ws-step-label en">Improve</div>
+        <div class="ws-step-label th">พัฒนา</div>
+        <div class="ws-title en">Close the Loop</div>
+        <div class="ws-title th">ปิดวงจร</div>
+        <div class="ws-desc en">Continuous cycle of reassessment, benchmarking, and portfolio optimization drives compounding performance improvements.</div>
+        <div class="ws-desc th">วงจรต่อเนื่องของการประเมินซ้ำ การเปรียบเทียบ และการเพิ่มประสิทธิภาพ</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+   06. PERSONALIZED INTERVENTIONS
+============================================= -->
+<section id="interventions" class="section">
+  <div class="wrap">
+    <div class="reveal" style="max-width:560px">
+      <div class="eyebrow"><span class="en">Interventions</span><span class="th">การแทรกแซง</span></div>
+      <h2 class="h-lg">
+        <span class="en">Evidence-Based Programs Across All 6 Pillars</span>
+        <span class="th">โปรแกรมที่อิงหลักฐานครอบคลุม 6 เสาหลัก</span>
+      </h2>
+      <p class="body-md" style="margin-top:12px">
+        <span class="en">A curated marketplace of vetted interventions — each pillar-mapped, outcome-tracked, and delivered through the employee credit wallet.</span>
+        <span class="th">ตลาดการแทรกแซงที่ผ่านการคัดสรร — ผูกกับเสาหลัก ติดตามผล และส่งมอบผ่านกระเป๋าเครดิตพนักงาน</span>
+      </p>
+    </div>
+
+    <div class="intervention-grid">
+
+      <div class="interv-card reveal d1">
+        <div class="interv-photo">
+          <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=640&q=75&auto=format&fit=crop&crop=center" alt="Mindfulness coaching session in a calm professional setting" loading="lazy"/>
+          <div class="interv-photo-overlay"></div>
+          <div class="interv-photo-pill en">Mind Pillar</div>
+          <div class="interv-photo-pill th">เสาหลักจิตใจ</div>
+        </div>
+        <div class="interv-body">
+          <div class="interv-pillar" style="color:#10D5D2">Mind Pillar</div>
+          <div class="interv-title en">Cognitive Resilience & Stress Management</div>
+          <div class="interv-title th">ความยืดหยุ่นทางปัญญาและการจัดการความเครียด</div>
+          <div class="interv-desc en">Structured programs targeting burnout prevention, mindfulness, and cognitive performance for high-pressure roles.</div>
+          <div class="interv-desc th">โปรแกรมที่มีโครงสร้างมุ่งเน้นการป้องกันความเหนื่อยล้า สติ และประสิทธิภาพทางปัญญา</div>
+          <div class="interv-tags">
+            <span class="interv-tag en">Mindfulness</span><span class="interv-tag th">สติ</span>
+            <span class="interv-tag en">Coaching</span><span class="interv-tag th">โค้ชชิ่ง</span>
+            <span class="interv-tag en">EAP</span>
+            <span class="interv-tag en">Group Sessions</span><span class="interv-tag th">กลุ่ม</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="interv-card reveal d2">
+        <div class="interv-photo">
+          <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=640&q=75&auto=format&fit=crop&crop=center" alt="Corporate wellness and physical movement program" loading="lazy"/>
+          <div class="interv-photo-overlay"></div>
+          <div class="interv-photo-pill en">Body Pillar</div>
+          <div class="interv-photo-pill th">เสาหลักร่างกาย</div>
+        </div>
+        <div class="interv-body">
+          <div class="interv-pillar" style="color:#FC8181">Body Pillar</div>
+          <div class="interv-title en">Physical Performance & Movement</div>
+          <div class="interv-title th">ประสิทธิภาพทางร่างกายและการเคลื่อนไหว</div>
+          <div class="interv-desc en">Corporate fitness programs, health screenings, nutrition guidance, and sleep optimization for sustained physical vitality.</div>
+          <div class="interv-desc th">โปรแกรมฟิตเนสองค์กร การตรวจสุขภาพ คำแนะนำด้านโภชนาการ และการเพิ่มประสิทธิภาพการนอน</div>
+          <div class="interv-tags">
+            <span class="interv-tag en">Fitness</span><span class="interv-tag th">ฟิตเนส</span>
+            <span class="interv-tag en">Nutrition</span><span class="interv-tag th">โภชนาการ</span>
+            <span class="interv-tag en">Sleep Health</span><span class="interv-tag th">การนอน</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="interv-card reveal d3">
+        <div class="interv-photo">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=640&q=75&auto=format&fit=crop&crop=center" alt="Financial planning and wellbeing workshop" loading="lazy"/>
+          <div class="interv-photo-overlay"></div>
+          <div class="interv-photo-pill en">Money Pillar</div>
+          <div class="interv-photo-pill th">เสาหลักการเงิน</div>
+        </div>
+        <div class="interv-body">
+          <div class="interv-pillar" style="color:#FCD34D">Money Pillar</div>
+          <div class="interv-title en">Financial Wellbeing & Planning</div>
+          <div class="interv-title th">ความเป็นอยู่ทางการเงินและการวางแผน</div>
+          <div class="interv-desc en">Financial literacy workshops, personal planning sessions, debt management, and investment education programs.</div>
+          <div class="interv-desc th">เวิร์กช็อปความรู้ทางการเงิน เซสชันวางแผนส่วนตัว การจัดการหนี้ และโปรแกรมการลงทุน</div>
+          <div class="interv-tags">
+            <span class="interv-tag en">Planning</span><span class="interv-tag th">วางแผน</span>
+            <span class="interv-tag en">Workshops</span><span class="interv-tag th">เวิร์กช็อป</span>
+            <span class="interv-tag en">Coaching</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="interv-card reveal d1">
+        <div class="interv-photo">
+          <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=640&q=75&auto=format&fit=crop&crop=center" alt="Team building and social connection experience" loading="lazy"/>
+          <div class="interv-photo-overlay"></div>
+          <div class="interv-photo-pill en">Social Pillar</div>
+          <div class="interv-photo-pill th">เสาหลักสังคม</div>
+        </div>
+        <div class="interv-body">
+          <div class="interv-pillar" style="color:#34D399">Social Pillar</div>
+          <div class="interv-title en">Belonging & Connection</div>
+          <div class="interv-title th">ความผูกพันและการเชื่อมต่อ</div>
+          <div class="interv-desc en">Team building experiences, community programs, and social connection activities that strengthen organizational belonging.</div>
+          <div class="interv-desc th">ประสบการณ์สร้างทีม โปรแกรมชุมชน และกิจกรรมการเชื่อมต่อทางสังคม</div>
+          <div class="interv-tags">
+            <span class="interv-tag en">Team Building</span><span class="interv-tag th">สร้างทีม</span>
+            <span class="interv-tag en">Community</span><span class="interv-tag th">ชุมชน</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="interv-card reveal d2">
+        <div class="interv-photo">
+          <img src="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=640&q=75&auto=format&fit=crop&crop=center" alt="Leadership coaching and professional development session" loading="lazy"/>
+          <div class="interv-photo-overlay"></div>
+          <div class="interv-photo-pill en">Growth Pillar</div>
+          <div class="interv-photo-pill th">เสาหลักการเติบโต</div>
+        </div>
+        <div class="interv-body">
+          <div class="interv-pillar" style="color:#A78BFA">Growth Pillar</div>
+          <div class="interv-title en">Learning & Development</div>
+          <div class="interv-title th">การเรียนรู้และการพัฒนา</div>
+          <div class="interv-desc en">Skills programs, executive coaching, career development paths, and leadership development interventions.</div>
+          <div class="interv-desc th">โปรแกรมทักษะ โค้ชชิ่งผู้บริหาร เส้นทางการพัฒนาอาชีพ และการพัฒนาภาวะผู้นำ</div>
+          <div class="interv-tags">
+            <span class="interv-tag en">L&D</span>
+            <span class="interv-tag en">Coaching</span>
+            <span class="interv-tag en">Leadership</span><span class="interv-tag th">ภาวะผู้นำ</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="interv-card reveal d3">
+        <div class="interv-photo">
+          <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=640&q=75&auto=format&fit=crop&crop=center" alt="Modern workplace design and focused work environment" loading="lazy"/>
+          <div class="interv-photo-overlay"></div>
+          <div class="interv-photo-pill en">Work Design</div>
+          <div class="interv-photo-pill th">การออกแบบงาน</div>
+        </div>
+        <div class="interv-body">
+          <div class="interv-pillar" style="color:#93C5FD">Work Design Pillar</div>
+          <div class="interv-title en">Role Design & Work Environment</div>
+          <div class="interv-title th">การออกแบบบทบาทและสภาพแวดล้อมการทำงาน</div>
+          <div class="interv-desc en">Role clarity workshops, flexible work consulting, ergonomics assessments, and organizational design interventions.</div>
+          <div class="interv-desc th">เวิร์กช็อปความชัดเจนในบทบาท การให้คำปรึกษาการทำงานแบบยืดหยุ่น และการประเมินสรีรศาสตร์</div>
+          <div class="interv-tags">
+            <span class="interv-tag en">Role Design</span><span class="interv-tag th">ออกแบบบทบาท</span>
+            <span class="interv-tag en">Flexibility</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+   07. BUSINESS IMPACT INTELLIGENCE
+============================================= -->
+<section id="business-impact" class="section">
+  <div class="wrap">
+    <div class="reveal center" style="max-width:580px;margin:0 auto">
+      <div class="eyebrow"><span class="en">Business Impact</span><span class="th">ผลกระทบทางธุรกิจ</span></div>
+      <h2 class="h-lg">
+        <span class="en">Human Signals Mapped to Business Insights</span>
+        <span class="th">สัญญาณมนุษย์ที่แปลงเป็นข้อมูลเชิงธุรกิจ</span>
+      </h2>
+      <p class="body-md" style="margin-top:12px">
+        <span class="en">Performia's intelligence layer connects what's happening inside your people to what's happening inside your business.</span>
+        <span class="th">ชั้นข่าวกรองของ Performia เชื่อมต่อสิ่งที่เกิดขึ้นภายในบุคลากรกับสิ่งที่เกิดขึ้นภายในธุรกิจ</span>
+      </p>
+    </div>
+
+    <div class="impact-layout reveal" style="margin-top:56px">
+
+      <!-- Human Signals -->
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);margin-bottom:14px" class="en">Human Signals</div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);margin-bottom:14px" class="th">สัญญาณมนุษย์</div>
+        <div class="signal-col">
+          <div class="signal-card">
+            <div class="signal-dot" style="background:#FC8181"></div>
+            <div>
+              <div class="signal-card-title en">Burnout Risk</div>
+              <div class="signal-card-title th">ความเสี่ยงเหนื่อยล้า</div>
+              <div class="signal-card-sub en">Mind + Work Design</div>
+              <div class="signal-card-sub th">จิตใจ + งาน</div>
+            </div>
+            <div class="signal-card-val" style="color:#FC8181">HIGH</div>
+          </div>
+          <div class="signal-card">
+            <div class="signal-dot" style="background:#10D5D2"></div>
+            <div>
+              <div class="signal-card-title en">Program Participation</div>
+              <div class="signal-card-title th">การมีส่วนร่วมในโปรแกรม</div>
+              <div class="signal-card-sub en">Intervention Uptake</div>
+              <div class="signal-card-sub th">การใช้โปรแกรม</div>
+            </div>
+            <div class="signal-card-val">88%</div>
+          </div>
+          <div class="signal-card">
+            <div class="signal-dot" style="background:#A78BFA"></div>
+            <div>
+              <div class="signal-card-title en">Growth Readiness</div>
+              <div class="signal-card-title th">ความพร้อมด้านการเติบโต</div>
+              <div class="signal-card-sub en">Growth Pillar Score</div>
+              <div class="signal-card-sub th">คะแนนเสาการเติบโต</div>
+            </div>
+            <div class="signal-card-val">72/100</div>
+          </div>
+          <div class="signal-card">
+            <div class="signal-dot" style="background:#34D399"></div>
+            <div>
+              <div class="signal-card-title en">Belonging Score</div>
+              <div class="signal-card-title th">คะแนนความผูกพัน</div>
+              <div class="signal-card-sub en">Social Pillar Score</div>
+              <div class="signal-card-sub th">คะแนนเสาสังคม</div>
+            </div>
+            <div class="signal-card-val">91/100</div>
+          </div>
+          <div class="signal-card">
+            <div class="signal-dot" style="background:#FCD34D"></div>
+            <div>
+              <div class="signal-card-title en">Energy Index</div>
+              <div class="signal-card-title th">ดัชนีพลังงาน</div>
+              <div class="signal-card-sub en">Body + Mind combined</div>
+              <div class="signal-card-sub th">ร่างกาย + จิตใจ</div>
+            </div>
+            <div class="signal-card-val">79/100</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Middle -->
+      <div class="impact-middle">
+        <div class="impact-arrow">
+          <div class="impact-arrow-label en">Intelligence</div>
+          <div class="impact-arrow-label th">ข่าวกรอง</div>
+          <div class="impact-arrow-line"></div>
+          <div class="impact-arrow-head">
+            <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 2v6M2 6l3 3 3-3"/></svg>
+          </div>
+        </div>
+        <div class="impact-platform-badge">
+          <div class="ipb-label en">Powered By</div>
+          <div class="ipb-label th">ขับเคลื่อนโดย</div>
+          <div class="ipb-name">Performia</div>
+        </div>
+        <div class="impact-arrow" style="transform:scaleY(-1)">
+          <div class="impact-arrow-label" style="transform:scaleY(-1);color:transparent">x</div>
+          <div class="impact-arrow-line"></div>
+          <div class="impact-arrow-head">
+            <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 2v6M2 6l3 3 3-3"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Business Insights -->
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);margin-bottom:14px" class="en">Business Insights</div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);margin-bottom:14px" class="th">ข้อมูลเชิงธุรกิจ</div>
+        <div class="insight-col">
+          <div class="insight-card">
+            <div class="insight-icon"><svg viewBox="0 0 17 17" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M8.5 15.5a7 7 0 100-14 7 7 0 000 14z"/><path d="M5.5 8.5l2 2 4-4"/></svg></div>
+            <div>
+              <div class="insight-title en">Retention Rate</div>
+              <div class="insight-title th">อัตราการคงอยู่</div>
+              <div class="insight-sub en">Turnover risk reduction</div>
+              <div class="insight-sub th">ลดความเสี่ยงลาออก</div>
+            </div>
+            <div class="insight-delta">93.8%</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-icon"><svg viewBox="0 0 17 17" fill="none" stroke-width="1.8" stroke-linecap="round"><polyline points="2 13 6 9 9 12 15 5"/></svg></div>
+            <div>
+              <div class="insight-title en">Productivity Index</div>
+              <div class="insight-title th">ดัชนีผลผลิต</div>
+              <div class="insight-sub en">Output vs. benchmark</div>
+              <div class="insight-sub th">เทียบกับเกณฑ์มาตรฐาน</div>
+            </div>
+            <div class="insight-delta">+14%</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-icon"><svg viewBox="0 0 17 17" fill="none" stroke-width="1.8" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="6.5"/><path d="M6 8.5l2 2 3.5-3.5"/></svg></div>
+            <div>
+              <div class="insight-title en">Engagement Score</div>
+              <div class="insight-title th">คะแนนการมีส่วนร่วม</div>
+              <div class="insight-sub en">Across all business units</div>
+              <div class="insight-sub th">ทุกหน่วยธุรกิจ</div>
+            </div>
+            <div class="insight-delta">81/100</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-icon"><svg viewBox="0 0 17 17" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M8.5 3v5l3 3"/><circle cx="8.5" cy="8.5" r="6.5"/></svg></div>
+            <div>
+              <div class="insight-title en">Leadership Readiness</div>
+              <div class="insight-title th">ความพร้อมด้านภาวะผู้นำ</div>
+              <div class="insight-sub en">Internal pipeline strength</div>
+              <div class="insight-sub th">ความแข็งแกร่งของท่อส่ง</div>
+            </div>
+            <div class="insight-delta">+23%</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-icon"><svg viewBox="0 0 17 17" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M14 3l-6 6-3-3-4 4"/></svg></div>
+            <div>
+              <div class="insight-title en">Innovation Index</div>
+              <div class="insight-title th">ดัชนีนวัตกรรม</div>
+              <div class="insight-sub en">Psychological safety driven</div>
+              <div class="insight-sub th">ขับเคลื่อนด้วยความปลอดภัย</div>
+            </div>
+            <div class="insight-delta">+8%</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Photo — HR executive with data overlay -->
+    <div style="margin-top:48px;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:stretch" class="reveal">
+      <div class="impact-photo-frame">
+        <img src="https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=800&q=80&auto=format&fit=crop&crop=center" alt="HR executive team reviewing human performance data" loading="lazy"/>
+        <div class="photo-overlay"></div>
+        <div class="impact-photo-caption">
+          <div class="ipc-avatar"></div>
+          <div>
+            <div class="ipc-name en">Head of People Analytics</div>
+            <div class="ipc-name th">หัวหน้าฝ่ายวิเคราะห์บุคลากร</div>
+            <div class="ipc-role en">Enterprise Organization · Q4 Review</div>
+            <div class="ipc-role th">องค์กรขนาดใหญ่ · รีวิว Q4</div>
+          </div>
+          <div class="ipc-stat">
+            <div class="ipc-stat-val">3.4x</div>
+            <div class="ipc-stat-lbl en">Measured ROI</div>
+            <div class="ipc-stat-lbl th">ROI ที่วัดได้</div>
+          </div>
+        </div>
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--r-xl);padding:32px;display:flex;flex-direction:column;justify-content:center;gap:18px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent)" class="en">Intelligence in Action</div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent)" class="th">ข่าวกรองในการปฏิบัติ</div>
+        <div style="font-size:26px;font-weight:800;color:var(--text-1);letter-spacing:-.03em;line-height:1.15" class="en">From scattered HR data to a single human performance intelligence layer</div>
+        <div style="font-size:26px;font-weight:800;color:var(--text-1);letter-spacing:-.03em;line-height:1.15" class="th">จากข้อมูล HR ที่กระจัดกระจายสู่ชั้นข่าวกรองประสิทธิภาพบุคลากรเดียว</div>
+        <div style="font-size:15px;color:var(--text-2);line-height:1.65" class="en">Performia consolidates signals from your entire workforce into a live analytics layer — connecting wellbeing data to business outcomes your board actually cares about.</div>
+        <div style="font-size:15px;color:var(--text-2);line-height:1.65" class="th">Performia รวบรวมสัญญาณจากพนักงานทั้งองค์กรเป็นชั้นวิเคราะห์สด เชื่อมต่อข้อมูลสวัสดิภาพกับผลลัพธ์ทางธุรกิจที่คณะกรรมการสนใจ</div>
+        <div style="display:flex;gap:24px;padding-top:18px;border-top:1px solid var(--border)">
+          <div><div style="font-size:28px;font-weight:900;color:var(--primary);letter-spacing:-.04em">93.8%</div><div style="font-size:11px;color:var(--text-3);font-weight:500" class="en">Retention Rate</div><div style="font-size:11px;color:var(--text-3);font-weight:500" class="th">อัตราคงอยู่</div></div>
+          <div><div style="font-size:28px;font-weight:900;color:var(--primary);letter-spacing:-.04em">+14%</div><div style="font-size:11px;color:var(--text-3);font-weight:500" class="en">Productivity</div><div style="font-size:11px;color:var(--text-3);font-weight:500" class="th">ผลผลิต</div></div>
+          <div><div style="font-size:28px;font-weight:900;color:var(--accent);letter-spacing:-.04em">A+</div><div style="font-size:11px;color:var(--text-3);font-weight:500">ESG S-Score</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="benchmark" class="section">
+  <div class="wrap">
+    <div style="display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end;margin-bottom:48px" class="reveal">
+      <div>
+        <div class="eyebrow"><span class="en">Benchmark Intelligence</span><span class="th">ข่าวกรองเกณฑ์มาตรฐาน</span></div>
+        <h2 class="h-lg" style="max-width:520px">
+          <span class="en">Position Your Organization Against Industry Leaders</span>
+          <span class="th">จัดวางองค์กรของคุณเทียบกับผู้นำอุตสาหกรรม</span>
+        </h2>
+        <p class="body-md" style="margin-top:12px;max-width:480px">
+          <span class="en">Performia's Benchmark Intelligence gives executives the comparative data needed to make evidence-based human capital investments — separate from wellbeing metrics, positioned as a strategic decision tool.</span>
+          <span class="th">ข่าวกรองเกณฑ์มาตรฐานของ Performia ให้ข้อมูลเปรียบเทียบที่ผู้บริหารต้องการสำหรับการลงทุนทุนมนุษย์อย่างมีหลักฐาน</span>
+        </p>
+      </div>
+      <a href="#final-cta" class="btn btn-primary">
+        <span class="en">Request Report</span><span class="th">ขอรายงาน</span>
+      </a>
+    </div>
+
+    <div class="bench-grid">
+
+      <div class="bench-card reveal d1">
+        <div class="bench-card-top" style="background:linear-gradient(90deg,#071B63,#10D5D2)"></div>
+        <div class="bench-ranking"><span>18</span>%</div>
+        <div class="bench-type en">Industry Ranking</div>
+        <div class="bench-type th">อันดับอุตสาหกรรม</div>
+        <div class="bench-title en">Top Performer in Human Performance Score</div>
+        <div class="bench-title th">ผู้นำด้านคะแนนประสิทธิภาพบุคลากร</div>
+        <div class="bench-track"><div class="bench-fill" style="width:82%"></div></div>
+        <div class="bench-note en">Outperforms 82% of industry peers</div>
+        <div class="bench-note th">เหนือกว่า 82% ของคู่แข่งในอุตสาหกรรม</div>
+      </div>
+
+      <div class="bench-card reveal d2">
+        <div class="bench-card-top" style="background:linear-gradient(90deg,#071B63,#10D5D2)"></div>
+        <div class="bench-ranking"><span>12</span>%</div>
+        <div class="bench-type en">FMCG Sector</div>
+        <div class="bench-type th">ภาคสินค้าอุปโภคบริโภค</div>
+        <div class="bench-title en">Sector-Leading Participation Rate</div>
+        <div class="bench-title th">อัตราการมีส่วนร่วมชั้นนำในภาค</div>
+        <div class="bench-track"><div class="bench-fill" style="width:88%"></div></div>
+        <div class="bench-note en">88% vs. 54% sector average</div>
+        <div class="bench-note th">88% เทียบกับ 54% เฉลี่ยของภาค</div>
+      </div>
+
+      <div class="bench-card reveal d3">
+        <div class="bench-card-top" style="background:linear-gradient(90deg,#071B63,#10D5D2)"></div>
+        <div class="bench-ranking"><span>24</span>%</div>
+        <div class="bench-type en">Regional Benchmark</div>
+        <div class="bench-type th">เกณฑ์มาตรฐานภูมิภาค</div>
+        <div class="bench-title en">SEA Regional Leader in Wellbeing Investment</div>
+        <div class="bench-title th">ผู้นำภูมิภาคอาเซียนด้านการลงทุนสวัสดิภาพ</div>
+        <div class="bench-track"><div class="bench-fill" style="width:76%"></div></div>
+        <div class="bench-note en">Top quartile across Southeast Asia</div>
+        <div class="bench-note th">กลุ่มสูงสุดในเอเชียตะวันออกเฉียงใต้</div>
+      </div>
+
+      <div class="bench-card reveal d4">
+        <div class="bench-card-top" style="background:linear-gradient(90deg,#071B63,#10D5D2)"></div>
+        <div class="bench-ranking" style="font-size:40px;padding-top:6px"><span>A+</span></div>
+        <div class="bench-type en">ESG S-Score</div>
+        <div class="bench-type th">คะแนน ESG S</div>
+        <div class="bench-title en">GRI-Aligned Social Reporting Grade</div>
+        <div class="bench-title th">เกรดการรายงานสังคม GRI</div>
+        <div class="bench-track"><div class="bench-fill" style="width:93%"></div></div>
+        <div class="bench-note en">Investor-grade human capital disclosure</div>
+        <div class="bench-note th">การเปิดเผยทุนมนุษย์ระดับนักลงทุน</div>
+      </div>
+
+    </div>
+
+    <div class="bench-exec-note reveal" style="margin-top:24px">
+      <div class="ben-left">
+        <div class="ben-eyebrow en">Executive Decision Tool</div>
+        <div class="ben-eyebrow th">เครื่องมือตัดสินใจผู้บริหาร</div>
+        <div class="ben-title en">Benchmark is Not a Wellness Metric</div>
+        <div class="ben-title th">เกณฑ์มาตรฐานไม่ใช่ตัวชี้วัดสวัสดิภาพ</div>
+        <div class="ben-desc en">Performia's Benchmark Intelligence positions your human capital strategy against peers, sectors, and global standards — giving boards and investors the comparative evidence they need to evaluate organizational resilience.</div>
+        <div class="ben-desc th">ข่าวกรองเกณฑ์มาตรฐานของ Performia วางกลยุทธ์ทุนมนุษย์ของคุณเทียบกับคู่แข่ง ภาค และมาตรฐานโลก ให้คณะกรรมการและนักลงทุนมีหลักฐานเปรียบเทียบ</div>
+      </div>
+      <div class="ben-right">
+        <a href="#final-cta" class="btn btn-accent btn-lg">
+          <span class="en">See Benchmark Report</span><span class="th">ดูรายงานเกณฑ์มาตรฐาน</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- =============================================
+   09. ESG & REPORTING
+============================================= -->
+<section id="reporting" class="section">
+  <div class="wrap">
+    <div class="reveal center" style="max-width:580px;margin:0 auto">
+      <div class="eyebrow"><span class="en">Reporting</span><span class="th">การรายงาน</span></div>
+      <h2 class="h-lg">
+        <span class="en">Board-Ready Reports. Investor-Grade Intelligence.</span>
+        <span class="th">รายงานระดับคณะกรรมการ ข่าวกรองระดับนักลงทุน</span>
+      </h2>
+      <p class="body-md" style="margin-top:12px">
+        <span class="en">Five report types connecting human performance data to the strategic metrics boards, investors, and regulators actually need.</span>
+        <span class="th">รายงาน 5 ประเภทที่เชื่อมต่อข้อมูลประสิทธิภาพบุคลากรกับตัวชี้วัดเชิงกลยุทธ์ที่คณะกรรมการ นักลงทุน และหน่วยงานกำกับดูแลต้องการ</span>
+      </p>
+    </div>
+
+    <div class="report-grid">
+
+      <div class="report-card reveal d1">
+        <div class="report-visual">
+          <div class="rv-inner">
+            <div class="rv-line light" style="width:65%"></div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;">
+              <div style="background:rgba(16,213,210,.3);border-radius:5px;height:26px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:var(--accent)">79.4</div>
+              <div style="background:rgba(52,211,153,.2);border-radius:5px;height:26px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#34D399">88%</div>
+              <div style="background:rgba(252,211,77,.15);border-radius:5px;height:26px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#FCD34D">3.4x</div>
+            </div>
+            <div class="rv-line" style="width:80%"></div>
+            <div class="rv-line" style="width:55%"></div>
+            <div style="display:flex;align-items:flex-end;gap:3px;height:28px;margin-top:auto">
+              <div style="flex:1;height:45%;background:rgba(16,213,210,.3);border-radius:2px 2px 0 0"></div>
+              <div style="flex:1;height:60%;background:rgba(16,213,210,.4);border-radius:2px 2px 0 0"></div>
+              <div style="flex:1;height:78%;background:rgba(16,213,210,.5);border-radius:2px 2px 0 0"></div>
+              <div style="flex:1;height:88%;background:rgba(16,213,210,.7);border-radius:2px 2px 0 0"></div>
+            </div>
+          </div>
+        </div>
+        <div class="rc-type en">Executive</div>
+        <div class="rc-type th">ผู้บริหาร</div>
+        <div class="rc-title en">Executive Summary</div>
+        <div class="rc-title th">สรุปผู้บริหาร</div>
+        <div class="rc-desc en">One-page overview of HPS, participation, budget ROI, and key strategic recommendations.</div>
+        <div class="rc-desc th">ภาพรวมหน้าเดียวของ HPS การมีส่วนร่วม ROI งบประมาณ และคำแนะนำเชิงกลยุทธ์</div>
+      </div>
+
+      <div class="report-card reveal d2">
+        <div class="report-visual">
+          <div class="rv-inner">
+            <div class="rv-line light" style="width:55%"></div>
+            <div class="rv-line accent" style="width:80%"></div>
+            <div class="rv-line" style="width:65%"></div>
+            <div class="rv-line accent" style="width:70%"></div>
+            <div class="rv-line" style="width:50%"></div>
+            <div style="display:flex;align-items:flex-end;gap:3px;height:28px;margin-top:auto">
+              <div style="flex:1;height:55%;background:rgba(16,213,210,.25);border-radius:2px 2px 0 0"></div>
+              <div style="flex:1;height:68%;background:rgba(16,213,210,.35);border-radius:2px 2px 0 0"></div>
+              <div style="flex:1;height:72%;background:rgba(16,213,210,.45);border-radius:2px 2px 0 0"></div>
+              <div style="flex:1;height:80%;background:rgba(16,213,210,.55);border-radius:2px 2px 0 0"></div>
+              <div style="flex:1;height:88%;background:rgba(16,213,210,.7);border-radius:2px 2px 0 0"></div>
+            </div>
+          </div>
+        </div>
+        <div class="rc-type en">Quarterly</div>
+        <div class="rc-type th">รายไตรมาส</div>
+        <div class="rc-title en">Quarterly Insights Report</div>
+        <div class="rc-title th">รายงานข้อมูลเชิงลึกรายไตรมาส</div>
+        <div class="rc-desc en">Pillar trends, budget utilization, and benchmark comparisons quarter-on-quarter.</div>
+        <div class="rc-desc th">แนวโน้มเสาหลัก การใช้งบประมาณ และการเปรียบเทียบเกณฑ์มาตรฐานรายไตรมาส</div>
+      </div>
+
+      <div class="report-card reveal d3">
+        <div class="report-visual">
+          <div class="rv-inner">
+            <div class="rv-line light" style="width:60%"></div>
+            <div style="display:flex;flex-direction:column;gap:5px;margin:4px 0">
+              <div style="display:flex;align-items:center;gap:5px">
+                <div style="width:7px;height:7px;border-radius:50%;background:#10D5D2;flex-shrink:0"></div>
+                <div class="rv-line" style="flex:1;width:auto"></div>
+                <div style="width:20px;height:5px;background:rgba(16,213,210,.5);border-radius:3px;flex-shrink:0"></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:5px">
+                <div style="width:7px;height:7px;border-radius:50%;background:#34D399;flex-shrink:0"></div>
+                <div class="rv-line" style="flex:1;width:auto"></div>
+                <div style="width:16px;height:5px;background:rgba(52,211,153,.5);border-radius:3px;flex-shrink:0"></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:5px">
+                <div style="width:7px;height:7px;border-radius:50%;background:#FCD34D;flex-shrink:0"></div>
+                <div class="rv-line" style="flex:1;width:auto"></div>
+                <div style="width:14px;height:5px;background:rgba(252,211,77,.5);border-radius:3px;flex-shrink:0"></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:5px">
+                <div style="width:7px;height:7px;border-radius:50%;background:#A78BFA;flex-shrink:0"></div>
+                <div class="rv-line" style="flex:1;width:auto"></div>
+                <div style="width:18px;height:5px;background:rgba(167,139,250,.5);border-radius:3px;flex-shrink:0"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="rc-type en">Performance</div>
+        <div class="rc-type th">ประสิทธิภาพ</div>
+        <div class="rc-title en">Human Performance Report</div>
+        <div class="rc-title th">รายงานประสิทธิภาพบุคลากร</div>
+        <div class="rc-desc en">6-pillar deep dive, intervention effectiveness, ROI calculations, and risk heat maps.</div>
+        <div class="rc-desc th">วิเคราะห์เชิงลึก 6 เสาหลัก ประสิทธิภาพการแทรกแซง การคำนวณ ROI และแผนที่ความร้อนความเสี่ยง</div>
+      </div>
+
+      <div class="report-card reveal d4">
+        <div class="report-visual">
+          <div class="rv-inner">
+            <div class="rv-line light" style="width:55%"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin:4px 0">
+              <div style="background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.2);border-radius:7px;padding:6px;text-align:center">
+                <div style="font-size:14px;font-weight:900;color:#34D399;letter-spacing:-.02em">A+</div>
+                <div style="font-size:6px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.06em">S-Score</div>
+              </div>
+              <div style="background:rgba(16,213,210,.1);border:1px solid rgba(16,213,210,.2);border-radius:7px;padding:6px;text-align:center">
+                <div style="font-size:14px;font-weight:900;color:var(--accent);letter-spacing:-.02em">GRI</div>
+                <div style="font-size:6px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.06em">Ready</div>
+              </div>
+            </div>
+            <div class="rv-line" style="width:80%"></div>
+            <div class="rv-line accent" style="width:65%"></div>
+          </div>
+        </div>
+        <div class="rc-type en">ESG</div>
+        <div class="rc-type th">ESG</div>
+        <div class="rc-title en">ESG Human Capital Report</div>
+        <div class="rc-title th">รายงานทุนมนุษย์ ESG</div>
+        <div class="rc-desc en">GRI and SASB-aligned social indicators — investor-grade human capital disclosure ready for annual reports.</div>
+        <div class="rc-desc th">ตัวชี้วัดสังคมที่ตรงตาม GRI และ SASB พร้อมสำหรับรายงานประจำปี</div>
+      </div>
+
+      <div class="report-card reveal d5">
+        <div class="report-visual">
+          <div class="rv-inner">
+            <div class="rv-line light" style="width:70%"></div>
+            <div class="rv-line accent" style="width:55%"></div>
+            <div style="background:rgba(255,255,255,.06);border-radius:7px;padding:8px;margin:4px 0">
+              <div class="rv-line" style="width:90%;margin-bottom:5px"></div>
+              <div class="rv-line" style="width:70%;margin-bottom:5px"></div>
+              <div class="rv-line accent" style="width:60%"></div>
+            </div>
+            <div class="rv-line" style="width:80%"></div>
+          </div>
+        </div>
+        <div class="rc-type en">Board</div>
+        <div class="rc-type th">คณะกรรมการ</div>
+        <div class="rc-title en">Board-Ready Reporting</div>
+        <div class="rc-title th">รายงานระดับคณะกรรมการ</div>
+        <div class="rc-desc en">Structured presentation of human capital strategy, investment outcomes, and competitive positioning for board sessions.</div>
+        <div class="rc-desc th">การนำเสนอกลยุทธ์ทุนมนุษย์ ผลลัพธ์การลงทุน และตำแหน่งการแข่งขันสำหรับคณะกรรมการ</div>
+      </div>
+
+    </div>
+
+    <!-- Boardroom photo band -->
+    <div class="reporting-photo-band reveal">
+      <img src="https://images.unsplash.com/photo-1560439514-4e9645039924?w=1400&q=80&auto=format&fit=crop&crop=center" alt="Executive leadership team in boardroom reviewing human capital reports" loading="lazy"/>
+      <div class="rpb-overlay">
+        <div class="rpb-content">
+          <div class="rpb-eye en">Board-Level Intelligence</div>
+          <div class="rpb-eye th">ข่าวกรองระดับคณะกรรมการ</div>
+          <div class="rpb-title en">Reports that connect human performance data to the metrics your board actually needs</div>
+          <div class="rpb-title th">รายงานที่เชื่อมต่อข้อมูลประสิทธิภาพบุคลากรกับตัวชี้วัดที่คณะกรรมการต้องการ</div>
+          <div class="rpb-desc en">GRI-aligned, investor-grade, automatically generated — and ready for your next board session.</div>
+          <div class="rpb-desc th">สอดคล้องกับ GRI ระดับนักลงทุน สร้างโดยอัตโนมัติ พร้อมสำหรับการประชุมคณะกรรมการครั้งถัดไป</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="who-for" class="section">
+  <div class="wrap">
+    <div class="reveal center" style="max-width:560px;margin:0 auto">
+      <div class="eyebrow"><span class="en">Solutions</span><span class="th">โซลูชัน</span></div>
+      <h2 class="h-lg">
+        <span class="en">Built for Enterprise-Scale Organizations</span>
+        <span class="th">สร้างมาสำหรับองค์กรระดับองค์กร</span>
+      </h2>
+      <p class="body-md" style="margin-top:12px">
+        <span class="en">Performia is designed for organizations where human performance drives competitive advantage and where leadership needs intelligence, not just data.</span>
+        <span class="th">Performia ออกแบบสำหรับองค์กรที่ประสิทธิภาพบุคลากรขับเคลื่อนข้อได้เปรียบในการแข่งขัน</span>
+      </p>
+    </div>
+
+    <div class="who-grid" style="margin-top:48px">
+
+      <div class="who-card featured reveal d1">
+        <div class="who-icon">
+          <svg viewBox="0 0 20 20" fill="none" stroke-width="1.8" stroke-linecap="round">
+            <path d="M10 1l2 6h6l-5 4 2 6-5-4-5 4 2-6L2 7h6z"/>
+          </svg>
+        </div>
+        <div class="who-name en">Enterprise Organizations</div>
+        <div class="who-name th">องค์กรขนาดใหญ่</div>
+        <div class="who-desc en">500+ employee organizations seeking to link human capital investment to measurable business outcomes and competitive advantage.</div>
+        <div class="who-desc th">องค์กรที่มีพนักงาน 500+ คนที่ต้องการเชื่อมต่อการลงทุนทุนมนุษย์กับผลลัพธ์ทางธุรกิจที่วัดได้</div>
+      </div>
+
+      <div class="who-card reveal d2">
+        <div class="who-icon">
+          <svg viewBox="0 0 20 20" fill="none" stroke-width="1.8" stroke-linecap="round">
+            <rect x="1" y="3" width="18" height="14" rx="2"/>
+            <path d="M1 8h18"/>
+          </svg>
+        </div>
+        <div class="who-name en">Public Companies</div>
+        <div class="who-name th">บริษัทจดทะเบียน</div>
+        <div class="who-desc en">Listed companies facing investor and regulatory pressure to demonstrate measurable human capital management and ESG disclosure.</div>
+        <div class="who-desc th">บริษัทจดทะเบียนที่เผชิญแรงกดดันด้าน ESG และการเปิดเผยทุนมนุษย์</div>
+      </div>
+
+      <div class="who-card reveal d3">
+        <div class="who-icon">
+          <svg viewBox="0 0 20 20" fill="none" stroke-width="1.8" stroke-linecap="round">
+            <path d="M2 20V8L10 2l8 6v12"/>
+            <path d="M8 20v-6h4v6"/>
+          </svg>
+        </div>
+        <div class="who-name en">Banking & Financial</div>
+        <div class="who-name th">ธนาคารและการเงิน</div>
+        <div class="who-desc en">High-pressure financial services organizations needing resilience data, burnout risk management, and cognitive performance tracking.</div>
+        <div class="who-desc th">องค์กรการเงินที่ต้องการข้อมูลความยืดหยุ่น การจัดการความเสี่ยงเหนื่อยล้า</div>
+      </div>
+
+      <div class="who-card reveal d4">
+        <div class="who-icon">
+          <svg viewBox="0 0 20 20" fill="none" stroke-width="1.8" stroke-linecap="round">
+            <circle cx="10" cy="10" r="8"/>
+            <path d="M10 1v18M1 10h18"/>
+          </svg>
+        </div>
+        <div class="who-name en">Insurance</div>
+        <div class="who-name th">ประกันภัย</div>
+        <div class="who-desc en">Insurers seeking to quantify workforce wellness risk, demonstrate duty of care, and embed human capital data in ESG strategy.</div>
+        <div class="who-desc th">บริษัทประกันที่ต้องการวัดปริมาณความเสี่ยงสุขภาพพนักงานและฝัง ESG</div>
+      </div>
+
+    </div>
+
+    <div class="who-grid-wide">
+
+      <div class="who-card reveal d1">
+        <div class="who-icon">
+          <svg viewBox="0 0 20 20" fill="none" stroke-width="1.8" stroke-linecap="round">
+            <rect x="2" y="3" width="16" height="14" rx="2"/>
+            <path d="M2 8h16M8 3v5"/>
+          </svg>
+        </div>
+        <div class="who-name en">Manufacturing</div>
+        <div class="who-name th">อุตสาหกรรมการผลิต</div>
+        <div class="who-desc en">Manufacturing operations measuring physical and cognitive performance, safety culture, and workforce resilience at scale.</div>
+        <div class="who-desc th">การดำเนินงานการผลิตที่วัดประสิทธิภาพทางร่างกายและปัญญา วัฒนธรรมความปลอดภัย</div>
+      </div>
+
+      <div class="who-card reveal d2">
+        <div class="who-icon">
+          <svg viewBox="0 0 20 20" fill="none" stroke-width="1.8" stroke-linecap="round">
+            <path d="M6 2L2 6v12h16V6l-4-4z"/>
+            <path d="M2 6h16M10 6v12"/>
+          </svg>
+        </div>
+        <div class="who-name en">FMCG</div>
+        <div class="who-name th">สินค้าอุปโภคบริโภค</div>
+        <div class="who-desc en">Fast-moving consumer goods companies aligning distributed workforce wellbeing with performance, retention, and ESG targets.</div>
+        <div class="who-desc th">บริษัทสินค้าอุปโภคบริโภคที่จัดเรียงสวัสดิภาพพนักงานกับประสิทธิภาพและเป้าหมาย ESG</div>
+      </div>
+
+      <div class="who-card reveal d3">
+        <div class="who-icon">
+          <svg viewBox="0 0 20 20" fill="none" stroke-width="1.8" stroke-linecap="round">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+          </svg>
+        </div>
+        <div class="who-name en">Large Employers</div>
+        <div class="who-name th">นายจ้างรายใหญ่</div>
+        <div class="who-desc en">Any large employer seeking to centralize human capital intelligence, measure wellbeing ROI, and build a culture of high performance.</div>
+        <div class="who-desc th">นายจ้างรายใหญ่ที่ต้องการรวมศูนย์ข่าวกรองทุนมนุษย์ วัด ROI ด้านสวัสดิภาพ</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+   11. FINAL CTA
+============================================= -->
+<section id="final-cta">
+  <div class="hero-grid" style="opacity:.4"></div>
+  <div class="hero-glow glow-1" style="opacity:.5"></div>
+
+  <div class="wrap">
+    <div class="cta-body reveal">
+      <div class="eyebrow"><span class="en">Get Started</span><span class="th">เริ่มต้น</span></div>
+      <h2 class="cta-h2">
+        <span class="en">Ready to Turn Wellbeing Into <em>Measurable Performance?</em></span>
+        <span class="th">พร้อมแปลงความเป็นอยู่ที่ดีเป็น<em>ประสิทธิภาพที่วัดได้?</em></span>
+      </h2>
+      <p class="cta-sub en">Discover how Performia helps organizations improve human performance and measurable business outcomes. Speak with our team to build your business case.</p>
+      <p class="cta-sub th">ค้นพบว่า Performia ช่วยองค์กรปรับปรุงประสิทธิภาพบุคลากรและผลลัพธ์ทางธุรกิจที่วัดได้ได้อย่างไร</p>
+      <div class="cta-btns">
+        <a href="#" class="btn btn-accent btn-lg">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="2" width="14" height="11" rx="1.5"/><path d="M5 1v2M11 1v2M1 6h14"/></svg>
+          <span class="en">Book a Demo</span><span class="th">นัดสาธิต</span>
+        </a>
+        <a href="#" class="btn btn-outline-white btn-lg">
+          <span class="en">Talk to Our Team</span><span class="th">คุยกับทีมของเรา</span>
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7.5h9M8 3l4 4.5-4 4.5"/></svg>
+        </a>
+      </div>
+      <div class="cta-trust">
+        <div class="trust-item">
+          <svg viewBox="0 0 14 14" fill="none" stroke-linecap="round" stroke-width="1.5"><path d="M7 1l4 3v5c0 2.2-4 4-4 4S3 11.2 3 9V4z"/></svg>
+          <span class="en">GDPR Compliant</span><span class="th">สอดคล้อง GDPR</span>
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 14 14" fill="none" stroke-linecap="round" stroke-width="1.5"><circle cx="7" cy="7" r="6"/><path d="M4.5 7l2 2 3-3"/></svg>
+          <span class="en">GRI-Aligned Reporting</span><span class="th">รายงานตาม GRI</span>
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 14 14" fill="none" stroke-linecap="round" stroke-width="1.5"><rect x="1" y="3" width="12" height="9" rx="1.5"/><path d="M9 3V2a2 2 0 00-4 0v1"/></svg>
+          <span class="en">ISO 27001 Ready</span><span class="th">พร้อม ISO 27001</span>
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 14 14" fill="none" stroke-linecap="round" stroke-width="1.5"><path d="M2 7h10M7 2l5 5-5 5"/></svg>
+          <span class="en">HRIS Integration</span><span class="th">เชื่อมต่อ HRIS</span>
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 14 14" fill="none" stroke-linecap="round" stroke-width="1.5"><path d="M7 1l1.5 4.5H13l-3.75 2.72 1.43 4.4L7 10.1l-3.68 2.62 1.43-4.4L1 5.5h4.5z"/></svg>
+          <span class="en">Enterprise Grade</span><span class="th">ระดับองค์กร</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+   FOOTER
+============================================= -->
+<footer>
+  <div class="wrap">
+    <div class="footer-body">
+      <div>
+        <div class="footer-logo">
+          <div class="footer-lm">
+            <svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M2.5 7.5l3.5 3.5L12.5 4"/></svg>
+          </div>
+          <span class="footer-lt">Performia</span>
+        </div>
+        <p class="footer-tag en">The Enterprise Human Performance Intelligence Platform. Measure, improve, and report on human performance at scale.</p>
+        <p class="footer-tag th">แพลตฟอร์มข่าวกรองประสิทธิภาพบุคลากรระดับองค์กร วัด ปรับปรุง และรายงานประสิทธิภาพบุคลากรในระดับใหญ่</p>
+        <div class="footer-socials">
+          <a href="#" class="soc" aria-label="LinkedIn">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2.667 4.667a1.333 1.333 0 100-2.667 1.333 1.333 0 000 2.667zM1.333 6h2.667v8H1.333V6zM6 6h2.557v1.1h.036C8.967 6.4 9.9 5.867 11.2 5.867c2.933 0 3.467 1.933 3.467 4.444V14h-2.667v-3.067c0-.933 0-2.133-1.3-2.133-1.3 0-1.5 1.017-1.5 2.067V14H6V6z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title en">Platform</div>
+        <div class="footer-col-title th">แพลตฟอร์ม</div>
+        <ul class="footer-links">
+          <li><a href="#why-hp"><span class="en">Platform Overview</span><span class="th">ภาพรวมแพลตฟอร์ม</span></a></li>
+          <li><a href="#how-it-works"><span class="en">How It Works</span><span class="th">วิธีการทำงาน</span></a></li>
+          <li><a href="#interventions"><span class="en">Interventions</span><span class="th">การแทรกแซง</span></a></li>
+          <li><a href="#benchmark"><span class="en">Benchmark</span><span class="th">เกณฑ์มาตรฐาน</span></a></li>
+          <li><a href="#reporting"><span class="en">Reporting</span><span class="th">การรายงาน</span></a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title en">Framework</div>
+        <div class="footer-col-title th">เฟรมเวิร์ก</div>
+        <ul class="footer-links">
+          <li><a href="#jv-matrix"><span class="en">JV Matrix™</span><span class="th">เมทริกซ์ JV™</span></a></li>
+          <li><a href="#jv-matrix"><span class="en">6 Pillars</span><span class="th">6 เสาหลัก</span></a></li>
+          <li><a href="#business-impact"><span class="en">Business Impact</span><span class="th">ผลกระทบทางธุรกิจ</span></a></li>
+          <li><a href="#reporting"><span class="en">ESG Reporting</span><span class="th">รายงาน ESG</span></a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title en">Solutions</div>
+        <div class="footer-col-title th">โซลูชัน</div>
+        <ul class="footer-links">
+          <li><a href="#who-for"><span class="en">Enterprise</span><span class="th">องค์กร</span></a></li>
+          <li><a href="#who-for"><span class="en">Public Companies</span><span class="th">บริษัทจดทะเบียน</span></a></li>
+          <li><a href="#who-for"><span class="en">Banking</span><span class="th">ธนาคาร</span></a></li>
+          <li><a href="#who-for"><span class="en">Manufacturing</span><span class="th">การผลิต</span></a></li>
+          <li><a href="#who-for"><span class="en">FMCG</span><span class="th">สินค้าอุปโภคบริโภค</span></a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title en">Contact</div>
+        <div class="footer-col-title th">ติดต่อ</div>
+        <ul class="footer-links">
+          <li><a href="#final-cta"><span class="en">Book a Demo</span><span class="th">นัดสาธิต</span></a></li>
+          <li><a href="#final-cta"><span class="en">Talk to Sales</span><span class="th">ติดต่อฝ่ายขาย</span></a></li>
+          <li><a href="#"><span class="en">About Performia</span><span class="th">เกี่ยวกับ Performia</span></a></li>
+          <li><a href="#"><span class="en">Privacy Policy</span><span class="th">นโยบายความเป็นส่วนตัว</span></a></li>
+          <li><a href="#"><span class="en">Terms of Service</span><span class="th">ข้อกำหนดการใช้บริการ</span></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-copy en">© 2024 Performia. All rights reserved. Powered by the JV Human Performance Matrix™</div>
+      <div class="footer-copy th">© 2024 Performia. สงวนลิขสิทธิ์ ขับเคลื่อนโดย JV Human Performance Matrix™</div>
+      <div style="display:flex;align-items:center;gap:20px">
+        <div class="footer-lang">
+          <button class="footer-lang-btn active" data-lang-switch="en">EN</button>
+          <span class="footer-lang-sep">|</span>
+          <button class="footer-lang-btn" data-lang-switch="th">TH</button>
+        </div>
+        <div class="footer-legal">
+          <a href="#"><span class="en">Privacy</span><span class="th">ความเป็นส่วนตัว</span></a>
+          <a href="#"><span class="en">Terms</span><span class="th">ข้อกำหนด</span></a>
+          <a href="#"><span class="en">Cookies</span><span class="th">คุกกี้</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* =============================================
+   LANGUAGE TOGGLE
+============================================= */
+function setLang(lang) {
+  document.documentElement.setAttribute('data-lang', lang);
+  // Sync all toggle buttons
+  document.querySelectorAll('[data-lang-switch]').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.langSwitch === lang);
+  });
+  // Update html lang attribute
+  document.documentElement.lang = lang === 'th' ? 'th' : 'en';
+}
+
+document.querySelectorAll('[data-lang-switch]').forEach(btn => {
+  btn.addEventListener('click', () => setLang(btn.dataset.langSwitch));
+});
+
+/* =============================================
+   NAV SCROLL
+============================================= */
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 10);
+});
+
+/* =============================================
+   SCROLL REVEAL
+============================================= */
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+/* =============================================
+   PILLAR CARDS
+============================================= */
+const pillarData = {
+  mind: {
+    name_en: 'Mind',
+    name_th: 'จิตใจ',
+    desc_en: 'Cognitive performance, resilience, stress management, and emotional regulation. The Mind pillar assesses how employees think, feel, and adapt under organizational pressure.',
+    desc_th: 'ประสิทธิภาพทางปัญญา ความยืดหยุ่น การจัดการความเครียด และการควบคุมอารมณ์ เสาหลักจิตใจประเมินวิธีที่พนักงานคิด รู้สึก และปรับตัวภายใต้แรงกดดัน',
+    tags_en: ['Cognitive Resilience', 'Stress Management', 'Emotional Regulation', 'Focus & Clarity', 'Mental Agility'],
+    metrics: [{label_en:'Dimension Coverage',label_th:'ความครอบคลุม',val:'4 Dims'},{label_en:'Productivity Impact',label_th:'ผลต่อผลผลิต',val:'+14%'},{label_en:'Burnout Correlation',label_th:'ความสัมพันธ์เหนื่อยล้า',val:'r=.71'}]
+  },
+  body: {
+    name_en: 'Body',
+    name_th: 'ร่างกาย',
+    desc_en: 'Physical vitality, movement quality, nutrition, sleep health, and energy management. The Body pillar tracks the physical foundations of sustained high performance.',
+    desc_th: 'ความมีชีวิตชีวาทางร่างกาย คุณภาพการเคลื่อนไหว โภชนาการ สุขภาพการนอน และการจัดการพลังงาน',
+    tags_en: ['Physical Fitness', 'Nutrition', 'Sleep Health', 'Energy Management', 'Movement'],
+    metrics: [{label_en:'Dimension Coverage',label_th:'ความครอบคลุม',val:'4 Dims'},{label_en:'Absenteeism Impact',label_th:'ผลต่อการลางาน',val:'-28%'},{label_en:'Energy Correlation',label_th:'ความสัมพันธ์พลังงาน',val:'r=.64'}]
+  },
+  money: {
+    name_en: 'Money',
+    name_th: 'การเงิน',
+    desc_en: 'Financial wellbeing, planning capability, economic security, and financial literacy. Financial stress is one of the top predictors of overall human performance.',
+    desc_th: 'ความเป็นอยู่ทางการเงิน ความสามารถในการวางแผน ความมั่นคงทางเศรษฐกิจ และความรู้ทางการเงิน',
+    tags_en: ['Financial Planning', 'Economic Security', 'Debt Management', 'Investment Literacy'],
+    metrics: [{label_en:'Dimension Coverage',label_th:'ความครอบคลุม',val:'4 Dims'},{label_en:'Stress Reduction',label_th:'ลดความเครียด',val:'-32%'},{label_en:'Productivity Lift',label_th:'เพิ่มผลผลิต',val:'+11%'}]
+  },
+  social: {
+    name_en: 'Social',
+    name_th: 'สังคม',
+    desc_en: 'Belonging, connection quality, relationship strength, and team psychological safety. Social pillar is the strongest single predictor of retention in the JV Matrix.',
+    desc_th: 'ความรู้สึกเป็นส่วนหนึ่ง คุณภาพการเชื่อมต่อ ความแข็งแกร่งของความสัมพันธ์ และความปลอดภัยทางจิตใจของทีม',
+    tags_en: ['Belonging', 'Team Trust', 'Connection Quality', 'Community', 'Psychological Safety'],
+    metrics: [{label_en:'Dimension Coverage',label_th:'ความครอบคลุม',val:'4 Dims'},{label_en:'Retention Impact',label_th:'ผลต่อการคงอยู่',val:'-40%'},{label_en:'Innovation Link',label_th:'ความสัมพันธ์นวัตกรรม',val:'r=.68'}]
+  },
+  growth: {
+    name_en: 'Growth',
+    name_th: 'การเติบโต',
+    desc_en: 'Learning agility, development velocity, career clarity, and purpose alignment. The Growth pillar measures the degree to which employees can and do develop within the organization.',
+    desc_th: 'ความคล่องตัวในการเรียนรู้ ความเร็วในการพัฒนา ความชัดเจนในอาชีพ และการจัดเรียงกับเป้าหมาย',
+    tags_en: ['Learning Agility', 'Career Clarity', 'Purpose Alignment', 'Development Velocity'],
+    metrics: [{label_en:'Dimension Coverage',label_th:'ความครอบคลุม',val:'4 Dims'},{label_en:'Internal Mobility',label_th:'การเคลื่อนย้ายภายใน',val:'+2.3x'},{label_en:'Succession Link',label_th:'ความสัมพันธ์สืบทอด',val:'r=.57'}]
+  },
+  work: {
+    name_en: 'Work Design',
+    name_th: 'การออกแบบงาน',
+    desc_en: 'Role clarity, workload balance, autonomy, flexibility, and organizational environment quality. Work Design is the most directly actionable pillar for HR and organizational leaders.',
+    desc_th: 'ความชัดเจนในบทบาท ความสมดุลของภาระงาน ความเป็นอิสระ ความยืดหยุ่น และคุณภาพสภาพแวดล้อม',
+    tags_en: ['Role Clarity', 'Workload Balance', 'Autonomy', 'Flexibility', 'Environment'],
+    metrics: [{label_en:'Dimension Coverage',label_th:'ความครอบคลุม',val:'4 Dims'},{label_en:'Burnout Prevention',label_th:'ป้องกันเหนื่อยล้า',val:'-45%'},{label_en:'Engagement Link',label_th:'ความสัมพันธ์',val:'r=.74'}]
+  }
+};
+
+const detail = document.getElementById('pillar-detail');
+
+document.querySelectorAll('.pillar-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const p = card.dataset.pillar;
+    const d = pillarData[p];
+    const lang = document.documentElement.getAttribute('data-lang') || 'en';
+
+    document.querySelectorAll('.pillar-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+
+    document.getElementById('pd-title').textContent = lang === 'th' ? d.name_th : d.name_en;
+    document.getElementById('pd-desc').textContent = lang === 'th' ? d.desc_th : d.desc_en;
+
+    const tags = document.getElementById('pd-tags');
+    tags.innerHTML = d.tags_en.map(t => `<span class="pd-tag">${t}</span>`).join('');
+
+    const metrics = detail.querySelector('.pd-metrics');
+    metrics.innerHTML = d.metrics.map(m => `
+      <div class="pd-metric">
+        <div class="pd-metric-icon" style="background:rgba(16,213,210,.15)">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="#10D5D2" stroke-width="1.8" stroke-linecap="round">
+            <path d="M2 11l3-4 2.5 2 3-4.5 2.5 2"/>
+          </svg>
+        </div>
+        <div class="pd-metric-text">${lang === 'th' ? m.label_th : m.label_en}</div>
+        <div class="pd-metric-val">${m.val}</div>
+      </div>
+    `).join('');
+
+    detail.classList.add('visible');
+    detail.style.display = '';
+    detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+});
+
+/* =============================================
+   WORKFLOW STEP INTERACTION
+============================================= */
+document.querySelectorAll('.workflow-step').forEach((step, i) => {
+  step.addEventListener('click', () => {
+    document.querySelectorAll('.ws-circle').forEach(c => c.classList.remove('active'));
+    step.querySelector('.ws-circle').classList.add('active');
+  });
+});
+
+/* =============================================
+   RE-RENDER PILLAR DETAIL ON LANG CHANGE
+============================================= */
+const origSetLang = setLang;
+window._setLang = setLang;
+// Patch to re-render active pillar detail on language change
+function setLang(lang) {
+  document.documentElement.setAttribute('data-lang', lang);
+  document.querySelectorAll('[data-lang-switch]').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.langSwitch === lang);
+  });
+  document.documentElement.lang = lang === 'th' ? 'th' : 'en';
+
+  // Re-render active pillar
+  const active = document.querySelector('.pillar-card.active');
+  if (active) active.click();
+}
+
+document.querySelectorAll('[data-lang-switch]').forEach(btn => {
+  btn.replaceWith(btn.cloneNode(true));
+});
+document.querySelectorAll('[data-lang-switch]').forEach(btn => {
+  btn.addEventListener('click', () => setLang(btn.dataset.langSwitch));
+});
+
+</script>
+</body>
+</html>
