@@ -443,6 +443,22 @@ h1, h2, h3, h4 { font-family: var(--font); color: var(--text-1); }
 }
 .challenge-card:hover::before { opacity: 1; }
 
+.challenge-card.photo-card { padding: 0; overflow: hidden; }
+.challenge-card.photo-card .cc-photo {
+  height: 148px; overflow: hidden; position: relative;
+}
+.challenge-card.photo-card .cc-photo img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform .6s var(--ease);
+  filter: saturate(.85) brightness(.9);
+}
+.challenge-card.photo-card:hover .cc-photo img { transform: scale(1.05); filter: saturate(1) brightness(.95); }
+.challenge-card.photo-card .cc-photo-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 35%, rgba(3,18,68,.55) 100%);
+}
+.challenge-card.photo-card .cc-body { padding: 20px 22px 22px; }
+
 .challenge-icon {
   width: 44px; height: 44px;
   background: rgba(7,27,99,.07);
@@ -1664,77 +1680,94 @@ footer {
 
     <div class="challenge-grid" style="margin-top:48px">
 
-      <div class="challenge-card reveal d1">
-        <div class="challenge-icon">
-          <svg viewBox="0 0 22 22" fill="none" stroke-width="1.8" stroke-linecap="round">
-            <path d="M11 21a9 9 0 100-18 9 9 0 000 18z"/>
-            <path d="M11 7v5l3 3"/>
-          </svg>
+      <div class="challenge-card photo-card reveal d1">
+        <div class="cc-photo">
+          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=640&q=75&auto=format&fit=crop" alt="Focused professional experiencing workplace stress" loading="lazy"/>
+          <div class="cc-photo-overlay"></div>
         </div>
-        <div class="challenge-title"><span class="en">Burnout at Scale</span><span class="th">ความเหนื่อยล้าทั่วองค์กร</span></div>
-        <div class="challenge-desc"><span class="en">76% of employees report symptoms of burnout, yet most organizations lack early warning systems to identify and address it before talent exits.</span><span class="th">76% ของพนักงานมีอาการเหนื่อยหน่าย แต่องค์กรส่วนใหญ่ยังขาดระบบเตือนภัยล่วงหน้า</span></div>
-        <div class="challenge-stat"><span class="challenge-stat-num">76%</span><span class="challenge-stat-lbl">Gallup, 2024</span></div>
+        <div class="cc-body">
+          <div class="challenge-icon" style="margin-bottom:12px">
+            <svg viewBox="0 0 22 22" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M11 21a9 9 0 100-18 9 9 0 000 18z"/><path d="M11 7v5l3 3"/></svg>
+          </div>
+          <div class="challenge-title"><span class="en">Burnout at Scale</span><span class="th">ความเหนื่อยล้าทั่วองค์กร</span></div>
+          <div class="challenge-desc"><span class="en">76% of employees report symptoms of burnout, yet most organizations lack early warning systems to identify and address it before talent exits.</span><span class="th">76% ของพนักงานมีอาการเหนื่อยหน่าย แต่องค์กรส่วนใหญ่ยังขาดระบบเตือนภัยล่วงหน้า</span></div>
+          <div class="challenge-stat"><span class="challenge-stat-num">76%</span><span class="challenge-stat-lbl">Gallup, 2024</span></div>
+        </div>
       </div>
 
-      <div class="challenge-card reveal d2">
-        <div class="challenge-icon">
-          <svg viewBox="0 0 22 22" fill="none" stroke-width="1.8" stroke-linecap="round">
-            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-          </svg>
+      <div class="challenge-card photo-card reveal d2">
+        <div class="cc-photo">
+          <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=640&q=75&auto=format&fit=crop" alt="HR team analyzing data in a meeting room" loading="lazy"/>
+          <div class="cc-photo-overlay"></div>
         </div>
-        <div class="challenge-title"><span class="en">Low Program Participation</span><span class="th">อัตราการมีส่วนร่วมต่ำ</span></div>
-        <div class="challenge-desc"><span class="en">Generic wellbeing programs average only 20–40% participation because they offer the same content to everyone rather than personalized interventions.</span><span class="th">โปรแกรมสวัสดิภาพทั่วไปมีอัตราการมีส่วนร่วมเฉลี่ยเพียง 20–40% เนื่องจากขาดการปรับแต่งเฉพาะบุคคล</span></div>
-        <div class="challenge-stat"><span class="challenge-stat-num">40%</span><span class="challenge-stat-lbl"><span class="en">avg. participation</span><span class="th">อัตราเฉลี่ย</span></span></div>
+        <div class="cc-body">
+          <div class="challenge-icon" style="margin-bottom:12px">
+            <svg viewBox="0 0 22 22" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <div class="challenge-title"><span class="en">Low Program Participation</span><span class="th">อัตราการมีส่วนร่วมต่ำ</span></div>
+          <div class="challenge-desc"><span class="en">Generic wellbeing programs average only 20–40% participation because they offer the same content to everyone rather than personalized interventions.</span><span class="th">โปรแกรมสวัสดิภาพทั่วไปมีอัตราการมีส่วนร่วมเฉลี่ยเพียง 20–40% เนื่องจากขาดการปรับแต่งเฉพาะบุคคล</span></div>
+          <div class="challenge-stat"><span class="challenge-stat-num">40%</span><span class="challenge-stat-lbl"><span class="en">avg. participation</span><span class="th">อัตราเฉลี่ย</span></span></div>
+        </div>
       </div>
 
-      <div class="challenge-card reveal d3">
-        <div class="challenge-icon">
-          <svg viewBox="0 0 22 22" fill="none" stroke-width="1.8" stroke-linecap="round">
-            <line x1="11" y1="1" x2="11" y2="21"/>
-            <path d="M17 5H8.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H5"/>
-          </svg>
+      <div class="challenge-card photo-card reveal d3">
+        <div class="cc-photo">
+          <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=640&q=75&auto=format&fit=crop" alt="Business leaders discussing budget and strategy" loading="lazy"/>
+          <div class="cc-photo-overlay"></div>
         </div>
-        <div class="challenge-title"><span class="en">Budget Without Accountability</span><span class="th">งบประมาณที่ขาดความรับผิดชอบ</span></div>
-        <div class="challenge-desc"><span class="en">HR leaders spend billions on wellbeing programs with no data on which initiatives drive outcomes, resulting in vendor lock-in and wasted spend.</span><span class="th">ผู้นำ HR ใช้งบประมาณหลายพันล้านโดยไม่มีข้อมูลว่าโครงการใดสร้างผลลัพธ์ที่แท้จริง</span></div>
-        <div class="challenge-stat"><span class="challenge-stat-num">$322B</span><span class="challenge-stat-lbl"><span class="en">lost annually</span><span class="th">สูญเสียต่อปี</span></span></div>
+        <div class="cc-body">
+          <div class="challenge-icon" style="margin-bottom:12px">
+            <svg viewBox="0 0 22 22" fill="none" stroke-width="1.8" stroke-linecap="round"><line x1="11" y1="1" x2="11" y2="21"/><path d="M17 5H8.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H5"/></svg>
+          </div>
+          <div class="challenge-title"><span class="en">Budget Without Accountability</span><span class="th">งบประมาณที่ขาดความรับผิดชอบ</span></div>
+          <div class="challenge-desc"><span class="en">HR leaders spend billions on wellbeing programs with no data on which initiatives drive outcomes, resulting in vendor lock-in and wasted spend.</span><span class="th">ผู้นำ HR ใช้งบประมาณหลายพันล้านโดยไม่มีข้อมูลว่าโครงการใดสร้างผลลัพธ์ที่แท้จริง</span></div>
+          <div class="challenge-stat"><span class="challenge-stat-num">$322B</span><span class="challenge-stat-lbl"><span class="en">lost annually</span><span class="th">สูญเสียต่อปี</span></span></div>
+        </div>
       </div>
 
-      <div class="challenge-card reveal d1">
-        <div class="challenge-icon">
-          <svg viewBox="0 0 22 22" fill="none" stroke-width="1.8" stroke-linecap="round">
-            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
-            <circle cx="9" cy="7" r="4"/>
-            <path d="M23 21v-2a4 4 0 00-3-3.87"/>
-            <path d="M16 3.13a4 4 0 010 7.75"/>
-          </svg>
+      <div class="challenge-card photo-card reveal d1">
+        <div class="cc-photo">
+          <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=640&q=75&auto=format&fit=crop" alt="Professional employee preparing to leave organization" loading="lazy"/>
+          <div class="cc-photo-overlay"></div>
         </div>
-        <div class="challenge-title"><span class="en">High Turnover Costs</span><span class="th">ต้นทุนการลาออกสูง</span></div>
-        <div class="challenge-desc"><span class="en">Replacing a single employee costs 1.5–2x their annual salary. Organizations without performance data cannot predict or prevent preventable attrition.</span><span class="th">การแทนที่พนักงานหนึ่งคนมีต้นทุน 1.5–2 เท่าของเงินเดือนประจำปี ซึ่งป้องกันได้ด้วยข้อมูล</span></div>
-        <div class="challenge-stat"><span class="challenge-stat-num">2x</span><span class="challenge-stat-lbl"><span class="en">replacement cost</span><span class="th">ต้นทุนทดแทน</span></span></div>
+        <div class="cc-body">
+          <div class="challenge-icon" style="margin-bottom:12px">
+            <svg viewBox="0 0 22 22" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <div class="challenge-title"><span class="en">High Turnover Costs</span><span class="th">ต้นทุนการลาออกสูง</span></div>
+          <div class="challenge-desc"><span class="en">Replacing a single employee costs 1.5–2x their annual salary. Organizations without performance data cannot predict or prevent preventable attrition.</span><span class="th">การแทนที่พนักงานหนึ่งคนมีต้นทุน 1.5–2 เท่าของเงินเดือนประจำปี ซึ่งป้องกันได้ด้วยข้อมูล</span></div>
+          <div class="challenge-stat"><span class="challenge-stat-num">2x</span><span class="challenge-stat-lbl"><span class="en">replacement cost</span><span class="th">ต้นทุนทดแทน</span></span></div>
+        </div>
       </div>
 
-      <div class="challenge-card reveal d2">
-        <div class="challenge-icon">
-          <svg viewBox="0 0 22 22" fill="none" stroke-width="1.8" stroke-linecap="round">
-            <rect x="1" y="3" width="20" height="16" rx="2"/>
-            <path d="M1 9h20M8 3v18"/>
-          </svg>
+      <div class="challenge-card photo-card reveal d2">
+        <div class="cc-photo">
+          <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=640&q=75&auto=format&fit=crop" alt="Disconnected teams with separate work tools" loading="lazy"/>
+          <div class="cc-photo-overlay"></div>
         </div>
-        <div class="challenge-title"><span class="en">Disconnected Programs</span><span class="th">โปรแกรมที่ขาดการเชื่อมต่อ</span></div>
-        <div class="challenge-desc"><span class="en">Most organizations run 8–12 separate wellness vendors with no unified data layer, making it impossible to understand the collective impact on human performance.</span><span class="th">องค์กรส่วนใหญ่มีผู้ให้บริการด้านสวัสดิภาพ 8–12 รายแยกจากกัน โดยไม่มีชั้นข้อมูลรวมกัน</span></div>
-        <div class="challenge-stat"><span class="challenge-stat-num">8–12</span><span class="challenge-stat-lbl"><span class="en">siloed vendors</span><span class="th">ผู้ให้บริการแยกส่วน</span></span></div>
+        <div class="cc-body">
+          <div class="challenge-icon" style="margin-bottom:12px">
+            <svg viewBox="0 0 22 22" fill="none" stroke-width="1.8" stroke-linecap="round"><rect x="1" y="3" width="20" height="16" rx="2"/><path d="M1 9h20M8 3v18"/></svg>
+          </div>
+          <div class="challenge-title"><span class="en">Disconnected Programs</span><span class="th">โปรแกรมที่ขาดการเชื่อมต่อ</span></div>
+          <div class="challenge-desc"><span class="en">Most organizations run 8–12 separate wellness vendors with no unified data layer, making it impossible to understand the collective impact on human performance.</span><span class="th">องค์กรส่วนใหญ่มีผู้ให้บริการด้านสวัสดิภาพ 8–12 รายแยกจากกัน โดยไม่มีชั้นข้อมูลรวมกัน</span></div>
+          <div class="challenge-stat"><span class="challenge-stat-num">8–12</span><span class="challenge-stat-lbl"><span class="en">siloed vendors</span><span class="th">ผู้ให้บริการแยกส่วน</span></span></div>
+        </div>
       </div>
 
-      <div class="challenge-card reveal d3">
-        <div class="challenge-icon">
-          <svg viewBox="0 0 22 22" fill="none" stroke-width="1.8" stroke-linecap="round">
-            <path d="M2 9l9-7 9 7v11a2 2 0 01-2 2H4a2 2 0 01-2-2z"/>
-            <polyline points="8 22 8 12 14 12 14 22"/>
-          </svg>
+      <div class="challenge-card photo-card reveal d3">
+        <div class="cc-photo">
+          <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=640&q=75&auto=format&fit=crop" alt="Executive leadership ESG board meeting" loading="lazy"/>
+          <div class="cc-photo-overlay"></div>
         </div>
-        <div class="challenge-title"><span class="en">No ESG Visibility</span><span class="th">ขาดการมองเห็นด้าน ESG</span></div>
-        <div class="challenge-desc"><span class="en">61% of ESG reporters now require human capital data, yet most HR functions cannot produce the quantified social indicators boards and investors demand.</span><span class="th">61% ของผู้รายงาน ESG ต้องการข้อมูลทุนมนุษย์ แต่ฝ่าย HR ส่วนใหญ่ไม่สามารถผลิตข้อมูลดังกล่าวได้</span></div>
-        <div class="challenge-stat"><span class="challenge-stat-num">61%</span><span class="challenge-stat-lbl">GRI, 2024</span></div>
+        <div class="cc-body">
+          <div class="challenge-icon" style="margin-bottom:12px">
+            <svg viewBox="0 0 22 22" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M2 9l9-7 9 7v11a2 2 0 01-2 2H4a2 2 0 01-2-2z"/><polyline points="8 22 8 12 14 12 14 22"/></svg>
+          </div>
+          <div class="challenge-title"><span class="en">No ESG Visibility</span><span class="th">ขาดการมองเห็นด้าน ESG</span></div>
+          <div class="challenge-desc"><span class="en">61% of ESG reporters now require human capital data, yet most HR functions cannot produce the quantified social indicators boards and investors demand.</span><span class="th">61% ของผู้รายงาน ESG ต้องการข้อมูลทุนมนุษย์ แต่ฝ่าย HR ส่วนใหญ่ไม่สามารถผลิตข้อมูลดังกล่าวได้</span></div>
+          <div class="challenge-stat"><span class="challenge-stat-num">61%</span><span class="challenge-stat-lbl">GRI, 2024</span></div>
+        </div>
       </div>
 
     </div>
