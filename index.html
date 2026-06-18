@@ -349,60 +349,23 @@ h1, h2, h3, h4 { font-family: var(--font); color: var(--text-1); }
   justify-content: center;
 }
 
-.intel-network {
+/* Hero photo */
+.hero-photo-wrap {
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(3,18,68,.55), 0 8px 32px rgba(3,18,68,.3);
+  border: 1px solid rgba(255,255,255,.1);
+  aspect-ratio: 4/5;
   position: relative;
-  width: 100%;
-  max-width: 560px;
-  aspect-ratio: 1;
+  max-width: 480px;
 }
-
-.intel-network svg {
-  width: 100%;
-  height: 100%;
+.hero-photo-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center 20%;
+  display: block;
 }
-
-/* Floating info chips */
-.intel-chip {
-  position: absolute;
-  background: rgba(255,255,255,.96);
-  border: 1px solid rgba(255,255,255,.9);
-  border-radius: 14px;
-  padding: 12px 16px;
-  box-shadow: 0 12px 40px rgba(3,18,68,.28), 0 2px 8px rgba(3,18,68,.14);
-  white-space: nowrap;
-  animation: chipFloat 5s ease-in-out infinite;
-}
-.chip-label {
-  font-size: 9px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .1em;
-  color: var(--text-3);
-  margin-bottom: 3px;
-}
-.chip-value {
-  font-size: 20px;
-  font-weight: 900;
-  letter-spacing: -.03em;
-  line-height: 1;
-  color: var(--text-1);
-}
-.chip-sub {
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--success);
-  margin-top: 2px;
-}
-.chip-sub.warn { color: var(--warning); }
-
-.chip-1 { top: 8%; left: -5%; animation-delay: 0s; }
-.chip-2 { top: 12%; right: 2%; animation-delay: 1.4s; }
-.chip-3 { bottom: 16%; right: -3%; animation-delay: 2.8s; }
-.chip-4 { bottom: 8%; left: 4%; animation-delay: .7s; }
-
-@keyframes chipFloat {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-7px); }
+.hero-photo-wrap .photo-overlay {
+  background: linear-gradient(to bottom, rgba(3,18,68,.3) 0%, transparent 40%, rgba(3,18,68,.55) 100%);
 }
 
 /* =============================================
@@ -448,7 +411,7 @@ h1, h2, h3, h4 { font-family: var(--font); color: var(--text-1); }
   height: 148px; overflow: hidden; position: relative;
 }
 .challenge-card.photo-card .cc-photo img {
-  width: 100%; height: 100%; object-fit: cover;
+  width: 100%; height: 100%; object-fit: cover; object-position: center 25%;
   transition: transform .6s var(--ease);
   filter: saturate(.85) brightness(.9);
 }
@@ -1445,7 +1408,6 @@ footer {
 @media (max-width: 1100px) {
   .wrap { padding: 0 32px; }
   .hero-inner { grid-template-columns: 1fr; }
-  .intel-network { max-width: 400px; margin: 0 auto; }
   .pillars-grid { grid-template-columns: repeat(3,1fr); }
   .impact-chains { grid-template-columns: repeat(2,1fr); }
   .bench-grid { grid-template-columns: 1fr 1fr; }
@@ -1574,163 +1536,13 @@ footer {
 
       <!-- Right — abstract intelligence network SVG -->
       <div class="hero-visual">
-        <!-- Floating KPI chips -->
-        <div class="intel-chip chip-1">
-          <div class="chip-label en">HPS Score</div>
-          <div class="chip-label th">คะแนน HPS</div>
-          <div class="chip-value">79.4</div>
-          <div class="chip-sub">+6.2 vs Q3</div>
-        </div>
-        <div class="intel-chip chip-2">
-          <div class="chip-label en">Participation</div>
-          <div class="chip-label th">การมีส่วนร่วม</div>
-          <div class="chip-value">88%</div>
-          <div class="chip-sub">+12% MoM</div>
-        </div>
-        <div class="intel-chip chip-3">
-          <div class="chip-label en">ESG S-Score</div>
-          <div class="chip-label th">คะแนน ESG S</div>
-          <div class="chip-value">A+</div>
-          <div class="chip-sub">GRI Aligned</div>
-        </div>
-        <div class="intel-chip chip-4">
-          <div class="chip-label en">Budget ROI</div>
-          <div class="chip-label th">ROI งบประมาณ</div>
-          <div class="chip-value">3.4x</div>
-          <div class="chip-sub warn">Q4 2024</div>
-        </div>
-
-        <!-- The abstract network SVG -->
-        <div class="intel-network">
-          <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#10D5D2" stop-opacity=".25"/>
-                <stop offset="100%" stop-color="#10D5D2" stop-opacity="0"/>
-              </radialGradient>
-              <radialGradient id="nodeGlow1" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#10D5D2" stop-opacity=".18"/>
-                <stop offset="100%" stop-color="#10D5D2" stop-opacity="0"/>
-              </radialGradient>
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="3" result="blur"/>
-                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-              </filter>
-              <filter id="softglow">
-                <feGaussianBlur stdDeviation="6" result="blur"/>
-                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-              </filter>
-            </defs>
-
-            <!-- Background glow -->
-            <circle cx="250" cy="250" r="200" fill="url(#centerGlow)"/>
-
-            <!-- Outer ring — dashed -->
-            <circle cx="250" cy="250" r="210" stroke="rgba(16,213,210,.06)" stroke-width="1" stroke-dasharray="8 12"/>
-            <circle cx="250" cy="250" r="170" stroke="rgba(16,213,210,.09)" stroke-width="1" stroke-dasharray="4 8"/>
-
-            <!-- Radial connection lines from center to nodes -->
-            <!-- Mind -->
-            <line x1="250" y1="250" x2="250" y2="80" stroke="rgba(16,213,210,.25)" stroke-width="1.2" stroke-dasharray="4 6"/>
-            <!-- Body -->
-            <line x1="250" y1="250" x2="395" y2="160" stroke="rgba(252,129,129,.2)" stroke-width="1.2" stroke-dasharray="4 6"/>
-            <!-- Money -->
-            <line x1="250" y1="250" x2="395" y2="340" stroke="rgba(252,211,77,.2)" stroke-width="1.2" stroke-dasharray="4 6"/>
-            <!-- Social -->
-            <line x1="250" y1="250" x2="250" y2="420" stroke="rgba(52,211,153,.2)" stroke-width="1.2" stroke-dasharray="4 6"/>
-            <!-- Growth -->
-            <line x1="250" y1="250" x2="105" y2="340" stroke="rgba(167,139,250,.2)" stroke-width="1.2" stroke-dasharray="4 6"/>
-            <!-- Work -->
-            <line x1="250" y1="250" x2="105" y2="160" stroke="rgba(147,197,253,.2)" stroke-width="1.2" stroke-dasharray="4 6"/>
-
-            <!-- Secondary connections between nodes -->
-            <line x1="250" y1="80" x2="395" y2="160" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
-            <line x1="395" y1="160" x2="395" y2="340" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
-            <line x1="395" y1="340" x2="250" y2="420" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
-            <line x1="250" y1="420" x2="105" y2="340" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
-            <line x1="105" y1="340" x2="105" y2="160" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
-            <line x1="105" y1="160" x2="250" y2="80" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
-
-            <!-- Cross connections -->
-            <line x1="250" y1="80" x2="395" y2="340" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
-            <line x1="395" y1="160" x2="105" y2="340" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
-            <line x1="395" y1="340" x2="105" y2="160" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
-
-            <!-- Animated pulse lines on active paths -->
-            <line x1="250" y1="250" x2="250" y2="80" stroke="#10D5D2" stroke-width="1.5" stroke-dasharray="3 200">
-              <animate attributeName="stroke-dashoffset" values="203;0" dur="3s" repeatCount="indefinite"/>
-            </line>
-            <line x1="250" y1="250" x2="395" y2="340" stroke="#34D399" stroke-width="1.5" stroke-dasharray="3 180">
-              <animate attributeName="stroke-dashoffset" values="183;0" dur="4s" repeatCount="indefinite" begin="1s"/>
-            </line>
-            <line x1="250" y1="250" x2="105" y2="160" stroke="#A78BFA" stroke-width="1.5" stroke-dasharray="3 170">
-              <animate attributeName="stroke-dashoffset" values="173;0" dur="3.5s" repeatCount="indefinite" begin="0.5s"/>
-            </line>
-
-            <!-- Pillar nodes -->
-            <!-- MIND — top -->
-            <circle cx="250" cy="80" r="40" fill="url(#nodeGlow1)"/>
-            <circle cx="250" cy="80" r="28" fill="rgba(16,213,210,.12)" stroke="rgba(16,213,210,.4)" stroke-width="1.5" filter="url(#glow)"/>
-            <circle cx="250" cy="80" r="16" fill="rgba(16,213,210,.2)" stroke="rgba(16,213,210,.7)" stroke-width="1"/>
-            <text x="250" y="83" text-anchor="middle" font-family="Noto Sans Thai, sans-serif" font-size="9" font-weight="700" fill="rgba(16,213,210,1)" letter-spacing=".06em">MIND</text>
-
-            <!-- BODY — top right -->
-            <circle cx="395" cy="160" r="40" fill="rgba(252,129,129,.05)"/>
-            <circle cx="395" cy="160" r="26" fill="rgba(252,129,129,.1)" stroke="rgba(252,129,129,.35)" stroke-width="1.5"/>
-            <circle cx="395" cy="160" r="14" fill="rgba(252,129,129,.18)" stroke="rgba(252,129,129,.6)" stroke-width="1"/>
-            <text x="395" y="163" text-anchor="middle" font-family="Noto Sans Thai, sans-serif" font-size="9" font-weight="700" fill="rgba(252,129,129,1)" letter-spacing=".06em">BODY</text>
-
-            <!-- MONEY — bottom right -->
-            <circle cx="395" cy="340" r="40" fill="rgba(252,211,77,.05)"/>
-            <circle cx="395" cy="340" r="26" fill="rgba(252,211,77,.1)" stroke="rgba(252,211,77,.35)" stroke-width="1.5"/>
-            <circle cx="395" cy="340" r="14" fill="rgba(252,211,77,.18)" stroke="rgba(252,211,77,.6)" stroke-width="1"/>
-            <text x="395" y="343" text-anchor="middle" font-family="Noto Sans Thai, sans-serif" font-size="9" font-weight="700" fill="rgba(252,211,77,1)" letter-spacing=".04em">MONEY</text>
-
-            <!-- SOCIAL — bottom -->
-            <circle cx="250" cy="420" r="40" fill="rgba(52,211,153,.05)"/>
-            <circle cx="250" cy="420" r="26" fill="rgba(52,211,153,.1)" stroke="rgba(52,211,153,.35)" stroke-width="1.5"/>
-            <circle cx="250" cy="420" r="14" fill="rgba(52,211,153,.18)" stroke="rgba(52,211,153,.6)" stroke-width="1"/>
-            <text x="250" y="423" text-anchor="middle" font-family="Noto Sans Thai, sans-serif" font-size="9" font-weight="700" fill="rgba(52,211,153,1)" letter-spacing=".04em">SOCIAL</text>
-
-            <!-- GROWTH — bottom left -->
-            <circle cx="105" cy="340" r="40" fill="rgba(167,139,250,.05)"/>
-            <circle cx="105" cy="340" r="26" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.35)" stroke-width="1.5"/>
-            <circle cx="105" cy="340" r="14" fill="rgba(167,139,250,.18)" stroke="rgba(167,139,250,.6)" stroke-width="1"/>
-            <text x="105" y="343" text-anchor="middle" font-family="Noto Sans Thai, sans-serif" font-size="8" font-weight="700" fill="rgba(167,139,250,1)" letter-spacing=".04em">GROWTH</text>
-
-            <!-- WORK — top left -->
-            <circle cx="105" cy="160" r="40" fill="rgba(147,197,253,.05)"/>
-            <circle cx="105" cy="160" r="26" fill="rgba(147,197,253,.1)" stroke="rgba(147,197,253,.35)" stroke-width="1.5"/>
-            <circle cx="105" cy="160" r="14" fill="rgba(147,197,253,.18)" stroke="rgba(147,197,253,.6)" stroke-width="1"/>
-            <text x="105" y="163" text-anchor="middle" font-family="Noto Sans Thai, sans-serif" font-size="8" font-weight="700" fill="rgba(147,197,253,1)" letter-spacing=".03em">WORK</text>
-
-            <!-- CENTER — HPS -->
-            <circle cx="250" cy="250" r="60" fill="url(#centerGlow)"/>
-            <circle cx="250" cy="250" r="44" fill="rgba(7,27,99,.8)" stroke="rgba(16,213,210,.35)" stroke-width="2"/>
-            <circle cx="250" cy="250" r="36" fill="rgba(7,27,99,.9)" stroke="rgba(16,213,210,.15)" stroke-width="1"/>
-            <text x="250" y="244" text-anchor="middle" font-family="Noto Sans Thai, sans-serif" font-size="18" font-weight="900" fill="#fff" letter-spacing=".01em">79</text>
-            <text x="250" y="257" text-anchor="middle" font-family="Noto Sans Thai, sans-serif" font-size="7.5" font-weight="700" fill="rgba(16,213,210,.9)" letter-spacing=".12em">HPS</text>
-
-            <!-- Orbiting particle dots -->
-            <circle cx="250" cy="250" r="95" fill="none" stroke="transparent"/>
-            <circle r="3" fill="#10D5D2" opacity=".7">
-              <animateMotion dur="12s" repeatCount="indefinite">
-                <mpath href="#orbit1"/>
-              </animateMotion>
-            </circle>
-            <circle r="2.5" fill="#34D399" opacity=".6">
-              <animateMotion dur="16s" repeatCount="indefinite" begin="-4s">
-                <mpath href="#orbit1"/>
-              </animateMotion>
-            </circle>
-            <circle r="2" fill="#A78BFA" opacity=".5">
-              <animateMotion dur="20s" repeatCount="indefinite" begin="-8s">
-                <mpath href="#orbit1"/>
-              </animateMotion>
-            </circle>
-            <path id="orbit1" d="M250,155 A95,95 0 1,1 249.99,155 Z" fill="none"/>
-
-          </svg>
+        <div class="hero-photo-wrap">
+          <img
+            src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=960&q=80&auto=format&fit=crop"
+            alt="Diverse enterprise professionals in a modern collaborative workspace"
+            loading="eager"
+          />
+          <div class="photo-overlay"></div>
         </div>
       </div>
 
